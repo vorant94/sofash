@@ -3,6 +3,7 @@ import { createEnv } from './core/create-env.js';
 import { Telegraf } from 'telegraf';
 import { createServer } from './core/create-server.js';
 import { createTelegrafMiddleware } from './core/create-telegraf-middleware.js';
+import { message } from 'telegraf/filters';
 
 void main();
 
@@ -14,7 +15,9 @@ async function main(): Promise<void> {
 
   app.use(await createTelegrafMiddleware(app));
 
-  telegraf.on('text', async (ctx) => await ctx.reply('Hello'));
+  telegraf.on(message(), async (ctx) => {
+    await ctx.reply('Hello');
+  });
 
   const server = createServer(app);
   server.listen(env.NODE_PORT, () => {
