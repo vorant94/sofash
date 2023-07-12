@@ -12,7 +12,7 @@
     "postinstall": "husky install",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
-    "lt": "lt --port 3000"
+    "localtunnel": "lt --port 3000"
   },
   "dependencies": {
     "@godaddy/terminus": "^4.12.1",
