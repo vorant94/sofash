@@ -11,14 +11,21 @@
     "lint:fix": "eslint ./src/**.ts --fix",
     "postinstall": "husky install",
     "prepack": "pinst --disable",
-    "postpack": "pinst --enable"
+    "postpack": "pinst --enable",
+    "lt": "lt --port 3000"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "joi": "^17.9.2",
+    "telegraf": "^4.12.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/node": "^18.0.0",
+    "@types/express": "^4",
+    "@types/fs-extra": "^11",
+    "@types/localtunnel": "^2",
+    "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint": "^8.0.1",
@@ -29,6 +36,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "husky": "^8.0.0",
+    "localtunnel": "^2.0.2",
     "nodemon": "^3.0.1",
     "pinst": "^3.0.0",
     "prettier": "^3.0.0",

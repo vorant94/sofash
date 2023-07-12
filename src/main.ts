@@ -1,12 +1,32 @@
-import express, { type Request, type Response } from 'express';
+import express from 'express';
+import { createEnv } from './core/create-env.js';
+import { Telegraf } from 'telegraf';
+import { createHealthcheckMiddleware } from './core/create-healthcheck-middleware.js';
+import { asyncMiddleware } from './shared/async-middleware.js';
 
-const app = express();
-const port = 3000;
+void main();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-});
+async function main(): Promise<void> {
+  const env = await createEnv();
+  const bot = new Telegraf(env.TG_BOT_TOKEN);
+  const app = express();
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+  app.locals = { env };
+
+  app.use(
+    asyncMiddleware(
+      await bot.createWebhook({
+        domain: env.TG_BOT_WEBHOOK_URL,
+        path: '/telegram',
+      }),
+    ),
+  );
+
+  app.use('/health', createHealthcheckMiddleware());
+
+  bot.on('text', async (ctx) => await ctx.reply('Hello'));
+
+  app.listen(env.NODE_PORT, () => {
+    console.log(`Example app listening on port ${env.NODE_PORT}`);
+  });
+}
