@@ -63,6 +63,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@godaddy/terminus@npm:^4.12.1":
+  version: 4.12.1
+  resolution: "@godaddy/terminus@npm:4.12.1"
+  dependencies:
+    stoppable: ^1.1.0
+  checksum: dcda8a4dee950cf51a3be572b688ac7170a272aff292065f2234bad856799d4700feaa434ecb8d3f2bf00f918ab6659f9f810f904bc8aee24ed38b0062950d80
+  languageName: node
+  linkType: hard
+
 "@hapi/hoek@npm:^9.0.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
@@ -4026,6 +4035,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sofash@workspace:."
   dependencies:
+    "@godaddy/terminus": ^4.12.1
     "@types/express": ^4
     "@types/fs-extra": ^11
     "@types/localtunnel": ^2
@@ -4068,6 +4078,13 @@ __metadata:
   version: 2.0.1
   resolution: "statuses@npm:2.0.1"
   checksum: 18c7623fdb8f646fb213ca4051be4df7efb3484d4ab662937ca6fbef7ced9b9e12842709872eb3020cc3504b93bde88935c9f6417489627a7786f24f8031cbcb
+  languageName: node
+  linkType: hard
+
+"stoppable@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "stoppable@npm:1.1.0"
+  checksum: 63104fcbdece130bc4906fd982061e763d2ef48065ed1ab29895e5ad00552c625f8a4c50c9cd2e3bfa805c8a2c3bfdda0f07c5ae39694bd2d5cb0bee1618d1e9
   languageName: node
   linkType: hard
 

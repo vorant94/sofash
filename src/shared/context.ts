@@ -1,5 +1,8 @@
+import { type Telegraf } from 'telegraf';
+
 export interface Context {
   env: Env;
+  telegraf: Telegraf;
 }
 
 export interface Env {

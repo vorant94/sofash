@@ -1,32 +1,23 @@
 import express from 'express';
 import { createEnv } from './core/create-env.js';
 import { Telegraf } from 'telegraf';
-import { createHealthcheckMiddleware } from './core/create-healthcheck-middleware.js';
-import { asyncMiddleware } from './shared/async-middleware.js';
+import { createServer } from './core/create-server.js';
+import { createTelegrafMiddleware } from './core/create-telegraf-middleware.js';
 
 void main();
 
 async function main(): Promise<void> {
-  const env = await createEnv();
-  const bot = new Telegraf(env.TG_BOT_TOKEN);
   const app = express();
+  const env = await createEnv();
+  const telegraf = new Telegraf(env.TG_BOT_TOKEN);
+  app.locals = { env, telegraf };
 
-  app.locals = { env };
+  app.use(await createTelegrafMiddleware(app));
 
-  app.use(
-    asyncMiddleware(
-      await bot.createWebhook({
-        domain: env.TG_BOT_WEBHOOK_URL,
-        path: '/telegram',
-      }),
-    ),
-  );
+  telegraf.on('text', async (ctx) => await ctx.reply('Hello'));
 
-  app.use('/health', createHealthcheckMiddleware());
-
-  bot.on('text', async (ctx) => await ctx.reply('Hello'));
-
-  app.listen(env.NODE_PORT, () => {
-    console.log(`Example app listening on port ${env.NODE_PORT}`);
+  const server = createServer(app);
+  server.listen(env.NODE_PORT, () => {
+    console.log(`server is listening on port ${env.NODE_PORT}`);
   });
 }
