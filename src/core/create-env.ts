@@ -2,7 +2,6 @@ import fs from 'fs-extra';
 import path from 'path';
 import { config } from 'dotenv';
 import joi from 'joi';
-import { type Env } from '../shared/context.js';
 
 export async function createEnv(): Promise<Env> {
   const isDotenvPresent = await fs.exists(path.resolve('./.env'));
@@ -28,3 +27,12 @@ export async function createEnv(): Promise<Env> {
 
   return value;
 }
+
+export interface Env {
+  NODE_ENV: NodeEnv;
+  NODE_PORT: number;
+  TG_BOT_TOKEN: string;
+  TG_BOT_WEBHOOK_URL: string;
+}
+
+export type NodeEnv = 'DEV' | 'PROD';
