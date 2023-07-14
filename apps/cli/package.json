@@ -1,0 +1,61 @@
+{
+  "name": "cli",
+  "packageManager": "yarn@3.6.1",
+  "type": "module",
+  "scripts": {
+    "run:prod": "./bin/run.js",
+    "run:dev": "./bin/dev.js",
+    "build": "shx rm -rf dist && tsc",
+    "lint": "eslint ./src/**.ts",
+    "lint:fix": "eslint ./src/**.ts --fix"
+  },
+  "dependencies": {
+    "@oclif/core": "^2.9.3",
+    "@oclif/plugin-help": "^5.2.12",
+    "@oclif/plugin-plugins": "^3.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^18",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard-with-typescript": "^36.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "oclif": "^3.9.1",
+    "prettier": "^3.0.0",
+    "prettier-eslint": "^15.0.1",
+    "shx": "^0.3.3",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.6.0",
+    "typescript": "^5.1.6"
+  },
+  "oclif": {
+    "bin": "cli",
+    "dirname": "cli",
+    "commands": "./dist/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ],
+    "topicSeparator": " ",
+    "topics": {
+      "hello": {
+        "description": "Say hello to the world and others"
+      }
+    }
+  },
+  "bin": "./bin/run.js",
+  "files": [
+    "/bin",
+    "/dist",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,6 +1,0 @@
-{
-  "ext": "ts,json",
-  "execMap": {
-    "ts": "ts-node-esm"
-  }
-}

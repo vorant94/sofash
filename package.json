@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "lint": "yarn workspaces foreach --exclude . run lint",
+    "lint:fix": "yarn workspaces foreach --exclude . run lint:fix",
     "build": "yarn workspaces foreach --exclude . run build",
     "postinstall": "husky install",
     "prepack": "pinst --disable",
