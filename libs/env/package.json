@@ -1,26 +1,21 @@
 {
-  "name": "server",
+  "name": "env",
   "packageManager": "yarn@3.6.1",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "prod": "node ./dist/main.js",
-    "dev": "ts-node ./src/main.ts",
-    "dev:watch": "nodemon ./src/main.ts",
     "build": "shx rm -rf dist && tsc",
     "lint": "eslint ./src/**.ts",
-    "lint:fix": "eslint ./src/**.ts --fix",
-    "lt": "lt --port 3000"
+    "lint:fix": "eslint ./src/**.ts --fix"
   },
   "dependencies": {
-    "@godaddy/terminus": "^4.12.1",
-    "env": "workspace:env",
-    "express": "^4.18.2",
-    "joi": "^17.9.2",
-    "telegraf": "^4.12.2"
+    "dotenv": "^16.3.1",
+    "fs-extra": "^11.1.1",
+    "joi": "^17.9.2"
   },
   "devDependencies": {
-    "@types/express": "^4",
-    "@types/localtunnel": "^2",
+    "@types/fs-extra": "^11",
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
@@ -31,12 +26,9 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-promise": "^6.0.0",
-    "localtunnel": "^2.0.2",
-    "nodemon": "^3.0.1",
     "prettier": "^3.0.0",
     "prettier-eslint": "^15.0.1",
-    "shx": "^0.3.4",
-    "ts-node": "^10.9.1",
+    "shx": "^0.3.3",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6"
   }

@@ -1,15 +1,16 @@
 import express from 'express';
-import { createEnv } from './core/create-env.js';
+import { ENV_SCHEMA } from './core/env.js';
 import { Telegraf } from 'telegraf';
 import { createServer } from './core/create-server.js';
 import { createTelegrafMiddleware } from './core/create-telegraf-middleware.js';
 import { message } from 'telegraf/filters';
+import { parseEnv } from 'env';
 
 void main();
 
 async function main(): Promise<void> {
   const app = express();
-  const env = await createEnv();
+  const env = await parseEnv(ENV_SCHEMA);
   const telegraf = new Telegraf(env.TG_BOT_TOKEN);
   app.locals = { env, telegraf };
 

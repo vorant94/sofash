@@ -1,6 +1,6 @@
 import { Command, Flags } from '@oclif/core';
-import { telegramMixin } from '../../shared/telegram/telegram.mixin.js';
-import { envMixin } from '../../shared/env/env.mixin.js';
+import { telegramMixin } from '../../shared/telegram.mixin.js';
+import { envMixin } from '../../shared/env.mixin.js';
 
 export default class GetChatHistory extends telegramMixin(envMixin(Command)) {
   static flags = {

@@ -13,7 +13,7 @@
     "@oclif/core": "^2.9.3",
     "@oclif/plugin-help": "^5.2.12",
     "@oclif/plugin-plugins": "^3.1.6",
-    "dotenv": "^16.3.1",
+    "env": "workspace:env",
     "joi": "^17.9.2",
     "tdl": "^7.3.1"
   },

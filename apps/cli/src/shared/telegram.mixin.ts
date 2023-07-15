@@ -1,7 +1,7 @@
 import { type Command } from '@oclif/core';
-import { type AbstractConstructor } from '../utility/constructor.js';
+import { type AbstractConstructor } from './constructor.js';
 import { type Client, configure, createClient } from 'tdl';
-import { type HasEnv } from '../env/env.mixin.js';
+import { type HasEnv } from './env.mixin.js';
 
 export type CanHaveTelegram = AbstractConstructor<HasEnv>;
 

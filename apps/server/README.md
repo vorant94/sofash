@@ -1,5 +1,9 @@
 # server
 
+### requirements
+
+- run `yarn workspace env run build` to build env lib in case it is not built yet
+
 ### local dev setup
 
 - create `.env` file in the server app dir and specify your working env (e.g. `NODE_ENV=DEV`)

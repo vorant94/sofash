@@ -1,5 +1,5 @@
 import { type Telegraf } from 'telegraf';
-import { type Env } from './core/create-env.js';
+import { type Env } from './core/env.js';
 
 declare global {
   namespace Express {
