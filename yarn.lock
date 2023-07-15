@@ -2297,6 +2297,7 @@ __metadata:
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
+    env: "workspace:~"
     eslint: ^8.0.1
     eslint-config-prettier: ^8.8.0
     eslint-config-standard-with-typescript: ^36.0.0
@@ -2923,7 +2924,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"env@workspace:libs/env":
+"env@workspace:libs/env, env@workspace:~":
   version: 0.0.0-use.local
   resolution: "env@workspace:libs/env"
   dependencies:
@@ -7614,6 +7615,7 @@ __metadata:
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
+    env: "workspace:~"
     eslint: ^8.0.1
     eslint-config-prettier: ^8.8.0
     eslint-config-standard-with-typescript: ^36.0.0
