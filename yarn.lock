@@ -2297,6 +2297,7 @@ __metadata:
     "@types/node": ^18
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
+    dotenv: ^16.3.1
     eslint: ^8.0.1
     eslint-config-prettier: ^8.8.0
     eslint-config-standard-with-typescript: ^36.0.0
@@ -2304,10 +2305,13 @@ __metadata:
     eslint-plugin-n: ^15.0.0
     eslint-plugin-prettier: ^5.0.0
     eslint-plugin-promise: ^6.0.0
+    joi: ^17.9.2
     oclif: ^3.9.1
     prettier: ^3.0.0
     prettier-eslint: ^15.0.1
     shx: ^0.3.3
+    tdl: ^7.3.1
+    tdlib-types: ^0.1001008014.0
     ts-node: ^10.9.1
     tslib: ^2.6.0
     typescript: ^5.1.6
@@ -3374,7 +3378,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter3@npm:^4.0.4":
+"eventemitter3@npm:^4.0.4, eventemitter3@npm:^4.0.7":
   version: 4.0.7
   resolution: "eventemitter3@npm:4.0.7"
   checksum: 1875311c42fcfe9c707b2712c32664a245629b42bb0a5a84439762dd0fd637fc54d078155ea83c2af9e0323c9ac13687e03cfba79b03af9f40c89b4960099374
@@ -5826,6 +5830,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-addon-api@npm:^6.0.0":
+  version: 6.1.0
+  resolution: "node-addon-api@npm:6.1.0"
+  dependencies:
+    node-gyp: latest
+  checksum: 3a539510e677cfa3a833aca5397300e36141aca064cdc487554f2017110709a03a95da937e98c2a14ec3c626af7b2d1b6dabe629a481f9883143d0d5bff07bf2
+  languageName: node
+  linkType: hard
+
 "node-fetch@npm:^2.6.7, node-fetch@npm:^2.6.8":
   version: 2.6.12
   resolution: "node-fetch@npm:2.6.12"
@@ -5837,6 +5850,17 @@ __metadata:
     encoding:
       optional: true
   checksum: 3bc1655203d47ee8e313c0d96664b9673a3d4dd8002740318e9d27d14ef306693a4b2ef8d6525775056fd912a19e23f3ac0d7111ad8925877b7567b29a625592
+  languageName: node
+  linkType: hard
+
+"node-gyp-build@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "node-gyp-build@npm:4.6.0"
+  bin:
+    node-gyp-build: bin.js
+    node-gyp-build-optional: optional.js
+    node-gyp-build-test: build-test.js
+  checksum: 25d78c5ef1f8c24291f4a370c47ba52fcea14f39272041a90a7894cd50d766f7c8cb8fb06c0f42bf6f69b204b49d9be3c8fc344aac09714d5bdb95965499eb15
   languageName: node
   linkType: hard
 
@@ -8153,6 +8177,26 @@ __metadata:
     mkdirp: ^1.0.3
     yallist: ^4.0.0
   checksum: f23832fceeba7578bf31907aac744ae21e74a66f4a17a9e94507acf460e48f6db598c7023882db33bab75b80e027c21f276d405e4a0322d58f51c7088d428268
+  languageName: node
+  linkType: hard
+
+"tdl@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "tdl@npm:7.3.1"
+  dependencies:
+    debug: ^4.3.4
+    eventemitter3: ^4.0.7
+    node-addon-api: ^6.0.0
+    node-gyp: latest
+    node-gyp-build: ^4.6.0
+  checksum: a3d7df2043e4d3efcaa7f30ca16462316216ad6febc10114b43c0b06fbf4385e652f1e29172ccbaa4d4b56509b84acc45b6b57035844343305920feba878ffc4
+  languageName: node
+  linkType: hard
+
+"tdlib-types@npm:^0.1001008014.0":
+  version: 0.1001008014.0
+  resolution: "tdlib-types@npm:0.1001008014.0"
+  checksum: 73eaccc502ce97032a25b25aa57cc9e2a7c4866dbdf39f9079bfd8b32ec25526a909484e653a2e7725bbcfc8b31c84d80cb8d51c0121e97a2800006e6d54a342
   languageName: node
   linkType: hard
 

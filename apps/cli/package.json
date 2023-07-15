@@ -3,8 +3,8 @@
   "packageManager": "yarn@3.6.1",
   "type": "module",
   "scripts": {
-    "run:prod": "./bin/run.js",
-    "run:dev": "./bin/dev.js",
+    "prod": "./bin/run.js",
+    "dev": "./bin/dev.js",
     "build": "shx rm -rf dist && tsc",
     "lint": "eslint ./src/**.ts",
     "lint:fix": "eslint ./src/**.ts --fix"
@@ -12,7 +12,10 @@
   "dependencies": {
     "@oclif/core": "^2.9.3",
     "@oclif/plugin-help": "^5.2.12",
-    "@oclif/plugin-plugins": "^3.1.6"
+    "@oclif/plugin-plugins": "^3.1.6",
+    "dotenv": "^16.3.1",
+    "joi": "^17.9.2",
+    "tdl": "^7.3.1"
   },
   "devDependencies": {
     "@types/node": "^18",
@@ -29,6 +32,7 @@
     "prettier": "^3.0.0",
     "prettier-eslint": "^15.0.1",
     "shx": "^0.3.3",
+    "tdlib-types": "^0.1001008014.0",
     "ts-node": "^10.9.1",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6"
