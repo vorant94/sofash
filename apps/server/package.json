@@ -6,7 +6,7 @@
     "prod": "node ./dist/main.js",
     "dev": "ts-node ./src/main.ts",
     "dev:watch": "nodemon ./src/main.ts",
-    "build": "shx rm -rf dist && tsc",
+    "build": "shx rm -rf dist && tsc --build",
     "lint": "eslint ./src/**.ts",
     "lint:fix": "eslint ./src/**.ts --fix",
     "lt": "lt --port 3000"

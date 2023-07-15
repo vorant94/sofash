@@ -3,9 +3,6 @@
   "packageManager": "yarn@3.6.1",
   "private": true,
   "scripts": {
-    "server": "yarn workspace server",
-    "cli": "yarn workspace cli",
-    "env": "yarn workspace env",
     "lint": "yarn workspaces foreach --exclude . run lint",
     "lint:fix": "yarn workspaces foreach --exclude . run lint:fix",
     "build": "yarn workspaces foreach --exclude . run build",

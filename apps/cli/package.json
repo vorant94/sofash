@@ -5,7 +5,7 @@
   "scripts": {
     "prod": "./bin/run.js",
     "dev": "./bin/dev.js",
-    "build": "shx rm -rf dist && tsc",
+    "build": "shx rm -rf dist && tsc --build",
     "lint": "eslint ./src/**.ts",
     "lint:fix": "eslint ./src/**.ts --fix"
   },
