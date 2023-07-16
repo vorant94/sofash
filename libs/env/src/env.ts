@@ -5,6 +5,11 @@ import joi, { type ObjectSchema } from 'joi';
 
 export interface BaseEnv {
   NODE_ENV: NodeEnv;
+  DB_HOST: string;
+  DB_PORT: number;
+  DB_USERNAME: string;
+  DB_PASSWORD: string;
+  DB_DATABASE: string;
 }
 
 export const NODE_ENVS = ['DEV', 'PROD'] as const;
@@ -15,7 +20,7 @@ export async function parseEnv<T extends BaseEnv>(
 ): Promise<T> {
   const isDotenvPresent = await fs.exists(path.resolve('./.env'));
   if (isDotenvPresent) {
-    const { error } = config();
+    const { error } = config({ override: true });
     if (error != null) {
       throw new Error(error.message);
     }
@@ -35,5 +40,22 @@ export const BASE_SCHEMA = joi
       .string()
       .allow(...NODE_ENVS)
       .required(),
+    DB_HOST: joi.string().when('NODE_ENV', {
+      is: 'DEV',
+      then: joi.optional().default('localhost'),
+      otherwise: joi.required(),
+    }),
+    DB_PORT: joi.number().optional().default(5432),
+    DB_USERNAME: joi.string().when('NODE_ENV', {
+      is: 'DEV',
+      then: joi.optional().default('postgres'),
+      otherwise: joi.required(),
+    }),
+    DB_PASSWORD: joi.string().when('NODE_ENV', {
+      is: 'DEV',
+      then: joi.optional().default('postgres'),
+      otherwise: joi.required(),
+    }),
+    DB_DATABASE: joi.string().optional().default('sofash'),
   })
   .options({ stripUnknown: true });

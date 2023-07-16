@@ -4,26 +4,24 @@ import { envMixin } from '../../shared/env.mixin.js';
 
 export default class GetChatHistory extends telegramMixin(envMixin(Command)) {
   static flags = {
-    chatId: Flags.integer({ required: true }),
+    username: Flags.string({ required: true }),
   };
 
   async run(): Promise<void> {
     const { flags } = await this.parse(GetChatHistory);
 
-    await this.telegram.invoke({
-      _: 'getChats',
-      chat_list: {
-        _: 'chatListArchive',
-      },
-      limit: 100,
+    const chat = await this.telegram.invoke({
+      _: 'searchPublicChat',
+      username: flags.username,
     });
 
     const history = await this.telegram.invoke({
       _: 'getChatHistory',
-      chat_id: flags.chatId,
+      chat_id: chat.id,
       limit: 10,
       only_local: false,
     });
+
     this.log(JSON.stringify(history.messages[0]?.content, null, 2));
   }
 }

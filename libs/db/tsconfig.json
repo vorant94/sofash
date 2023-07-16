@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  // to exclude ormconfig.ts. the exclude fields results in build errors,
+  // when build is run from the app that is referencing this lib
+  "include": ["./src"],
+}

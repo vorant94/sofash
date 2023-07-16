@@ -3,7 +3,7 @@
 ### requirements
 
 - install `TDLib 1.8.0` via Homebrew (`brew install tdlib`)
-- run `yarn workspace env run build` to build env lib in case it is not built yet
+- run `yarn run build` to build all the libs, that are required for this app
 
 ### local dev setup
 

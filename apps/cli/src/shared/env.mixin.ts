@@ -25,11 +25,6 @@ export function envMixin<T extends CanHaveEnv>(
       TG_CLIENT_API_HASH: joi.string().required(),
     });
 
-    protected async catch(error: Error): Promise<any> {
-      this.log(`[Env Error]: ${JSON.stringify(error, null, 2)}`);
-      return await super.catch(error);
-    }
-
     protected async init(): Promise<any> {
       const superRes = await super.init();
 

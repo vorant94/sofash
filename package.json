@@ -3,6 +3,9 @@
   "packageManager": "yarn@3.6.1",
   "private": true,
   "scripts": {
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:pg": "docker exec -it sofash-postgres-1 psql -U postgres",
     "lint": "yarn workspaces foreach --exclude . run lint",
     "lint:fix": "yarn workspaces foreach --exclude . run lint:fix",
     "build": "yarn workspaces foreach --exclude . run build",

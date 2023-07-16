@@ -2,7 +2,7 @@
 
 ### requirements
 
-- run `yarn workspace env run build` to build env lib in case it is not built yet
+- run `yarn run build` to build all the libs, that are required for this app
 
 ### local dev setup
 

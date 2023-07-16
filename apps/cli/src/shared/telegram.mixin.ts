@@ -15,6 +15,7 @@ export function telegramMixin<T extends CanHaveTelegram>(
   abstract class BaseWithMixin extends base {
     telegram!: Client;
 
+    // need it because this.telegram.on('error', console.error) doesn't work for some reason
     protected async catch(error: Error): Promise<any> {
       this.log(`[Telegram Error]: ${JSON.stringify(error, null, 2)}`);
       return await super.catch(error);
