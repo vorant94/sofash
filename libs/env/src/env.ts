@@ -9,7 +9,6 @@ export interface BaseEnv {
   DB_PORT: number;
   DB_USERNAME: string;
   DB_PASSWORD: string;
-  DB_DATABASE: string;
 }
 
 export const NODE_ENVS = ['DEV', 'PROD'] as const;
@@ -56,6 +55,5 @@ export const BASE_SCHEMA = joi
       then: joi.optional().default('postgres'),
       otherwise: joi.required(),
     }),
-    DB_DATABASE: joi.string().optional().default('sofash'),
   })
   .options({ stripUnknown: true });

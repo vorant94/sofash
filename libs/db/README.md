@@ -17,9 +17,10 @@ export const DATA_SOURCE = new DataSource({
   password: 'xxx',
   database: 'sofash',
   logging: true,
-  entities: ['./src/entity/**/*.ts'],
-  migrations: ['./src/migration/**/*.ts'],
+  entities: ['./src/entities/**/*.ts'],
+  migrations: ['./src/migrations/**/*.ts'],
 });
 ```
 
-- run `yarn run typeorm migration:run -d ormconfig.ts`
+- build `cli` app and run there `yarn run prod db create` to create project db
+- come back here and run `yarn run typeorm migration:run -d ormconfig.ts`

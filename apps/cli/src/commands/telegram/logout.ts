@@ -4,8 +4,10 @@ import { envMixin } from '../../shared/env.mixin.js';
 
 export default class Logout extends telegramMixin(envMixin(Command)) {
   async run(): Promise<void> {
-    await this.telegram.invoke({
-      _: 'logOut',
+    await this.withTelegram(async (telegram) => {
+      await telegram.invoke({
+        _: 'logOut',
+      });
     });
   }
 }

@@ -5,10 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "typeorm": "typeorm-ts-node-esm",
-    "build": "shx rm -rf dist && tsc",
+    "build": "shx rm -rf dist && shx rm tsconfig.tsbuildinfo && tsc",
     "lint": "eslint ./src/**.ts",
-    "lint:fix": "eslint ./src/**.ts --fix"
+    "lint:fix": "eslint ./src/**.ts --fix",
+    "typeorm": "typeorm-ts-node-esm"
   },
   "dependencies": {
     "pg": "^8.11.1",

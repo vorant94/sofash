@@ -10,18 +10,22 @@ export default class GetChatHistory extends telegramMixin(envMixin(Command)) {
   async run(): Promise<void> {
     const { flags } = await this.parse(GetChatHistory);
 
-    const chat = await this.telegram.invoke({
-      _: 'searchPublicChat',
-      username: flags.username,
+    const messages = await this.withTelegram(async (telegram) => {
+      const { id } = await telegram.invoke({
+        _: 'searchPublicChat',
+        username: flags.username,
+      });
+
+      const { messages } = await telegram.invoke({
+        _: 'getChatHistory',
+        chat_id: id,
+        limit: 10,
+        only_local: false,
+      });
+
+      return messages;
     });
 
-    const history = await this.telegram.invoke({
-      _: 'getChatHistory',
-      chat_id: chat.id,
-      limit: 10,
-      only_local: false,
-    });
-
-    this.log(JSON.stringify(history.messages[0]?.content, null, 2));
+    this.log(JSON.stringify(messages, null, 2));
   }
 }

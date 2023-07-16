@@ -6,24 +6,31 @@ import { type HasEnv } from './env.mixin.js';
 export type CanHaveTelegram = AbstractConstructor<HasEnv>;
 
 export interface HasTelegram extends Command {
-  telegram: Client;
+  withTelegram: <T>(callback: (telegram: Client) => Promise<T>) => Promise<T>;
 }
 
 export function telegramMixin<T extends CanHaveTelegram>(
   base: T,
 ): AbstractConstructor<HasTelegram> & T {
   abstract class BaseWithMixin extends base {
-    telegram!: Client;
+    // creating it each time in order to keep connections open as little as possible
+    async withTelegram<T>(
+      callback: (telegram: Client) => Promise<T>,
+    ): Promise<T> {
+      const client = createClient({
+        apiId: this.env.TG_CLIENT_API_ID,
+        apiHash: this.env.TG_CLIENT_API_HASH,
+      });
 
-    // need it because this.telegram.on('error', console.error) doesn't work for some reason
-    protected async catch(error: Error): Promise<any> {
-      this.log(`[Telegram Error]: ${JSON.stringify(error, null, 2)}`);
-      return await super.catch(error);
-    }
-
-    protected async finally(error: Error | undefined): Promise<any> {
-      await this.telegram.close();
-      return await super.finally(error);
+      try {
+        return await callback(client);
+      } catch (error) {
+        // need it because this.telegram.on('error', console.error) doesn't work for some reason
+        this.error(`[Telegram Error]: ${JSON.stringify(error, null, 2)}`);
+        throw error;
+      } finally {
+        await client.close();
+      }
     }
 
     protected async init(): Promise<any> {
@@ -31,11 +38,6 @@ export function telegramMixin<T extends CanHaveTelegram>(
 
       configure({
         verbosityLevel: 1,
-      });
-
-      this.telegram = createClient({
-        apiId: this.env.TG_CLIENT_API_ID,
-        apiHash: this.env.TG_CLIENT_API_HASH,
       });
 
       return superRes;
