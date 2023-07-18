@@ -31,8 +31,8 @@ export function pgMixin<T extends CanHavePg>(
       this.pg = new pg.Client({
         host: this.env.DB_HOST,
         port: this.env.DB_PORT,
-        user: this.env.DB_USERNAME,
-        password: this.env.DB_PASSWORD,
+        user: this.env.DB_ROOT_USERNAME,
+        password: this.env.DB_ROOT_PASSWORD,
       });
 
       return superRes;

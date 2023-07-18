@@ -47,12 +47,12 @@ export const BASE_SCHEMA = joi
     DB_PORT: joi.number().optional().default(5432),
     DB_USERNAME: joi.string().when('NODE_ENV', {
       is: 'DEV',
-      then: joi.optional().default('postgres'),
+      then: joi.optional().default('sofash'),
       otherwise: joi.required(),
     }),
     DB_PASSWORD: joi.string().when('NODE_ENV', {
       is: 'DEV',
-      then: joi.optional().default('postgres'),
+      then: joi.optional().default('example'),
       otherwise: joi.required(),
     }),
   })

@@ -1,6 +1,6 @@
 import { DataSource, type DataSourceOptions } from 'typeorm';
 import { EventSource } from './entities/event-source.js';
-import { DB_NAME } from './tokens.js';
+import { DB_NAME, DB_TYPE } from './tokens.js';
 import { EventSources } from './data-sources/event-sources.js';
 
 export class Db {
@@ -12,7 +12,7 @@ export class Db {
     this.db = new DataSource({
       ...options,
       database: DB_NAME,
-      type: 'postgres',
+      type: DB_TYPE,
       entities: [EventSource],
     });
 

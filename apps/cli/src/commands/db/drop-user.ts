@@ -1,18 +1,20 @@
 import { Command, Flags } from '@oclif/core';
 import { envMixin } from '../../shared/env.mixin.js';
 import { pgMixin } from '../../shared/pg.mixin.js';
-import { DB_NAME } from 'db';
+import { onlyInDevMixin } from '../../shared/only-in-dev.mixin.js';
 
-export default class Create extends pgMixin(envMixin(Command)) {
+export default class DropUser extends onlyInDevMixin(
+  pgMixin(envMixin(Command)),
+) {
   static flags = {
     username: Flags.string({ required: true }),
   };
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(Create);
+    const { flags } = await this.parse(DropUser);
 
     await this.withPg(async (pg) => {
-      await pg.query(`CREATE DATABASE ${DB_NAME} OWNER ${flags.username}`);
+      await pg.query(`DROP USER ${flags.username}`);
     });
   }
 }
