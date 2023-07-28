@@ -4,8 +4,8 @@
 ### local development setup
 
 - setup `cli` app (you can skip telegram related steps)
-- inside `cli` app run `yarn run prod db create-user --username sofash` to create project user
-- inside `cli` app run `yarn run prod db create --username sofash` to create project db
+- inside `cli` app run `yarn prod db create-user --username sofash` to create project user
+- inside `cli` app run `yarn prod db create --username sofash` to create project db
 - run `touch ormconfig.ts`to create a config for typeorm cli
 - paste there the code from below, don't forget to update credentials to your needs
 
@@ -27,4 +27,4 @@ export const dataSource = new DataSource({
 
 ```
 
-- come back here and run `yarn run typeorm migration:run -d ormconfig.ts`
+- come back here and run `yarn typeorm migration:run -d ormconfig.ts`

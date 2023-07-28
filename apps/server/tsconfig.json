@@ -13,6 +13,7 @@
     "src/index.d.ts"
   ],
   "references": [
-    { "path": "../../libs/env" }
+    { "path": "../../libs/env" },
+    { "path": "../../libs/db" }
   ]
 }

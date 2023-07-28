@@ -1,6 +1,5 @@
 import http, { type Server } from 'http';
-import { type Express } from 'express';
-import { type Telegraf } from 'telegraf';
+import { type Express, type Locals } from 'express';
 import { createTerminus } from '@godaddy/terminus';
 
 export function createServer(app: Express): Server {
@@ -8,19 +7,25 @@ export function createServer(app: Express): Server {
 
   return createTerminus(server, {
     signal: 'SIGINT',
-    healthChecks: { '/health': onHealthCheck },
-    onSignal: onSignalFactory(app.locals.telegraf),
+    healthChecks: { '/health': onHealthCheckFactory(app.locals) },
+    onSignal: onSignalFactory(app.locals),
   });
 }
 
-function onSignalFactory(telegraf: Telegraf): () => Promise<any> {
+// TODO add console logs in case something didn't shut down successfully
+function onSignalFactory({ telegraf, db }: Locals): () => Promise<void> {
   return async () => {
     console.log('server is cleaning up');
-    await Promise.all([telegraf.telegram.deleteWebhook()]);
+    await Promise.allSettled([telegraf.telegram.deleteWebhook(), db.destroy()]);
   };
 }
 
-async function onHealthCheck(): Promise<any> {
-  console.log('server is checking health');
-  await Promise.resolve();
+// TODO add health check for
+//  - postgres
+//  - redis (once added to the project)
+function onHealthCheckFactory(_: Locals): () => Promise<any> {
+  return async () => {
+    console.log('server is checking health');
+    await Promise.resolve();
+  };
 }
