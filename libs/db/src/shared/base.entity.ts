@@ -1,7 +1,17 @@
-import { type ObjectLiteral } from 'typeorm';
+import {
+  CreateDateColumn,
+  type ObjectLiteral,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-export interface BaseEntity extends ObjectLiteral {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
+export abstract class BaseEntity implements ObjectLiteral {
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

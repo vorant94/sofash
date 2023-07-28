@@ -7,4 +7,15 @@ export class EventSources {
   async create(create: DeepPartial<EventSource>): Promise<EventSource> {
     return await this.repository.save(this.repository.create(create));
   }
+
+  async findAll(): Promise<EventSource[]> {
+    return await this.repository.find();
+  }
+
+  async updateLatestScrappedMessageId(
+    id: string,
+    latestScrappedMessageId: string,
+  ): Promise<void> {
+    await this.repository.update({ id }, { latestScrappedMessageId });
+  }
 }

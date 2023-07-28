@@ -6,7 +6,7 @@ import pg from 'pg';
 export type CanHavePg = AbstractConstructor<HasEnv>;
 
 export interface HasPg extends Command {
-  withPg: <T>(callback: (pg: pg.Client) => Promise<T>) => Promise<T>;
+  usingPg: <T>(callback: (pg: pg.Client) => Promise<T>) => Promise<T>;
 }
 
 export function pgMixin<T extends CanHavePg>(
@@ -15,7 +15,7 @@ export function pgMixin<T extends CanHavePg>(
   abstract class BaseWithMixin extends base {
     private pg!: pg.Client;
 
-    async withPg<T>(callback: (pg: pg.Client) => Promise<T>): Promise<T> {
+    async usingPg<T>(callback: (pg: pg.Client) => Promise<T>): Promise<T> {
       await this.pg.connect();
 
       try {

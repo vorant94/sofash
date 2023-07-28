@@ -4,7 +4,7 @@ import { envMixin } from '../../shared/env.mixin.js';
 
 export default class Login extends telegramMixin(envMixin(Command)) {
   async run(): Promise<void> {
-    await this.withTelegram(async (telegram) => {
+    await this.usingTelegram(async (telegram) => {
       await telegram.login();
     });
   }

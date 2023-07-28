@@ -14,7 +14,7 @@ export default class CreateUser extends pgMixin(envMixin(Command)) {
       type: 'mask',
     });
 
-    await this.withPg(async (pg) => {
+    await this.usingPg(async (pg) => {
       await pg.query(
         `CREATE USER ${flags.username} WITH ENCRYPTED PASSWORD '${password}'`,
       );

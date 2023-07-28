@@ -13,7 +13,7 @@ export default class DropUser extends onlyInDevMixin(
   async run(): Promise<void> {
     const { flags } = await this.parse(DropUser);
 
-    await this.withPg(async (pg) => {
+    await this.usingPg(async (pg) => {
       await pg.query(`DROP USER ${flags.username}`);
     });
   }

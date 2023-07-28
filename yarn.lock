@@ -2369,7 +2369,7 @@ __metadata:
     prettier-eslint: ^15.0.1
     shx: ^0.3.3
     tdl: ^7.3.1
-    tdlib-types: ^0.1001008014.0
+    tdlib-types: td-1.8.0
     ts-node: ^10.9.1
     tslib: ^2.6.0
     typescript: ^5.1.6
@@ -8563,10 +8563,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tdlib-types@npm:^0.1001008014.0":
-  version: 0.1001008014.0
-  resolution: "tdlib-types@npm:0.1001008014.0"
-  checksum: 73eaccc502ce97032a25b25aa57cc9e2a7c4866dbdf39f9079bfd8b32ec25526a909484e653a2e7725bbcfc8b31c84d80cb8d51c0121e97a2800006e6d54a342
+"tdlib-types@npm:td-1.8.0":
+  version: 0.1001008.1
+  resolution: "tdlib-types@npm:0.1001008.1"
+  peerDependencies:
+    tdl: ">= 7.0.0"
+  checksum: 421ae71815b9a8add289eda7ce009562db422e69ead9cb33f82a0c61c2510e1c198eb90a2d7a1a24ffd5eb6fe019dfac24b462609d9b75cbdb6d3a9c609316f8
   languageName: node
   linkType: hard
 

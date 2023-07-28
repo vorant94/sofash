@@ -11,7 +11,7 @@ export default class Create extends pgMixin(envMixin(Command)) {
   async run(): Promise<void> {
     const { flags } = await this.parse(Create);
 
-    await this.withPg(async (pg) => {
+    await this.usingPg(async (pg) => {
       await pg.query(`CREATE DATABASE ${DB_NAME} OWNER ${flags.username}`);
     });
   }

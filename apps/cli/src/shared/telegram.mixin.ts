@@ -6,7 +6,7 @@ import { type HasEnv } from './env.mixin.js';
 export type CanHaveTelegram = AbstractConstructor<HasEnv>;
 
 export interface HasTelegram extends Command {
-  withTelegram: <T>(callback: (telegram: Client) => Promise<T>) => Promise<T>;
+  usingTelegram: <T>(callback: (telegram: Client) => Promise<T>) => Promise<T>;
 }
 
 export function telegramMixin<T extends CanHaveTelegram>(
@@ -14,7 +14,7 @@ export function telegramMixin<T extends CanHaveTelegram>(
 ): AbstractConstructor<HasTelegram> & T {
   abstract class BaseWithMixin extends base {
     // creating it each time in order to keep connections open as little as possible
-    async withTelegram<T>(
+    async usingTelegram<T>(
       callback: (telegram: Client) => Promise<T>,
     ): Promise<T> {
       const client = createClient({
@@ -25,7 +25,7 @@ export function telegramMixin<T extends CanHaveTelegram>(
       try {
         return await callback(client);
       } catch (error) {
-        // need it because this.telegram.on('error', console.error) doesn't work for some reason
+        // need it because client.on('error', console.error) doesn't work for some reason
         this.error(`[Telegram Error]: ${JSON.stringify(error, null, 2)}`);
         throw error;
       } finally {

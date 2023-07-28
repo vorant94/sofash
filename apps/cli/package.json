@@ -35,7 +35,7 @@
     "prettier": "^3.0.0",
     "prettier-eslint": "^15.0.1",
     "shx": "^0.3.3",
-    "tdlib-types": "^0.1001008014.0",
+    "tdlib-types": "td-1.8.0",
     "ts-node": "^10.9.1",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6"
