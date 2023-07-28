@@ -5,7 +5,9 @@ export const EVENT_SOURCE_TYPES = ['telegram', 'meetup'] as const;
 export type EventSourceType = (typeof EVENT_SOURCE_TYPES)[number];
 
 @Entity()
-export class EventSource extends BaseEntity {
+export class EventSource<
+  TType extends EventSourceType = EventSourceType,
+> extends BaseEntity {
   @Column({ unique: true })
   uri!: string;
 
@@ -13,25 +15,17 @@ export class EventSource extends BaseEntity {
   latestScrappedMessageId?: string;
 
   @Column({ type: 'enum', enum: EVENT_SOURCE_TYPES })
-  type!: EventSourceType;
-}
-
-export interface TelegramEventSource extends EventSource {
-  type: 'telegram';
-}
-
-export interface MeetupEventSource extends EventSource {
-  type: 'meetup';
+  type!: TType;
 }
 
 export function isTelegramEventSource(
   eventSource: EventSource,
-): eventSource is TelegramEventSource {
+): eventSource is EventSource<'telegram'> {
   return eventSource.type === 'telegram';
 }
 
 export function isMeetupEventSource(
   eventSource: EventSource,
-): eventSource is MeetupEventSource {
+): eventSource is EventSource<'meetup'> {
   return eventSource.type === 'meetup';
 }
