@@ -6,24 +6,14 @@ import pg from 'pg';
 export type CanHavePg = AbstractConstructor<HasEnv>;
 
 export interface HasPg extends Command {
-  usingPg: <T>(callback: (pg: pg.Client) => Promise<T>) => Promise<T>;
+  pg: pg.Client;
 }
 
 export function pgMixin<T extends CanHavePg>(
   base: T,
 ): AbstractConstructor<HasPg> & T {
   abstract class BaseWithMixin extends base {
-    private pg!: pg.Client;
-
-    async usingPg<T>(callback: (pg: pg.Client) => Promise<T>): Promise<T> {
-      await this.pg.connect();
-
-      try {
-        return await callback(this.pg);
-      } finally {
-        await this.pg.end();
-      }
-    }
+    pg!: pg.Client;
 
     protected async init(): Promise<any> {
       const superRes = await super.init();
@@ -35,7 +25,15 @@ export function pgMixin<T extends CanHavePg>(
         password: this.env.DB_ROOT_PASSWORD,
       });
 
+      await this.pg.connect();
+
       return superRes;
+    }
+
+    protected async finally(error: Error | undefined): Promise<any> {
+      await this.pg.end();
+
+      super.finally(error);
     }
   }
 

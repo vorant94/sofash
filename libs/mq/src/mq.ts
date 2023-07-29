@@ -7,11 +7,9 @@ export class Mq {
   private readonly connection: Redis;
 
   constructor(options: MqOptions) {
-    // TODO find a way to make a connection lazy, because just setting lazyConnect
-    //  flag to true for some reason causes "Redis is already connecting/connected"
-    //  error when used in cli with "usingMq" pattern
     this.connection = new Redis({
       ...options,
+      lazyConnect: true,
     });
 
     this.rawEvents = new RawEvents(this.connection);

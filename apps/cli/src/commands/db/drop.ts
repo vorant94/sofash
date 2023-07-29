@@ -6,8 +6,6 @@ import { DB_NAME } from 'db';
 
 export default class Drop extends onlyInDevMixin(pgMixin(envMixin(Command))) {
   async run(): Promise<void> {
-    await this.usingPg(async (pg) => {
-      await pg.query(`DROP DATABASE ${DB_NAME}`);
-    });
+    await this.pg.query(`DROP DATABASE ${DB_NAME}`);
   }
 }

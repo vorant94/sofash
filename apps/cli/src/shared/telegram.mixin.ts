@@ -13,7 +13,8 @@ export function telegramMixin<T extends CanHaveTelegram>(
   base: T,
 ): AbstractConstructor<HasTelegram> & T {
   abstract class BaseWithMixin extends base {
-    // creating it each time in order to keep connections open as little as possible
+    // TODO find why client.on('error', console.error) doesnt work, so it can be
+    //  refactored with handling connection in "init" and "finally" methods
     async usingTelegram<T>(
       callback: (telegram: Client) => Promise<T>,
     ): Promise<T> {
@@ -25,9 +26,7 @@ export function telegramMixin<T extends CanHaveTelegram>(
       try {
         return await callback(client);
       } catch (error) {
-        // need it because client.on('error', console.error) doesn't work for some reason
         this.error(`[Telegram Error]: ${JSON.stringify(error, null, 2)}`);
-        throw error;
       } finally {
         await client.close();
       }
