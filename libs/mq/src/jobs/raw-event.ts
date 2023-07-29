@@ -3,10 +3,13 @@ import { type message } from 'tdlib-types';
 import { type BaseModel } from '../shared/base.model.js';
 
 export type RawEvent = TelegramRawEvent;
-export type RawEventContent = RawEvent['content'];
 
 export interface TelegramRawEvent extends BaseModel {
   eventSource: EventSource<'telegram'>;
-  content: message;
+  content: EventSourceTypeToRawEventContent['telegram'];
 }
-export type TelegramRawEventContent = TelegramRawEvent['content'];
+
+// TODO bind it somehow to event source type enum
+interface EventSourceTypeToRawEventContent {
+  telegram: message;
+}

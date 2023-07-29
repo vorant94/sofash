@@ -17,15 +17,3 @@ export class EventSource<
   @Column({ type: 'enum', enum: EVENT_SOURCE_TYPES })
   type!: TType;
 }
-
-export function isTelegramEventSource(
-  eventSource: EventSource,
-): eventSource is EventSource<'telegram'> {
-  return eventSource.type === 'telegram';
-}
-
-export function isMeetupEventSource(
-  eventSource: EventSource,
-): eventSource is EventSource<'meetup'> {
-  return eventSource.type === 'meetup';
-}

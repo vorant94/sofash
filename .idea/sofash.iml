@@ -2,10 +2,19 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.docker" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/.yarn" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/cli/_td_database" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/cli/_td_files" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/cli/db" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/cli/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/server/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/libs/db/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/libs/env/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/libs/mq/dist" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
-      <excludeFolder url="file://$MODULE_DIR$/.yarn" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

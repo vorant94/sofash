@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e54aeb05-eca8-4f16-9884-368a6c11e691" name="Changes" comment="extracted scrap logic out of command">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/cli/src/scrappers/telegram-channel.scrapper.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/apps/cli/src/shared/scrapper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sofash.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sofash.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/cli/src/commands/scrap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/cli/src/commands/scrap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/db/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/libs/db/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/db/src/db.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/db/src/db.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/db/src/entities/event-source.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/db/src/entities/event-source.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/env/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/libs/env/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/mq/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/mq/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/mq/src/models/raw-event.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/src/jobs/raw-event.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/mq/src/queues/raw-events.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/src/queues/raw-events.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsbtTreeLayoutManager">
+    <layout place="tools.popupnpm">
+      <scroll-view-position x="0" y="9" />
+      <selected-paths>
+        <path>
+          <id value="$PROJECT_DIR$/package.json" />
+          <id value="docker:up" />
+        </path>
+      </selected-paths>
+    </layout>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": -1
+}]]></component>
+  <component name="ProjectId" id="2TFxKxLjxjWZUqRVEQcVSrgPTEx" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "code.cleanup.on.save": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/Users/vorant94/git/sofash",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "rearrange.code.on.save": "true",
+    "settings.editor.selected.configurable": "web-ide.project.structure",
+    "ts.external.directory.path": "/Users/vorant94/git/sofash/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="docker:up" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="docker:up" />
+      </scripts>
+      <node-interpreter value="project" />
+      <package-manager value="$PROJECT_DIR$/.yarn/releases/yarn-3.6.1.cjs" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.docker:up" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e54aeb05-eca8-4f16-9884-368a6c11e691" name="Changes" comment="" />
+      <created>1690652569729</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1690652569729</updated>
+      <workItem from="1690652570809" duration="424000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="extracted scrap logic out of command" />
+    <option name="LAST_COMMIT_MESSAGE" value="extracted scrap logic out of command" />
+  </component>
+</project>

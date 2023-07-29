@@ -1,6 +1,6 @@
 import { Queue } from 'bullmq';
 import { type Redis } from 'ioredis';
-import { type RawEvent } from '../models/raw-event.js';
+import { type RawEvent } from '../jobs/raw-event.js';
 
 export class RawEvents {
   private readonly queue: Queue;
@@ -11,9 +11,9 @@ export class RawEvents {
     });
   }
 
-  async addBulk(rawEvents: RawEvent[]): Promise<void> {
+  async addJobsBulk(jobs: RawEvent[]): Promise<void> {
     await this.queue.addBulk(
-      rawEvents.map((rawEvent) => ({
+      jobs.map((rawEvent) => ({
         name: rawEvent.name,
         data: rawEvent,
       })),

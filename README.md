@@ -10,4 +10,4 @@ A Telegram Bot that aggregates interesting local events for your, so you always 
 
 - run `yarn`
 - run `yarn docker:up`
-- make sure to go through `db` lib [README](libs/db/README.md) to properly setup project database
+- make sure to go through [db](libs/db/README.md) lib README to properly setup project database

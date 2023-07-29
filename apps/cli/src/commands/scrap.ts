@@ -2,25 +2,26 @@ import { Command } from '@oclif/core';
 import { envMixin } from '../shared/env.mixin.js';
 import { dbMixin } from '../shared/db.mixin.js';
 import { telegramMixin } from '../shared/telegram.mixin.js';
-import { type message } from 'tdlib-types';
-import { type EventSource, isTelegramEventSource } from 'db';
+import { type EventSource, type EventSourceType } from 'db';
 import { type Client } from 'tdl';
 import { mqMixin } from '../shared/mq.mixin.js';
-import {
-  type RawEvent,
-  type RawEventContent,
-  type TelegramRawEventContent,
-} from 'mq';
+import { type RawEvent } from 'mq';
+import { type Scrapper } from '../shared/scrapper.js';
+import { TelegramChannelScrapper } from '../scrappers/telegram-channel.scrapper.js';
 
 export default class Scrap extends mqMixin(
   telegramMixin(dbMixin(envMixin(Command))),
 ) {
   async run(): Promise<void> {
-    const eventSources = await this.collectEventSources();
+    await this.usingTelegram(async (telegram) => {
+      const eventSources = await this.collectEventSources();
 
-    const eventSourceToResult = await this.processEventSources(eventSources);
+      const scrappers = this.createScrappers(telegram);
 
-    this.logResults(eventSourceToResult);
+      const results = await this.processEventSources(eventSources, scrappers);
+
+      this.logResults(results);
+    });
   }
 
   // TODO add flags to scrap
@@ -34,16 +35,28 @@ export default class Scrap extends mqMixin(
     return eventSources;
   }
 
+  private createScrappers(telegram: Client): EventSourceTypeToScrapper {
+    return new Map<EventSourceType, Scrapper>([
+      // TODO fix proper generic types here to avoid manual type assertion
+      ['telegram', new TelegramChannelScrapper(telegram) as Scrapper],
+    ]);
+  }
+
   private async processEventSources(
     eventSources: EventSource[],
+    scrappers: EventSourceTypeToScrapper,
   ): Promise<EventSourceToResult> {
-    const results = await this.usingTelegram(
-      async (telegram) =>
-        await Promise.allSettled(
-          eventSources.map(async (eventSource) => {
-            await this.processEventSource(eventSource, telegram);
-          }),
-        ),
+    const results = await Promise.allSettled(
+      eventSources.map(async (eventSource) => {
+        const scrapper = scrappers.get(eventSource.type);
+        if (scrapper == null) {
+          throw new Error(
+            `No scrapper is configured for event source type [${eventSource.type}]`,
+          );
+        }
+
+        await this.processEventSource(eventSource, scrapper);
+      }),
     );
 
     return new Map<EventSource, PromiseSettledResult<void>>(
@@ -53,15 +66,13 @@ export default class Scrap extends mqMixin(
 
   private async processEventSource(
     eventSource: EventSource,
-    telegram: Client,
+    scrapper: Scrapper,
   ): Promise<void> {
-    const contents = await this.scrapEventSourceByType(eventSource, telegram);
-    if (contents.length === 0) {
-      return;
-    }
+    const contents = await scrapper.scrapEventSource(eventSource);
 
-    const latestScrappedMessageId = await this.queueRawEvents(
+    const latestScrappedMessageId = await this.queueRawEventJobs(
       eventSource,
+      scrapper,
       contents,
     );
 
@@ -71,131 +82,26 @@ export default class Scrap extends mqMixin(
     );
   }
 
-  private async scrapEventSourceByType(
+  private async queueRawEventJobs(
     eventSource: EventSource,
-    telegram: Client,
-  ): Promise<RawEventContent[]> {
-    if (isTelegramEventSource(eventSource)) {
-      return await this.scrapTelegramEventSource(eventSource, telegram);
-    }
-
-    throw new Error(
-      `Unsupported event type [${eventSource.type}] of event source [${eventSource.uri}]`,
-    );
-  }
-
-  private async scrapTelegramEventSource(
-    { uri, latestScrappedMessageId }: EventSource<'telegram'>,
-    telegram: Client,
-  ): Promise<TelegramRawEventContent[]> {
-    const res: message[] = [];
-
-    const { id } = await telegram.invoke({
-      _: 'searchPublicChat',
-      username: uri,
-    });
-
-    // because of telegram optimization reasons the first request can return
-    // fewer messages than requested. in order to avoid it, we at first request
-    // only latest message, than we can "paginate" from it by using its id and
-    // guaranteed get the number of messages we wanted
-    const {
-      messages: [latestMessage],
-    } = await telegram.invoke({
-      _: 'getChatHistory',
-      chat_id: id,
-      only_local: false,
-      limit: 1,
-    });
-    if (latestMessage == null) {
-      throw new Error(`This tg channel [${uri}] has no messages`);
-    }
-
-    if (
-      latestScrappedMessageId !== null &&
-      latestMessage.id === Number(latestScrappedMessageId)
-    ) {
-      this.log(
-        `scrapped 0 raw events for event source [${uri}], since there are no new messages`,
-      );
-      return res;
-    }
-
-    res.push(latestMessage);
-
-    const { messages } = await telegram.invoke({
-      _: 'getChatHistory',
-      chat_id: id,
-      only_local: false,
-      limit: 100,
-      from_message_id: latestMessage.id,
-    });
-
-    res.push(
-      ...messages.filter((message): message is message => Boolean(message)),
-    );
-
-    if (latestScrappedMessageId == null) {
-      this.log(
-        `scrapped [${res.length}] messages for event source [${uri}], didn't slice because latest scrapped message id wasn't provided`,
-      );
-      return res;
-    }
-
-    const latestScrappedMessageIndex = res.findIndex(
-      (message) => message.id === Number(latestScrappedMessageId),
-    );
-    if (latestScrappedMessageIndex !== -1) {
-      res.splice(latestScrappedMessageIndex);
-
-      this.log(
-        `scrapped [${res.length}] messages in total for event source [${uri}], sliced to prev last message [${latestScrappedMessageId}]`,
-      );
-      return res;
-    }
-
-    this.log(
-      `scrapped [${res.length}] messages for event source [${uri}], didn't catch up to prev last message [${latestScrappedMessageId}] since it wasn't in latest 100`,
-    );
-    return res;
-  }
-
-  private async queueRawEvents(
-    eventSource: EventSource,
-    contents: RawEventContent[],
+    scrapper: Scrapper,
+    contents: Array<RawEvent['content']>,
   ): Promise<string> {
     if (contents.length === 0) {
       throw new Error(`Tried to queue raw events, but got empty array`);
     }
 
-    const rawEvents: RawEvent[] = contents.map((content) =>
-      this.buildRawEventByType(eventSource, content),
+    const jobs: RawEvent[] = contents.map((content) =>
+      scrapper.createRawEventJob(eventSource, content),
     );
 
-    await this.mq.rawEvents.addBulk(rawEvents);
+    await this.mq.rawEvents.addJobsBulk(jobs);
 
     this.log(
-      `successfully queued [${rawEvents.length}] raw events for event source [${eventSource.uri}]`,
+      `successfully queued [${jobs.length}] raw event jobs for event source [${eventSource.uri}]`,
     );
 
-    return contents[0].id.toString();
-  }
-
-  private buildRawEventByType(
-    eventSource: EventSource,
-    content: RawEventContent,
-  ): RawEvent {
-    if (isTelegramEventSource(eventSource)) {
-      return {
-        name: `${eventSource.uri}::${content.id.toString()}`,
-        eventSource,
-        content,
-      };
-    }
-
-    throw new Error(
-      `Unsupported event type [${eventSource.type}] of event source [${eventSource.uri}]`,
-    );
+    return scrapper.getScrappedMessageId(contents[0]);
   }
 
   private async updateEventSourceLatestScrappedMessageId(
@@ -237,3 +143,4 @@ export default class Scrap extends mqMixin(
 }
 
 type EventSourceToResult = Map<EventSource, PromiseSettledResult<void>>;
+type EventSourceTypeToScrapper = Map<EventSourceType, Scrapper>;
