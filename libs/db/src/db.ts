@@ -4,27 +4,27 @@ import { DB_NAME, DB_TYPE } from './tokens.js';
 import { EventSources } from './data-sources/event-sources.js';
 
 export class Db {
-  public readonly eventSources: EventSources;
+  readonly eventSources: EventSources;
 
-  private readonly db: DataSource;
+  readonly #db: DataSource;
 
   constructor(options: DbOptions) {
-    this.db = new DataSource({
+    this.#db = new DataSource({
       ...options,
       database: DB_NAME,
       type: DB_TYPE,
       entities: [EventSource],
     });
 
-    this.eventSources = new EventSources(this.db.getRepository(EventSource));
+    this.eventSources = new EventSources(this.#db.getRepository(EventSource));
   }
 
   async initialize(): Promise<void> {
-    await this.db.initialize();
+    await this.#db.initialize();
   }
 
   async destroy(): Promise<void> {
-    await this.db.destroy();
+    await this.#db.destroy();
   }
 }
 

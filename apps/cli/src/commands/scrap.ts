@@ -14,13 +14,13 @@ export default class Scrap extends mqMixin(
 ) {
   async run(): Promise<void> {
     await this.usingTelegram(async (telegram) => {
-      const eventSources = await this.collectEventSources();
+      const eventSources = await this.#collectEventSources();
 
-      const scrappers = this.createScrappers(telegram);
+      const scrappers = this.#createScrappers(telegram);
 
-      const results = await this.processEventSources(eventSources, scrappers);
+      const results = await this.#processEventSources(eventSources, scrappers);
 
-      this.logResults(results);
+      this.#logResults(results);
     });
   }
 
@@ -28,21 +28,21 @@ export default class Scrap extends mqMixin(
   //  - for all event sources
   //  - for all event sources of a specific type
   //  - for a specific event source by its uri
-  private async collectEventSources(): Promise<EventSource[]> {
+  async #collectEventSources(): Promise<EventSource[]> {
     const eventSources = await this.db.eventSources.findAll();
 
     this.log(`collected [${eventSources.length}] event sources to scrap`);
     return eventSources;
   }
 
-  private createScrappers(telegram: Client): EventSourceTypeToScrapper {
+  #createScrappers(telegram: Client): EventSourceTypeToScrapper {
     return new Map<EventSourceType, Scrapper>([
       // TODO fix proper generic types here to avoid manual type assertion
       ['telegram', new TelegramChannelScrapper(telegram) as Scrapper],
     ]);
   }
 
-  private async processEventSources(
+  async #processEventSources(
     eventSources: EventSource[],
     scrappers: EventSourceTypeToScrapper,
   ): Promise<EventSourceToResult> {
@@ -55,7 +55,7 @@ export default class Scrap extends mqMixin(
           );
         }
 
-        await this.processEventSource(eventSource, scrapper);
+        await this.#processEventSource(eventSource, scrapper);
       }),
     );
 
@@ -64,25 +64,25 @@ export default class Scrap extends mqMixin(
     );
   }
 
-  private async processEventSource(
+  async #processEventSource(
     eventSource: EventSource,
     scrapper: Scrapper,
   ): Promise<void> {
     const contents = await scrapper.scrapEventSource(eventSource);
 
-    const latestScrappedMessageId = await this.queueRawEventJobs(
+    const latestScrappedMessageId = await this.#queueRawEventJobs(
       eventSource,
       scrapper,
       contents,
     );
 
-    await this.updateEventSourceLatestScrappedMessageId(
+    await this.#updateEventSourceLatestScrappedMessageId(
       eventSource,
       latestScrappedMessageId,
     );
   }
 
-  private async queueRawEventJobs(
+  async #queueRawEventJobs(
     eventSource: EventSource,
     scrapper: Scrapper,
     contents: Array<RawEvent['content']>,
@@ -104,7 +104,7 @@ export default class Scrap extends mqMixin(
     return scrapper.getScrappedMessageId(contents[0]);
   }
 
-  private async updateEventSourceLatestScrappedMessageId(
+  async #updateEventSourceLatestScrappedMessageId(
     { id }: EventSource,
     latestScrappedMessageId: string,
   ): Promise<void> {
@@ -114,7 +114,7 @@ export default class Scrap extends mqMixin(
     );
   }
 
-  private logResults(esToResult: EventSourceToResult): void {
+  #logResults(esToResult: EventSourceToResult): void {
     const esUriToReason = new Map<string, string>();
     for (const [eventSource, result] of esToResult) {
       if (result.status === 'rejected') {

@@ -7,7 +7,11 @@ import { type message } from 'tdlib-types';
 export class TelegramChannelScrapper
   implements Scrapper<EventSource<'telegram'>, TelegramRawEvent>
 {
-  constructor(private readonly telegram: Client) {}
+  #telegram: Client;
+
+  constructor(telegram: Client) {
+    this.#telegram = telegram;
+  }
 
   async scrapEventSource({
     uri,
@@ -15,7 +19,7 @@ export class TelegramChannelScrapper
   }: EventSource<'telegram'>): Promise<Array<TelegramRawEvent['content']>> {
     const res: message[] = [];
 
-    const { id } = await this.telegram.invoke({
+    const { id } = await this.#telegram.invoke({
       _: 'searchPublicChat',
       username: uri,
     });
@@ -26,7 +30,7 @@ export class TelegramChannelScrapper
     // guaranteed get the number of messages we wanted
     const {
       messages: [latestMessage],
-    } = await this.telegram.invoke({
+    } = await this.#telegram.invoke({
       _: 'getChatHistory',
       chat_id: id,
       only_local: false,
@@ -48,7 +52,7 @@ export class TelegramChannelScrapper
 
     res.push(latestMessage);
 
-    const { messages } = await this.telegram.invoke({
+    const { messages } = await this.#telegram.invoke({
       _: 'getChatHistory',
       chat_id: id,
       only_local: false,

@@ -5,24 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e54aeb05-eca8-4f16-9884-368a6c11e691" name="Changes" comment="extracted scrap logic out of command">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/cli/src/scrappers/telegram-channel.scrapper.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/apps/cli/src/shared/scrapper.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sofash.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sofash.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/cli/src/commands/scrap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/cli/src/commands/scrap.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/db/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/libs/db/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/cli/src/scrappers/telegram-channel.scrapper.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/cli/src/scrappers/telegram-channel.scrapper.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/cli/src/shared/env.mixin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/apps/cli/src/shared/env.mixin.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/db/src/data-sources/event-sources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/db/src/data-sources/event-sources.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libs/db/src/db.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/db/src/db.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/db/src/entities/event-source.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/db/src/entities/event-source.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/env/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/libs/env/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/mq/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/mq/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/mq/src/models/raw-event.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/src/jobs/raw-event.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/mq/src/mq.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/src/mq.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/libs/mq/src/queues/raw-events.ts" beforeDir="false" afterPath="$PROJECT_DIR$/libs/mq/src/queues/raw-events.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -112,7 +101,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1690652569729</updated>
-      <workItem from="1690652570809" duration="424000" />
+      <workItem from="1690652570809" duration="1137000" />
     </task>
     <servers />
   </component>

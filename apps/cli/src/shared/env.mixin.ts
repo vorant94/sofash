@@ -22,7 +22,7 @@ export function envMixin<T extends CanHaveEnv>(
   abstract class BaseWithMixin extends base {
     env!: Env;
 
-    private readonly envSchema: ObjectSchema<Env> = BASE_SCHEMA.append<Env>({
+    readonly #envSchema: ObjectSchema<Env> = BASE_SCHEMA.append<Env>({
       TG_CLIENT_API_ID: joi.number().required(),
       TG_CLIENT_API_HASH: joi.string().required(),
       DB_ROOT_USERNAME: joi.string().when('NODE_ENV', {
@@ -40,7 +40,7 @@ export function envMixin<T extends CanHaveEnv>(
     protected async init(): Promise<any> {
       const superRes = await super.init();
 
-      this.env = await parseEnv(this.envSchema);
+      this.env = await parseEnv(this.#envSchema);
 
       return superRes;
     }
