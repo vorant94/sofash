@@ -16,8 +16,10 @@
     "db": "workspace:~",
     "env": "workspace:~",
     "joi": "^17.9.2",
+    "mq": "workspace:~",
     "pg": "^8.11.1",
-    "tdl": "^7.3.1"
+    "tdl": "^7.3.1",
+    "tslib": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "^18",
@@ -37,7 +39,6 @@
     "shx": "^0.3.3",
     "tdlib-types": "td-1.8.0",
     "ts-node": "^10.9.1",
-    "tslib": "^2.6.0",
     "typescript": "^5.1.6"
   },
   "oclif": {

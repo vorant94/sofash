@@ -5,14 +5,22 @@ import { telegramMixin } from '../shared/telegram.mixin.js';
 import { type message } from 'tdlib-types';
 import { type EventSource, isTelegramEventSource } from 'db';
 import { type Client } from 'tdl';
+import { mqMixin } from '../shared/mq.mixin.js';
+import {
+  type RawEvent,
+  type RawEventContent,
+  type TelegramRawEventContent,
+} from 'mq';
 
-export default class Scrap extends telegramMixin(dbMixin(envMixin(Command))) {
+export default class Scrap extends mqMixin(
+  telegramMixin(dbMixin(envMixin(Command))),
+) {
   async run(): Promise<void> {
     const eventSources = await this.collectEventSources();
 
-    const esToResult = await this.processEventSources(eventSources);
+    const eventSourceToResult = await this.processEventSources(eventSources);
 
-    this.logResults(esToResult);
+    this.logResults(eventSourceToResult);
   }
 
   // TODO add flags to scrap
@@ -38,39 +46,37 @@ export default class Scrap extends telegramMixin(dbMixin(envMixin(Command))) {
         ),
     );
 
-    const res = new Map<EventSource, PromiseSettledResult<void>>();
-    for (const [index, eventSource] of eventSources.entries()) {
-      res.set(eventSource, results[index]);
-    }
-    return res;
+    return new Map<EventSource, PromiseSettledResult<void>>(
+      eventSources.map((eventSource, index) => [eventSource, results[index]]),
+    );
   }
 
   private async processEventSource(
     eventSource: EventSource,
     telegram: Client,
   ): Promise<void> {
-    const scrapResults = await this.scrapByType(eventSource, telegram);
-    if (scrapResults.length === 0) {
+    const contents = await this.scrapEventSourceByType(eventSource, telegram);
+    if (contents.length === 0) {
       return;
     }
 
-    const latestScrappedMessageId = await this.fillByType(
+    const latestScrappedMessageId = await this.queueRawEvents(
       eventSource,
-      scrapResults,
+      contents,
     );
 
-    await this.updateLatestScrappedMessageId(
+    await this.updateEventSourceLatestScrappedMessageId(
       eventSource,
       latestScrappedMessageId,
     );
   }
 
-  private async scrapByType(
+  private async scrapEventSourceByType(
     eventSource: EventSource,
     telegram: Client,
-  ): Promise<ScrapResult[]> {
+  ): Promise<RawEventContent[]> {
     if (isTelegramEventSource(eventSource)) {
-      return await this.scrapTelegram(eventSource, telegram);
+      return await this.scrapTelegramEventSource(eventSource, telegram);
     }
 
     throw new Error(
@@ -78,10 +84,10 @@ export default class Scrap extends telegramMixin(dbMixin(envMixin(Command))) {
     );
   }
 
-  private async scrapTelegram(
+  private async scrapTelegramEventSource(
     { uri, latestScrappedMessageId }: EventSource<'telegram'>,
     telegram: Client,
-  ): Promise<TelegramScrapResult[]> {
+  ): Promise<TelegramRawEventContent[]> {
     const res: message[] = [];
 
     const { id } = await telegram.invoke({
@@ -154,20 +160,45 @@ export default class Scrap extends telegramMixin(dbMixin(envMixin(Command))) {
     return res;
   }
 
-  private async fillByType(
-    _: EventSource,
-    scrapResults: ScrapResult[],
+  private async queueRawEvents(
+    eventSource: EventSource,
+    contents: RawEventContent[],
   ): Promise<string> {
-    if (scrapResults.length === 0) {
-      throw new Error(`Tried to fill messages, but got empty messages array`);
+    if (contents.length === 0) {
+      throw new Error(`Tried to queue raw events, but got empty array`);
     }
 
-    // TODO: fill redis queue here
+    const rawEvents: RawEvent[] = contents.map((content) =>
+      this.buildRawEventByType(eventSource, content),
+    );
 
-    return scrapResults[0].id.toString();
+    await this.mq.rawEvents.addBulk(rawEvents);
+
+    this.log(
+      `successfully queued [${rawEvents.length}] raw events for event source [${eventSource.uri}]`,
+    );
+
+    return contents[0].id.toString();
   }
 
-  private async updateLatestScrappedMessageId(
+  private buildRawEventByType(
+    eventSource: EventSource,
+    content: RawEventContent,
+  ): RawEvent {
+    if (isTelegramEventSource(eventSource)) {
+      return {
+        name: `${eventSource.uri}::${content.id.toString()}`,
+        eventSource,
+        content,
+      };
+    }
+
+    throw new Error(
+      `Unsupported event type [${eventSource.type}] of event source [${eventSource.uri}]`,
+    );
+  }
+
+  private async updateEventSourceLatestScrappedMessageId(
     { id }: EventSource,
     latestScrappedMessageId: string,
   ): Promise<void> {
@@ -206,8 +237,3 @@ export default class Scrap extends telegramMixin(dbMixin(envMixin(Command))) {
 }
 
 type EventSourceToResult = Map<EventSource, PromiseSettledResult<void>>;
-
-// TODO make it union with MeetupScrapResult
-type ScrapResult = TelegramScrapResult;
-
-type TelegramScrapResult = message;

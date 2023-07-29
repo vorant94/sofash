@@ -2,6 +2,7 @@
 
 ### requirements
 
+[//]: # (TODO: add tdlib to docker compose instead)
 - install `TDLib 1.8.0` via Homebrew (`brew install tdlib`)
 - run `yarn build` to build all the libs, that are required for this app
 

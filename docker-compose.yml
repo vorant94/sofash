@@ -22,3 +22,13 @@ services:
       ADMINER_DEFAULT_SERVER: 'postgres'
     depends_on:
       - postgres
+
+  redis-stack:
+    image: redis/redis-stack
+    hostname: redis-stack
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - "./.docker/redis-stack/data:/data"

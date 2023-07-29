@@ -9,6 +9,8 @@ export interface BaseEnv {
   DB_PORT: number;
   DB_USERNAME: string;
   DB_PASSWORD: string;
+  MQ_HOST: string;
+  MQ_PORT: number;
 }
 
 export const NODE_ENVS = ['DEV', 'PROD'] as const;
@@ -55,5 +57,11 @@ export const BASE_SCHEMA = joi
       then: joi.optional().default('example'),
       otherwise: joi.required(),
     }),
+    MQ_HOST: joi.string().when('NODE_ENV', {
+      is: 'DEV',
+      then: joi.optional().default('localhost'),
+      otherwise: joi.required(),
+    }),
+    MQ_PORT: joi.number().optional().default(6379),
   })
   .options({ stripUnknown: true });

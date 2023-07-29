@@ -11,8 +11,8 @@ export class EventSource<
   @Column({ unique: true })
   uri!: string;
 
-  @Column({ nullable: true })
-  latestScrappedMessageId?: string;
+  @Column({ nullable: true, type: String })
+  latestScrappedMessageId?: string | null;
 
   @Column({ type: 'enum', enum: EVENT_SOURCE_TYPES })
   type!: TType;

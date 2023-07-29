@@ -12,9 +12,13 @@ export class EventSources {
     return await this.repository.find();
   }
 
+  async getByUri(uri: string): Promise<EventSource> {
+    return await this.repository.findOneOrFail({ where: { uri } });
+  }
+
   async updateLatestScrappedMessageId(
     id: string,
-    latestScrappedMessageId: string,
+    latestScrappedMessageId: string | null,
   ): Promise<void> {
     await this.repository.update({ id }, { latestScrappedMessageId });
   }
