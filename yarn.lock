@@ -2428,6 +2428,7 @@ __metadata:
     eslint-plugin-prettier: ^5.0.0
     eslint-plugin-promise: ^6.0.0
     joi: ^17.9.2
+    mq: "workspace:~"
     oclif: ^3.9.1
     pg: ^8.11.1
     prettier: ^3.0.0
@@ -5992,7 +5993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mq@workspace:libs/mq":
+"mq@workspace:libs/mq, mq@workspace:~":
   version: 0.0.0-use.local
   resolution: "mq@workspace:libs/mq"
   dependencies:
