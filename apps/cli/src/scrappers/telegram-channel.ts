@@ -4,7 +4,7 @@ import { type EventSource } from 'db';
 import { type TelegramRawEvent } from 'mq';
 import { type message } from 'tdlib-types';
 
-export class TelegramChannelScrapper
+export class TelegramChannel
   implements Scrapper<EventSource<'telegram'>, TelegramRawEvent>
 {
   #telegram: Client;

@@ -7,7 +7,7 @@ import { type Client } from 'tdl';
 import { mqMixin } from '../shared/mq.mixin.js';
 import { type RawEvent } from 'mq';
 import { type Scrapper } from '../shared/scrapper.js';
-import { TelegramChannelScrapper } from '../scrappers/telegram-channel.scrapper.js';
+import { TelegramChannel } from '../scrappers/telegram-channel.js';
 
 export default class Scrap extends mqMixin(
   telegramMixin(dbMixin(envMixin(Command))),
@@ -38,7 +38,7 @@ export default class Scrap extends mqMixin(
   #createScrappers(telegram: Client): EventSourceTypeToScrapper {
     return new Map<EventSourceType, Scrapper>([
       // TODO fix proper generic types here to avoid manual type assertion
-      ['telegram', new TelegramChannelScrapper(telegram) as Scrapper],
+      ['telegram', new TelegramChannel(telegram) as Scrapper],
     ]);
   }
 
