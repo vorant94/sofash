@@ -9,6 +9,8 @@ export class Mq {
   constructor(options: MqOptions) {
     this.#connection = new Redis({
       ...options,
+      // TODO: lazy connect seems not to be working, since just creating the client leaving the process to hang
+      //  unless quit is called, need to fix it
       lazyConnect: true,
     });
 
