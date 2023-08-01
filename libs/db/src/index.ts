@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 
 export * from './db.js';
-export * from './tokens.js';
 
-export * from './entities/event-source.js';
+export * from './core/tokens.js';
 
-export * from './data-sources/event-sources.js';
+export * from './event-source/event-source.data-source.js';
+export * from './event-source/event-source.entity.js';

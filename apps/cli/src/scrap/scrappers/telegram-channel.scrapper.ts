@@ -1,11 +1,11 @@
 import { type Scrapper } from './scrapper.js';
 import { type Client } from 'tdl';
-import { type EventSource } from 'db';
-import { type TelegramRawEvent } from 'mq';
 import { type message } from 'tdlib-types';
+import { type TelegramRawEventJob } from 'mq';
+import { type EventSourceEntity } from 'db';
 
 export class TelegramChannelScrapper
-  implements Scrapper<EventSource<'telegram'>, TelegramRawEvent>
+  implements Scrapper<EventSourceEntity<'telegram'>, TelegramRawEventJob>
 {
   #telegram: Client;
 
@@ -16,7 +16,9 @@ export class TelegramChannelScrapper
   async scrapEventSource({
     uri,
     latestScrappedMessageId,
-  }: EventSource<'telegram'>): Promise<Array<TelegramRawEvent['content']>> {
+  }: EventSourceEntity<'telegram'>): Promise<
+    Array<TelegramRawEventJob['content']>
+  > {
     const res: message[] = [];
 
     const { id } = await this.#telegram.invoke({
@@ -90,9 +92,9 @@ export class TelegramChannelScrapper
   }
 
   createRawEventJob(
-    eventSource: EventSource<'telegram'>,
-    content: TelegramRawEvent['content'],
-  ): TelegramRawEvent {
+    eventSource: EventSourceEntity<'telegram'>,
+    content: TelegramRawEventJob['content'],
+  ): TelegramRawEventJob {
     return {
       name: `${eventSource.uri}::${content.id.toString()}`,
       eventSource,
@@ -100,7 +102,7 @@ export class TelegramChannelScrapper
     };
   }
 
-  getScrappedMessageId(content: TelegramRawEvent['content']): string {
+  getScrappedMessageId(content: TelegramRawEventJob['content']): string {
     return content.id.toString();
   }
 }

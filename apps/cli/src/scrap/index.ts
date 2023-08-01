@@ -1,8 +1,8 @@
 import { Command } from 'commander';
-import { type Db, type EventSource, type EventSourceType } from 'db';
+import { type Db, type EventSourceEntity, type EventSourceType } from 'db';
 import { type Client } from 'tdl';
 import { TelegramChannelScrapper } from './scrappers/telegram-channel.scrapper.js';
-import { type Mq, type RawEvent } from 'mq';
+import { type Mq, type RawEventJob } from 'mq';
 import { type Scrapper } from './scrappers/scrapper.js';
 import { CONTAINER, DB, MQ, TELEGRAM } from '../shared/container.js';
 
@@ -52,7 +52,7 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
       //
       // queue raw event jobs
       //
-      const jobs: RawEvent[] = contents.map((content) =>
+      const jobs: RawEventJob[] = contents.map((content) =>
         scrapper.createRawEventJob(eventSource, content),
       );
       await mq.rawEvents.addJobsBulk(jobs);
@@ -70,7 +70,7 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
     }),
   );
 
-  const esToResult = new Map<EventSource, PromiseSettledResult<void>>(
+  const esToResult = new Map<EventSourceEntity, PromiseSettledResult<void>>(
     eventSources.map((eventSource, index) => [eventSource, results[index]]),
   );
 

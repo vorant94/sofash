@@ -21,8 +21,8 @@ export const dataSource = new DataSource({
   password: 'xxx',
   database: DB_NAME,
   logging: true,
-  entities: ['./src/entities/**/*.ts'],
-  migrations: ['./src/migrations/**/*.ts'],
+  entities: ['./src/**/*.entity.ts'],
+  migrations: ['./src/core/migration/**/*.ts'],
 });
 
 ```

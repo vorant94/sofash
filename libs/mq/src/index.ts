@@ -1,5 +1,4 @@
 export * from './mq.js';
 
-export * from './jobs/raw-event.js';
-
-export * from './queues/raw-events.js';
+export * from './raw-event/raw-event.job.js';
+export * from './raw-event/raw-event.queue.js';

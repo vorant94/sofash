@@ -1,8 +1,8 @@
 import { Redis, type RedisOptions } from 'ioredis';
-import { RawEvents } from './queues/raw-events.js';
+import { RawEventQueue } from './raw-event/raw-event.queue.js';
 
 export class Mq {
-  readonly rawEvents: RawEvents;
+  readonly rawEvents: RawEventQueue;
 
   readonly #connection: Redis;
 
@@ -14,7 +14,7 @@ export class Mq {
       lazyConnect: true,
     });
 
-    this.rawEvents = new RawEvents(this.#connection);
+    this.rawEvents = new RawEventQueue(this.#connection);
   }
 
   async quit(): Promise<void> {

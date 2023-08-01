@@ -1,22 +1,24 @@
-import { type EventSource } from '../entities/event-source.js';
 import { type DeepPartial, type Repository } from 'typeorm';
+import { type EventSourceEntity } from './event-source.entity.js';
 
-export class EventSources {
-  readonly #repository: Repository<EventSource>;
+export class EventSourceDataSource {
+  readonly #repository: Repository<EventSourceEntity>;
 
-  constructor(repository: Repository<EventSource>) {
+  constructor(repository: Repository<EventSourceEntity>) {
     this.#repository = repository;
   }
 
-  async create(create: DeepPartial<EventSource>): Promise<EventSource> {
+  async create(
+    create: DeepPartial<EventSourceEntity>,
+  ): Promise<EventSourceEntity> {
     return await this.#repository.save(this.#repository.create(create));
   }
 
-  async findAll(): Promise<EventSource[]> {
+  async findAll(): Promise<EventSourceEntity[]> {
     return await this.#repository.find();
   }
 
-  async getByUri(uri: string): Promise<EventSource> {
+  async getByUri(uri: string): Promise<EventSourceEntity> {
     return await this.#repository.findOneOrFail({ where: { uri } });
   }
 

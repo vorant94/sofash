@@ -4,8 +4,8 @@ import { BaseEntity } from '../shared/base.entity.js';
 export const EVENT_SOURCE_TYPES = ['telegram', 'meetup'] as const;
 export type EventSourceType = (typeof EVENT_SOURCE_TYPES)[number];
 
-@Entity()
-export class EventSource<
+@Entity({ name: 'event_source' })
+export class EventSourceEntity<
   TType extends EventSourceType = EventSourceType,
 > extends BaseEntity {
   @Column({ unique: true })

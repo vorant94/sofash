@@ -1,9 +1,9 @@
-import { type EventSource } from 'db';
-import { type RawEvent } from 'mq';
+import { type RawEventJob } from 'mq';
+import { type EventSourceEntity } from 'db';
 
 export interface Scrapper<
-  TEventSource extends EventSource = EventSource,
-  TRawEvent extends RawEvent = RawEvent,
+  TEventSource extends EventSourceEntity = EventSourceEntity,
+  TRawEvent extends RawEventJob = RawEventJob,
 > {
   scrapEventSource: (
     eventSource: TEventSource,
