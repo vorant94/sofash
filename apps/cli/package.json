@@ -13,6 +13,7 @@
     "commander": "^11.0.0",
     "db": "workspace:~",
     "env": "workspace:~",
+    "inversify": "^6.0.1",
     "joi": "^17.9.2",
     "mq": "workspace:~",
     "pg": "^8.11.1",

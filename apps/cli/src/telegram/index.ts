@@ -1,12 +1,9 @@
 import { Command } from 'commander';
-import { createGetChatHistoryCommand } from './get-chat-history.command.js';
-import { createLoginCommand } from './login.command.js';
-import { createLogoutCommand } from './logout.command.js';
-import { type Client } from 'tdl';
+import { GET_CHAT_HISTORY_COMMAND } from './get-chat-history.command.js';
+import { LOGIN_COMMAND } from './login.command.js';
+import { LOGOUT_COMMAND } from './logout.command.js';
 
-export function createTelegramCommand(telegram: Client): Command {
-  return new Command('telegram')
-    .addCommand(createGetChatHistoryCommand(telegram))
-    .addCommand(createLoginCommand(telegram))
-    .addCommand(createLogoutCommand(telegram));
-}
+export const TELEGRAM_COMMAND = new Command('telegram')
+  .addCommand(GET_CHAT_HISTORY_COMMAND)
+  .addCommand(LOGIN_COMMAND)
+  .addCommand(LOGOUT_COMMAND);

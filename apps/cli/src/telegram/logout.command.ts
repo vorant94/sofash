@@ -1,10 +1,11 @@
 import { type Client } from 'tdl';
 import { Command } from 'commander';
+import { CONTAINER, TELEGRAM } from '../shared/container.js';
 
-export function createLogoutCommand(telegram: Client): Command {
-  return new Command('logout').action(async () => {
-    await telegram.invoke({
-      _: 'logOut',
-    });
+export const LOGOUT_COMMAND = new Command('logout').action(async () => {
+  const telegram = CONTAINER.get<Client>(TELEGRAM);
+
+  await telegram.invoke({
+    _: 'logOut',
   });
-}
+});

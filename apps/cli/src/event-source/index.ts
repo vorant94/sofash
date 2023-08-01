@@ -1,10 +1,7 @@
 import { Command } from 'commander';
-import { createCreateCommand } from './create.command.js';
-import { createUpdateLatestScrappedMessageIdCommand } from './update-latest-scrapped-message-id.command.js';
-import { type Db } from 'db';
+import { CREATE_COMMAND } from './create.command.js';
+import { UPDATE_LATEST_SCRAPPED_MESSAGE_ID_COMMAND } from './update-latest-scrapped-message-id.command.js';
 
-export function createEventSourceCommand(db: Db): Command {
-  return new Command('event-source')
-    .addCommand(createCreateCommand(db))
-    .addCommand(createUpdateLatestScrappedMessageIdCommand(db));
-}
+export const EVENT_SOURCE_COMMAND = new Command('event-source')
+  .addCommand(CREATE_COMMAND)
+  .addCommand(UPDATE_LATEST_SCRAPPED_MESSAGE_ID_COMMAND);

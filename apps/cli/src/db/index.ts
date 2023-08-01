@@ -1,15 +1,11 @@
 import { Command } from 'commander';
-import { createCreateCommand } from './create.command.js';
-import { createCreateUserCommand } from './create-user.command.js';
-import { createDropCommand } from './drop.command.js';
-import { createDropUserCommand } from './drop-user.command.js';
-import type pg from 'pg';
-import { type Env } from '../core/env.js';
+import { CREATE_COMMAND } from './create.command.js';
+import { CREATE_USER_COMMAND } from './create-user.command.js';
+import { DROP_COMMAND } from './drop.command.js';
+import { DROP_USER_COMMAND } from './drop-user.command.js';
 
-export function createDbCommand(pgClient: pg.Client, env: Env): Command {
-  return new Command('db')
-    .addCommand(createCreateCommand(pgClient))
-    .addCommand(createCreateUserCommand(pgClient))
-    .addCommand(createDropCommand(env, pgClient))
-    .addCommand(createDropUserCommand(env, pgClient));
-}
+export const DB_COMMAND = new Command('db')
+  .addCommand(CREATE_COMMAND)
+  .addCommand(CREATE_USER_COMMAND)
+  .addCommand(DROP_COMMAND)
+  .addCommand(DROP_USER_COMMAND);

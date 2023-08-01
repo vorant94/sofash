@@ -1,19 +1,22 @@
 import { type Db } from 'db';
 import { Command } from 'commander';
+import { CONTAINER, DB } from '../shared/container.js';
 
-export function createUpdateLatestScrappedMessageIdCommand(db: Db): Command {
-  return new Command('update-latest-scrapped-message-id')
-    .requiredOption(`--uri <string>`)
-    .option(`--latest-scrapped-message-id <string>`)
-    .action(async ({ uri, latestScrappedMessageId }: Options) => {
-      const { id } = await db.eventSources.getByUri(uri);
+export const UPDATE_LATEST_SCRAPPED_MESSAGE_ID_COMMAND = new Command(
+  'update-latest-scrapped-message-id',
+)
+  .requiredOption(`--uri <string>`)
+  .option(`--latest-scrapped-message-id <string>`)
+  .action(async ({ uri, latestScrappedMessageId }: Options) => {
+    const db = CONTAINER.get<Db>(DB);
 
-      await db.eventSources.updateLatestScrappedMessageId(
-        id,
-        latestScrappedMessageId ?? null,
-      );
-    });
-}
+    const { id } = await db.eventSources.getByUri(uri);
+
+    await db.eventSources.updateLatestScrappedMessageId(
+      id,
+      latestScrappedMessageId ?? null,
+    );
+  });
 
 interface Options {
   uri: string;

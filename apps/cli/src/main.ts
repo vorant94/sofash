@@ -1,27 +1,33 @@
 import { Command } from 'commander';
-import { createDbCommand } from './db/index.js';
-import { createScrapCommand } from './scrap/index.js';
+import { DB_COMMAND } from './db/index.js';
+import { SCRAP_COMMAND } from './scrap/index.js';
 import { parseEnv } from 'env';
-import { ENV_SCHEMA } from './core/env.js';
-import { createEventSourceCommand } from './event-source/index.js';
-import { createTelegramCommand } from './telegram/index.js';
+import { type Env, ENV_SCHEMA } from './core/env.js';
+import { EVENT_SOURCE_COMMAND } from './event-source/index.js';
+import { TELEGRAM_COMMAND } from './telegram/index.js';
 import { createPg } from './core/create-pg.js';
 import { createDb } from './core/create-db.js';
 import { createTelegram } from './core/create-telegram.js';
 import { createMq } from './core/create-mq.js';
+import { CONTAINER, DB, ENV, MQ, PG, TELEGRAM } from './shared/container.js';
+import type pg from 'pg';
+import { type Db } from 'db';
+import { type Client } from 'tdl';
+import { type Mq } from 'mq';
 
 const env = await parseEnv(ENV_SCHEMA);
+CONTAINER.bind<Env>(ENV).toConstantValue(env);
 
 const program = new Command();
 
-const pg = createPg(program, env);
-const db = createDb(program, env);
-const telegram = createTelegram(program, env);
-const mq = createMq(program, env);
+CONTAINER.bind<pg.Client>(PG).toConstantValue(createPg(program, env));
+CONTAINER.bind<Db>(DB).toConstantValue(createDb(program, env));
+CONTAINER.bind<Client>(TELEGRAM).toConstantValue(createTelegram(program, env));
+CONTAINER.bind<Mq>(MQ).toConstantValue(createMq(program, env));
 
 await program
-  .addCommand(createDbCommand(pg, env))
-  .addCommand(createEventSourceCommand(db))
-  .addCommand(createScrapCommand(db, telegram, mq))
-  .addCommand(createTelegramCommand(telegram))
+  .addCommand(DB_COMMAND)
+  .addCommand(EVENT_SOURCE_COMMAND)
+  .addCommand(SCRAP_COMMAND)
+  .addCommand(TELEGRAM_COMMAND)
   .parseAsync();

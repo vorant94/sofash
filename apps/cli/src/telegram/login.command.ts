@@ -1,8 +1,9 @@
 import { type Client } from 'tdl';
 import { Command } from 'commander';
+import { CONTAINER, TELEGRAM } from '../shared/container.js';
 
-export function createLoginCommand(telegram: Client): Command {
-  return new Command('login').action(async () => {
-    await telegram.login();
-  });
-}
+export const LOGIN_COMMAND = new Command('login').action(async () => {
+  const telegram = CONTAINER.get<Client>(TELEGRAM);
+
+  await telegram.login();
+});
