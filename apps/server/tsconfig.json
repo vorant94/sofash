@@ -4,16 +4,9 @@
     "rootDir": "./src",
     "outDir": "./dist"
   },
-  "ts-node": {
-    // it is here so ts-node can catch up globally defined types in "files" section below
-    "files": true
-  },
-  "files": [
-    "src/main.ts",
-    "src/index.d.ts"
-  ],
   "references": [
     { "path": "../../libs/env" },
-    { "path": "../../libs/db" }
+    { "path": "../../libs/db" },
+    { "path": "../../libs/mq" }
   ]
 }

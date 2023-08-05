@@ -15,11 +15,10 @@ import { type Db } from 'db';
 import { type Client } from 'tdl';
 import { type Mq } from 'mq';
 
-const env = await parseEnv(ENV_SCHEMA);
-CONTAINER.bind<Env>(ENV).toConstantValue(env);
-
 const program = new Command();
 
+const env = await parseEnv(ENV_SCHEMA);
+CONTAINER.bind<Env>(ENV).toConstantValue(env);
 CONTAINER.bind<pg.Client>(PG).toConstantValue(createPg(program, env));
 CONTAINER.bind<Db>(DB).toConstantValue(createDb(program, env));
 CONTAINER.bind<Client>(TELEGRAM).toConstantValue(createTelegram(program, env));

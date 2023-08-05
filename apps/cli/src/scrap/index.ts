@@ -55,7 +55,7 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
       const jobs: RawEventJob[] = contents.map((content) =>
         scrapper.createRawEventJob(eventSource, content),
       );
-      await mq.rawEvents.addJobsBulk(jobs);
+      await mq.rawEvents.queueJobs(jobs);
       console.log(
         `successfully queued [${jobs.length}] raw event jobs for event source [${eventSource.uri}]`,
       );

@@ -4733,8 +4733,10 @@ __metadata:
     eslint-plugin-prettier: ^5.0.0
     eslint-plugin-promise: ^6.0.0
     express: ^4.18.2
+    inversify: ^6.0.1
     joi: ^17.9.2
     localtunnel: ^2.0.2
+    mq: "workspace:~"
     nodemon: ^3.0.1
     prettier: ^3.0.0
     prettier-eslint: ^15.0.1
