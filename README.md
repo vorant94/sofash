@@ -5,6 +5,8 @@ A Telegram Bot that aggregates interesting local events for your, so you always 
 ### requirements
 
 - install `NodeJS ^18.0.0` via Homebrew (`brew install node@18`)
+- make sure corepack is enabled (run `corepack enable`)
+- install `Docker Desktop` (with support for Compose V2)
 
 ### local dev setup
 
