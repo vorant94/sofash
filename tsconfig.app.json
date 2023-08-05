@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "sourceMap": true
   },
+  //  TODO Try bun instead of node.js to avoid constant re-builds with references
   "ts-node": {
     "esm": true
   }
