@@ -1,11 +1,13 @@
 import { type Client } from 'tdl';
 import { Command } from 'commander';
-import { CONTAINER, TELEGRAM } from '../shared/container.js';
+import { CONTAINER, LOGGER, TELEGRAM } from '../shared/container.js';
+import { type Logger } from 'logger';
 
 export const GET_CHAT_HISTORY_COMMAND = new Command('get-chat-history')
   .requiredOption(`--username <string>`)
   .action(async ({ username }: Options) => {
     const telegram = CONTAINER.get<Client>(TELEGRAM);
+    const logger = CONTAINER.get<Logger>(LOGGER).clone('GetChatHistoryCommand');
 
     const { id } = await telegram.invoke({
       _: 'searchPublicChat',
@@ -19,7 +21,7 @@ export const GET_CHAT_HISTORY_COMMAND = new Command('get-chat-history')
       only_local: false,
     });
 
-    console.log(JSON.stringify(messages, null, 2));
+    logger.info(`got messages`, { messages });
   });
 
 interface Options {

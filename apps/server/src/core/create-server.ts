@@ -1,22 +1,24 @@
 import http, { type Server } from 'http';
 import { type Express } from 'express';
 import { createTerminus } from '@godaddy/terminus';
-import { CONTAINER, DB, MQ, TELEGRAF } from '../shared/container.js';
+import { CONTAINER, DB, LOGGER, MQ, TELEGRAF } from '../shared/container.js';
 import { type Telegraf } from 'telegraf';
 import { type Db } from 'db';
 import { type Mq } from 'mq';
+import { type Logger } from 'logger';
 
 export function createServer(app: Express): Server {
   const telegraf = CONTAINER.get<Telegraf>(TELEGRAF);
   const db = CONTAINER.get<Db>(DB);
   const mq = CONTAINER.get<Mq>(MQ);
+  const logger = CONTAINER.get<Logger>(LOGGER);
 
   const server = http.createServer(app);
 
   return createTerminus(server, {
     signal: 'SIGINT',
-    healthChecks: { '/health': onHealthCheckFactory() },
-    onSignal: onSignalFactory(telegraf, db, mq),
+    healthChecks: { '/health': onHealthCheckFactory(logger) },
+    onSignal: onSignalFactory(telegraf, db, mq, logger),
   });
 }
 
@@ -25,9 +27,11 @@ function onSignalFactory(
   telegraf: Telegraf,
   db: Db,
   mq: Mq,
+  logger: Logger,
 ): () => Promise<void> {
   return async () => {
-    console.log('server is cleaning up');
+    logger.info('server is cleaning up');
+
     await Promise.allSettled([
       telegraf.telegram.deleteWebhook(),
       db.destroy(),
@@ -40,9 +44,10 @@ function onSignalFactory(
 //  - tg bot webhook
 //  - postgres
 //  - redis (once added to the project)
-function onHealthCheckFactory(): () => Promise<any> {
+function onHealthCheckFactory(logger: Logger): () => Promise<any> {
   return async () => {
-    console.log('server is checking health');
+    logger.info('server is checking health');
+
     await Promise.resolve();
   };
 }

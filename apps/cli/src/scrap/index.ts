@@ -4,7 +4,8 @@ import { type Client } from 'tdl';
 import { TelegramChannelScrapper } from './scrappers/telegram-channel.scrapper.js';
 import { type Mq, type RawEventJob } from 'mq';
 import { type Scrapper } from './scrappers/scrapper.js';
-import { CONTAINER, DB, MQ, TELEGRAM } from '../shared/container.js';
+import { CONTAINER, DB, LOGGER, MQ, TELEGRAM } from '../shared/container.js';
+import { type Logger } from 'logger';
 
 // TODO add options to scrap
 //  - for all event sources
@@ -14,19 +15,20 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
   const db = CONTAINER.get<Db>(DB);
   const telegram = CONTAINER.get<Client>(TELEGRAM);
   const mq = CONTAINER.get<Mq>(MQ);
+  const logger = CONTAINER.get<Logger>(LOGGER).clone('ScrapCommand');
 
   //
   // collect event sources
   //
   const eventSources = await db.eventSources.findAll();
-  console.log(`collected [${eventSources.length}] event sources to scrap`);
+  logger.info(`collected [${eventSources.length}] event sources to scrap`);
 
   //
   // configure scrappers
   //
   const scrappers = new Map<EventSourceType, Scrapper>([
     // TODO fix proper generic types here to avoid manual type assertion
-    ['telegram', new TelegramChannelScrapper(telegram) as Scrapper],
+    ['telegram', new TelegramChannelScrapper(telegram, logger) as Scrapper],
   ]);
 
   //
@@ -56,8 +58,9 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
         scrapper.createRawEventJob(eventSource, content),
       );
       await mq.rawEvents.queueJobs(jobs);
-      console.log(
+      logger.info(
         `successfully queued [${jobs.length}] raw event jobs for event source [${eventSource.uri}]`,
+        { uri: eventSource.uri },
       );
 
       //
@@ -85,10 +88,10 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
   }
 
   const successCount = esToResult.size - esUriToReason.size;
-  console.log(`successfully scrapped [${successCount}] event sources`);
+  logger.info(`successfully scrapped [${successCount}] event sources`);
 
   if (esUriToReason.size === 0) {
-    console.log(`no event source failed to scrap`);
+    logger.info(`no event source failed to scrap`);
     return;
   }
 
@@ -98,6 +101,8 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
         ? reason.message
         : JSON.stringify(reason, null, 2);
 
-    console.log(`event source [${uri}] finished with errors [${message}]`);
+    logger.error(`event source [${uri}] finished with errors [${message}]`, {
+      uri,
+    });
   }
 });

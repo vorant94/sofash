@@ -7,6 +7,7 @@
   "references": [
     { "path": "../../libs/env" },
     { "path": "../../libs/db" },
-    { "path": "../../libs/mq" }
+    { "path": "../../libs/mq" },
+    { "path": "../../libs/logger" }
   ]
 }

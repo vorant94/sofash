@@ -3,14 +3,17 @@ import { type Client } from 'tdl';
 import { type message } from 'tdlib-types';
 import { type TelegramRawEventJob } from 'mq';
 import { type EventSourceEntity } from 'db';
+import { type Logger } from 'logger';
 
 export class TelegramChannelScrapper
   implements Scrapper<EventSourceEntity<'telegram'>, TelegramRawEventJob>
 {
   #telegram: Client;
+  #logger: Logger;
 
-  constructor(telegram: Client) {
+  constructor(telegram: Client, logger: Logger) {
     this.#telegram = telegram;
+    this.#logger = logger.clone(TelegramChannelScrapper.name);
   }
 
   async scrapEventSource({
@@ -46,8 +49,9 @@ export class TelegramChannelScrapper
       latestScrappedMessageId !== null &&
       latestMessage.id === Number(latestScrappedMessageId)
     ) {
-      console.log(
-        `scrapped 0 messages for event source [${uri}], since there are no new messages`,
+      this.#logger.info(
+        `scrapped [0] messages for event source [${uri}], since there are no new messages`,
+        { uri, latestScrappedMessageId },
       );
       return res;
     }
@@ -67,8 +71,9 @@ export class TelegramChannelScrapper
     );
 
     if (latestScrappedMessageId == null) {
-      console.log(
+      this.#logger.info(
         `scrapped [${res.length}] messages for event source [${uri}], didn't slice because latest scrapped message id wasn't provided`,
+        { uri, latestScrappedMessageId },
       );
       return res;
     }
@@ -79,14 +84,16 @@ export class TelegramChannelScrapper
     if (latestScrappedMessageIndex !== -1) {
       res.splice(latestScrappedMessageIndex);
 
-      console.log(
-        `scrapped [${res.length}] messages in total for event source [${uri}], sliced to prev last message [${latestScrappedMessageId}]`,
+      this.#logger.info(
+        `scrapped [${res.length}] messages for event source [${uri}], sliced to prev last message [${latestScrappedMessageId}]`,
+        { uri, latestScrappedMessageId },
       );
       return res;
     }
 
-    console.log(
+    this.#logger.info(
       `scrapped [${res.length}] messages for event source [${uri}], didn't catch up to prev last message [${latestScrappedMessageId}] since it wasn't in latest 100`,
+      { uri, latestScrappedMessageId },
     );
     return res;
   }

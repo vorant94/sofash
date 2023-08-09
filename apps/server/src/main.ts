@@ -6,14 +6,25 @@ import { createTelegrafMiddleware } from './core/create-telegraf-middleware.js';
 import { message } from 'telegraf/filters';
 import { parseEnv } from 'env';
 import { Db } from 'db';
-import { CONTAINER, DB, ENV, MQ, TELEGRAF } from './shared/container.js';
+import {
+  CONTAINER,
+  DB,
+  ENV,
+  LOGGER,
+  MQ,
+  TELEGRAF,
+} from './shared/container.js';
 import { Mq } from 'mq';
 import { createEventProcessor } from './event/create-event.processor.js';
+import { createLogger } from './core/create-logger.js';
+import { type Logger } from 'logger';
 
 const app = express();
 
 const env = await parseEnv(ENV_SCHEMA);
 CONTAINER.bind<Env>(ENV).toConstantValue(env);
+const logger = createLogger();
+CONTAINER.bind<Logger>(LOGGER).toConstantValue(logger);
 const telegraf = new Telegraf(env.TG_BOT_TOKEN);
 CONTAINER.bind<Telegraf>(TELEGRAF).toConstantValue(telegraf);
 const db = new Db({
@@ -41,5 +52,5 @@ telegraf.on(message(), async (ctx) => {
 
 const server = createServer(app);
 server.listen(env.NODE_PORT, () => {
-  console.log(`server is listening on port ${env.NODE_PORT}`);
+  logger.info(`server is listening on port ${env.NODE_PORT}`);
 });
