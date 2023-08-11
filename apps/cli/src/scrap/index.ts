@@ -1,11 +1,12 @@
 import { Command } from 'commander';
-import { type Db, type EventSourceEntity, type EventSourceType } from 'db';
+import { type Db, type EventSourceType } from 'db';
 import { type Client } from 'tdl';
 import { TelegramChannelScrapper } from './scrappers/telegram-channel.scrapper.js';
 import { type Mq, type RawEventJob } from 'mq';
 import { type Scrapper } from './scrappers/scrapper.js';
 import { CONTAINER, DB, LOGGER, MQ, TELEGRAM } from '../shared/container.js';
 import { type Logger } from 'logger';
+import { MeetupGroupScrapper } from './scrappers/meetup-group.scrapper.js';
 
 // TODO add options to scrap
 //  - for all event sources
@@ -29,6 +30,7 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
   const scrappers = new Map<EventSourceType, Scrapper>([
     // TODO fix proper generic types here to avoid manual type assertion
     ['telegram', new TelegramChannelScrapper(telegram, logger) as Scrapper],
+    ['meetup', new MeetupGroupScrapper(logger) as Scrapper],
   ]);
 
   //
@@ -73,8 +75,17 @@ export const SCRAP_COMMAND = new Command('scrap').action(async () => {
     }),
   );
 
-  const esToResult = new Map<EventSourceEntity, PromiseSettledResult<void>>(
-    eventSources.map((eventSource, index) => [eventSource, results[index]]),
+  const esToResult = new Map(
+    eventSources.map((eventSource, index) => {
+      const result = results.at(index);
+      if (result == null) {
+        throw new Error(
+          `no scrap result is found for event source with index [${index}] and uri [${eventSource.uri}]`,
+        );
+      }
+
+      return [eventSource, result];
+    }),
   );
 
   //
