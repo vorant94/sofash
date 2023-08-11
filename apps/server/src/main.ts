@@ -18,6 +18,9 @@ import { Mq } from 'mq';
 import { createEventProcessor } from './event/create-event.processor.js';
 import { createLogger } from './core/create-logger.js';
 import { type Logger } from 'logger';
+import sourceMapSupport from 'source-map-support';
+
+sourceMapSupport.install();
 
 const app = express();
 

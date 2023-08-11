@@ -24,6 +24,9 @@ import { type Client } from 'tdl';
 import { type Mq } from 'mq';
 import { type Logger } from 'logger';
 import { createLogger } from './core/create-logger.js';
+import sourceMapSupport from 'source-map-support';
+
+sourceMapSupport.install();
 
 const program = new Command();
 
