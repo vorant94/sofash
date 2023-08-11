@@ -1,6 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# TODO this fixes "yarn: command not found" when committing via webstorm ui with just "yarn lint",
-#  find a way to avoid manual pointing of yarn, so it will work as in regular terminal
-.yarn/releases/yarn-3.6.1.cjs lint
+yarn lint
