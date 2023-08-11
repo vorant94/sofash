@@ -3,6 +3,7 @@
   "packageManager": "yarn@3.6.1",
   "private": true,
   "scripts": {
+    "start": "yarn workspace server prod",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "docker:pg": "docker exec -it sofash-postgres-1 psql -U postgres",
