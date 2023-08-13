@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:18-bookworm
 
 WORKDIR /usr/local/app
 ENV YARN_VERSION 3.6.1
