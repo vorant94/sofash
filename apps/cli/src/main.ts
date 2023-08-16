@@ -32,8 +32,8 @@ const program = new Command();
 
 const env = await parseEnv(ENV_SCHEMA);
 CONTAINER.bind<Env>(ENV).toConstantValue(env);
-CONTAINER.bind<pg.Client>(PG).toConstantValue(createPg(program, env));
-CONTAINER.bind<Db>(DB).toConstantValue(createDb(program, env));
+CONTAINER.bind<pg.Client>(PG).toConstantValue(await createPg(program, env));
+CONTAINER.bind<Db>(DB).toConstantValue(await createDb(program, env));
 CONTAINER.bind<Client>(TELEGRAM).toConstantValue(createTelegram(program, env));
 CONTAINER.bind<Mq>(MQ).toConstantValue(createMq(program, env));
 CONTAINER.bind<Logger>(LOGGER).toConstantValue(createLogger());

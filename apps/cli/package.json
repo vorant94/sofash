@@ -6,13 +6,14 @@
     "prod": "node ./dist/main.js",
     "dev": "ts-node ./src/main.ts",
     "build": "shx rm -rf dist && tsc --build",
-    "lint": "eslint ./src/**.ts",
-    "lint:fix": "eslint ./src/**.ts --fix"
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint ./src/**/*.ts --fix"
   },
   "dependencies": {
     "commander": "^11.0.0",
     "db": "workspace:~",
     "env": "workspace:~",
+    "fs-extra": "^11.1.1",
     "inquirer": "^9.2.10",
     "inversify": "^6.0.1",
     "joi": "^17.9.2",
@@ -24,6 +25,7 @@
     "tslib": "^2.6.0"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11",
     "@types/inquirer": "^9",
     "@types/node": "^18",
     "@types/pg": "^8",

@@ -6,8 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "shx rm -rf dist && shx rm -f tsconfig.tsbuildinfo && tsc --build",
-    "lint": "eslint ./src/**.ts",
-    "lint:fix": "eslint ./src/**.ts --fix"
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint ./src/**/*.ts --fix"
   },
   "dependencies": {
     "logform": "^2.5.1",

@@ -36,5 +36,5 @@ export class Db {
 
 export type DbOptions = Pick<
   Extract<DataSourceOptions, { type: 'postgres' }>,
-  'host' | 'port' | 'username' | 'password'
+  'host' | 'port' | 'username' | 'password' | 'ssl'
 >;

@@ -8,41 +8,41 @@ import {
 export class Logger {
   // cannot be private with a #, because it needs to be accessed
   // in clone method after prev instance is cloned
-  private readonly logger: winston.Logger;
+  readonly #logger: winston.Logger;
 
-  constructor(transports: Transports) {
-    this.logger = createLogger();
+  constructor(transports: Transports, parent?: winston.Logger) {
+    this.#logger = parent ?? createLogger();
 
     if (transports.console) {
-      this.logger.add(CONSOLE_TRANSPORT);
+      this.#logger.add(CONSOLE_TRANSPORT);
     }
   }
 
-  clone(label: string): this {
+  clone(label: string): Logger {
     if (label.length > 25) {
       throw new Error(
         `label max length is 25, but [${label.length}] was provided`,
       );
     }
 
-    return Object.assign(Object.create(Object.getPrototypeOf(this)), {
-      ...this,
-      logger: this.logger.child({
+    return new Logger(
+      {},
+      this.#logger.child({
         label: label.padEnd(25, ' '),
       }),
-    });
+    );
   }
 
   info(message: string, ...meta: any[]): void {
-    this.logger.info(message, ...meta);
+    this.#logger.info(message, ...meta);
   }
 
   debug(message: string, ...meta: any[]): void {
-    this.logger.debug(message, ...meta);
+    this.#logger.debug(message, ...meta);
   }
 
   error(message: string, ...meta: any[]): void {
-    this.logger.error(message, ...meta);
+    this.#logger.error(message, ...meta);
   }
 }
 

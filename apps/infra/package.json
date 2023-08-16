@@ -9,8 +9,8 @@
     "deploy": "cdk deploy",
     "destroy": "cdk destroy",
     "build": "shx rm -rf dist && tsc --build",
-    "lint": "eslint ./src/**.ts",
-    "lint:fix": "eslint ./src/**.ts --fix",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint ./src/**/*.ts --fix",
     "cdk": "cdk"
   },
   "dependencies": {

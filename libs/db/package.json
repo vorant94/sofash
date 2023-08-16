@@ -6,8 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "shx rm -rf dist && shx rm -f tsconfig.tsbuildinfo && tsc",
-    "lint": "eslint ./src/**.ts",
-    "lint:fix": "eslint ./src/**.ts --fix",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint ./src/**/*.ts --fix",
     "typeorm": "typeorm-ts-node-esm"
   },
   "dependencies": {

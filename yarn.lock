@@ -1446,6 +1446,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "cli@workspace:apps/cli"
   dependencies:
+    "@types/fs-extra": ^11
     "@types/inquirer": ^9
     "@types/node": ^18
     "@types/pg": ^8
@@ -1462,6 +1463,7 @@ __metadata:
     eslint-plugin-n: ^15.0.0
     eslint-plugin-prettier: ^5.0.0
     eslint-plugin-promise: ^6.0.0
+    fs-extra: ^11.1.1
     inquirer: ^9.2.10
     inversify: ^6.0.1
     joi: ^17.9.2
