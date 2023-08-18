@@ -54,7 +54,7 @@ export const BASE_SCHEMA = joi
     }),
     DB_PASSWORD: joi.string().when('NODE_ENV', {
       is: 'DEV',
-      then: joi.optional().default('example'),
+      then: joi.optional().default('password'),
       otherwise: joi.required(),
     }),
     MQ_HOST: joi.string().when('NODE_ENV', {

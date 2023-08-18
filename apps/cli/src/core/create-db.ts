@@ -21,13 +21,13 @@ export async function createDb(program: Command, env: Env): Promise<Db> {
     ssl,
   });
 
-  // program
-  //   .hook('preAction', async () => {
-  //     await db.initialize();
-  //   })
-  //   .hook('postAction', async () => {
-  //     await db.destroy();
-  //   });
+  program
+    .hook('preAction', async () => {
+      await db.initialize();
+    })
+    .hook('postAction', async () => {
+      await db.destroy();
+    });
 
   return db;
 }

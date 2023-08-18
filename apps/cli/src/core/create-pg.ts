@@ -16,8 +16,8 @@ export async function createPg(program: Command, env: Env): Promise<pg.Client> {
   const pgClient = new pg.Client({
     host: env.DB_HOST,
     port: env.DB_PORT,
-    user: env.DB_ROOT_USERNAME,
-    password: env.DB_ROOT_PASSWORD,
+    user: env.DB_USERNAME,
+    password: env.DB_PASSWORD,
     ssl,
   });
 

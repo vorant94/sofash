@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { DB_COMMAND } from './db/index.js';
+import { PG_COMMAND } from './pg/index.js';
 import { SCRAP_COMMAND } from './scrap/index.js';
 import { parseEnv } from 'env';
 import { type Env, ENV_SCHEMA } from './core/env.js';
@@ -39,7 +39,7 @@ CONTAINER.bind<Mq>(MQ).toConstantValue(createMq(program, env));
 CONTAINER.bind<Logger>(LOGGER).toConstantValue(createLogger());
 
 await program
-  .addCommand(DB_COMMAND)
+  .addCommand(PG_COMMAND)
   .addCommand(EVENT_SOURCE_COMMAND)
   .addCommand(SCRAP_COMMAND)
   .addCommand(TELEGRAM_COMMAND)

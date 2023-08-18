@@ -1,5 +1,5 @@
 {
-  "app": "yarn dev",
+  "app": "yarn prod",
   "watch": {
     "include": [
       "**"
