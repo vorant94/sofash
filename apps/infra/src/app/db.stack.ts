@@ -13,6 +13,7 @@ import {
   DatabaseInstance,
   DatabaseInstanceEngine,
   PostgresEngineVersion,
+  StorageType,
 } from 'aws-cdk-lib/aws-rds';
 
 export class DbStack extends NestedStack {
@@ -29,6 +30,8 @@ export class DbStack extends NestedStack {
         version: PostgresEngineVersion.VER_15_3,
       }),
       instanceType: InstanceType.of(InstanceClass.T4G, InstanceSize.MICRO),
+      storageType: StorageType.GP2,
+      allocatedStorage: 1,
       credentials: Credentials.fromSecret(credentialsSecret),
       databaseName: 'sofash',
       removalPolicy: RemovalPolicy.DESTROY,
