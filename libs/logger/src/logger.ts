@@ -6,12 +6,10 @@ import {
 } from './console/console.transport.js';
 
 export class Logger {
-  // cannot be private with a #, because it needs to be accessed
-  // in clone method after prev instance is cloned
-  readonly #logger: winston.Logger;
+  #logger: winston.Logger;
 
-  constructor(transports: Transports, parent?: winston.Logger) {
-    this.#logger = parent ?? createLogger();
+  constructor(transports: Transports) {
+    this.#logger = createLogger();
 
     if (transports.console) {
       this.#logger.add(CONSOLE_TRANSPORT);
@@ -25,12 +23,11 @@ export class Logger {
       );
     }
 
-    return new Logger(
-      {},
-      this.#logger.child({
-        label: label.padEnd(25, ' '),
-      }),
-    );
+    const child = new Logger({});
+    child.#logger = this.#logger.child({
+      label: label.padEnd(25, ' '),
+    });
+    return child;
   }
 
   info(message: string, ...meta: any[]): void {
