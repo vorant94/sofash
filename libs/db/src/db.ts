@@ -32,9 +32,13 @@ export class Db {
   async destroy(): Promise<void> {
     await this.#db.destroy();
   }
+
+  async health(): Promise<void> {
+    await this.#db.query(`SELECT 1`);
+  }
 }
 
 export type DbOptions = Pick<
   Extract<DataSourceOptions, { type: 'postgres' }>,
-  'host' | 'port' | 'username' | 'password' | 'ssl'
+  'host' | 'port' | 'username' | 'password'
 >;

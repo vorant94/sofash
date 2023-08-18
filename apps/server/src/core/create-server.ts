@@ -17,7 +17,7 @@ export function createServer(app: Express): Server {
 
   return createTerminus(server, {
     signal: 'SIGINT',
-    healthChecks: { '/health': onHealthCheckFactory(logger) },
+    healthChecks: { '/health': onHealthCheckFactory(db, logger) },
     onSignal: onSignalFactory(telegraf, db, mq, logger),
   });
 }
@@ -42,12 +42,11 @@ function onSignalFactory(
 
 // TODO add health check for
 //  - tg bot webhook
-//  - postgres
 //  - redis (once added to the project)
-function onHealthCheckFactory(logger: Logger): () => Promise<any> {
+function onHealthCheckFactory(db: Db, logger: Logger): () => Promise<any> {
   return async () => {
     logger.info('server is checking health');
 
-    await Promise.resolve();
+    await Promise.all([db.health()]);
   };
 }

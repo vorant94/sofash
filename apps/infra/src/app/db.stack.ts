@@ -1,42 +1,40 @@
 import { NestedStack, RemovalPolicy } from 'aws-cdk-lib';
 import { type Construct } from 'constructs';
-import {
-  InstanceClass,
-  InstanceSize,
-  InstanceType,
-  SubnetType,
-  type Vpc,
-} from 'aws-cdk-lib/aws-ec2';
+import { SubnetType, type Vpc } from 'aws-cdk-lib/aws-ec2';
 import { type Secret } from 'aws-cdk-lib/aws-secretsmanager';
 import {
+  AuroraPostgresEngineVersion,
+  ClusterInstance,
   Credentials,
-  DatabaseInstance,
-  DatabaseInstanceEngine,
-  PostgresEngineVersion,
-  StorageType,
+  DatabaseCluster,
+  DatabaseClusterEngine,
 } from 'aws-cdk-lib/aws-rds';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 export class DbStack extends NestedStack {
-  readonly databaseInstance: DatabaseInstance;
+  readonly databaseCluster: DatabaseCluster;
 
   constructor(scope: Construct, vpc: Vpc, credentialsSecret: Secret) {
     super(scope, 'sofash-db');
 
-    this.databaseInstance = new DatabaseInstance(this, 'sofash-db', {
+    this.databaseCluster = new DatabaseCluster(this, 'sofash-db-cluster', {
       vpc,
-      // TODO make it SubnetType.PRIVATE_ISOLATED and setup VPN connection in NetworkStack
-      vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED },
-      engine: DatabaseInstanceEngine.postgres({
-        version: PostgresEngineVersion.VER_15_3,
+      vpcSubnets: { subnetType: SubnetType.PUBLIC },
+      engine: DatabaseClusterEngine.auroraPostgres({
+        version: AuroraPostgresEngineVersion.VER_15_3,
       }),
-      instanceType: InstanceType.of(InstanceClass.T4G, InstanceSize.MICRO),
-      storageType: StorageType.GP2,
-      allocatedStorage: 1,
+      writer: ClusterInstance.serverlessV2('writer'),
+      readers: [
+        ClusterInstance.serverlessV2('reader', { scaleWithWriter: true }),
+      ],
+      cloudwatchLogsRetention: RetentionDays.ONE_WEEK,
+      serverlessV2MinCapacity: 0.5,
+      serverlessV2MaxCapacity: 1,
+      defaultDatabaseName: 'sofash',
       credentials: Credentials.fromSecret(credentialsSecret),
-      databaseName: 'sofash',
       removalPolicy: RemovalPolicy.DESTROY,
     });
 
-    this.databaseInstance.connections.allowDefaultPortFromAnyIpv4();
+    this.databaseCluster.connections.allowDefaultPortFromAnyIpv4();
   }
 }
