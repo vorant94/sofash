@@ -7,9 +7,9 @@ export class NetworkStack extends NestedStack {
 
   // TODO find a awy to set retention for the logs related to this stack
   constructor(scope: Construct) {
-    super(scope, 'sofash-network');
+    super(scope, NetworkStack.name);
 
-    this.vpc = new Vpc(this, 'sofash-network-vpc', {
+    this.vpc = new Vpc(this, Vpc.name, {
       natGateways: 0,
     });
   }

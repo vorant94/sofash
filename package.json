@@ -6,6 +6,7 @@
     "start": "yarn workspace server prod",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
+    "docker:ps": "docker ps",
     "docker:build": "docker build . -t vorant94/sofash:latest",
     "docker:pg": "docker exec -it sofash-postgres-1 psql -U postgres",
     "lint": "yarn workspaces foreach --verbose --parallel --jobs unlimited --exclude . run lint",
