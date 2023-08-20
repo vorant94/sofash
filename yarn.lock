@@ -384,6 +384,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/aws-lambda@npm:^8.10.119":
+  version: 8.10.119
+  resolution: "@types/aws-lambda@npm:8.10.119"
+  checksum: 56328bd147fcbcd89da641f7cb0a5cfa1c1e0b0728a1c39769b6b912729737f5d7afc0701b0b0e949ba2b869efd53500e78a2d8733b1eb69c3cc27c06b05623b
+  languageName: node
+  linkType: hard
+
 "@types/body-parser@npm:*":
   version: 1.19.2
   resolution: "@types/body-parser@npm:1.19.2"
@@ -1476,6 +1483,7 @@ __metadata:
     source-map-support: ^0.5.21
     tdl: ^7.3.1
     tdlib-types: td-1.8.0
+    telegraf: ^4.12.2
     ts-node: ^10.9.1
     tslib: ^2.6.0
     typescript: ^5.1.6
@@ -5264,6 +5272,7 @@ __metadata:
   resolution: "server@workspace:apps/server"
   dependencies:
     "@godaddy/terminus": ^4.12.1
+    "@types/aws-lambda": ^8.10.119
     "@types/express": ^4
     "@types/localtunnel": ^2
     "@types/node": ^18
@@ -5288,6 +5297,7 @@ __metadata:
     nodemon: ^3.0.1
     prettier: ^3.0.0
     prettier-eslint: ^15.0.1
+    serverless-http: ^3.2.0
     shx: ^0.3.4
     source-map-support: ^0.5.21
     telegraf: ^4.12.2
@@ -5296,6 +5306,13 @@ __metadata:
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
+
+"serverless-http@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "serverless-http@npm:3.2.0"
+  checksum: aaa3b6e416ad25931bf00c3a1c31cb5f9a56c678ca8a6bc99749b90bb49ee6e8c53d7edd6bc0b587a171bb8c39c6093dc9980cb0142b8c18881533859d3b769f
+  languageName: node
+  linkType: hard
 
 "set-blocking@npm:^2.0.0":
   version: 2.0.0

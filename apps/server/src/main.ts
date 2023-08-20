@@ -1,11 +1,9 @@
 import express from 'express';
 import { type Env, ENV_SCHEMA } from './core/env.js';
-import { Telegraf } from 'telegraf';
-import { createServer } from './core/create-server.js';
-import { createTelegrafMiddleware } from './core/create-telegraf-middleware.js';
+import { type Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 import { parseEnv } from 'env';
-import { Db } from 'db';
+import { type Db } from 'db';
 import {
   CONTAINER,
   DB,
@@ -14,46 +12,50 @@ import {
   MQ,
   TELEGRAF,
 } from './shared/container.js';
-import { Mq } from 'mq';
+import { type Mq } from 'mq';
 import { createEventProcessor } from './event/create-event.processor.js';
 import { createLogger } from './core/create-logger.js';
 import { type Logger } from 'logger';
 import sourceMapSupport from 'source-map-support';
+import { isMain } from './shared/is-main.js';
+import { createServer } from './core/create-server.js';
+import { type Server } from 'http';
+import { createTelegrafMiddleware } from './core/create-telegraf-middleware.js';
+import { createTelegraf } from './core/create-telegraf.js';
+import { createDb } from './core/create-db.js';
+import { createMq } from './core/create-mq.js';
 
-sourceMapSupport.install();
+if (isMain(import.meta.url)) {
+  sourceMapSupport.install();
 
-const app = express();
+  const app = await main(true);
+  const env = CONTAINER.get<Env>(ENV);
+  const logger = CONTAINER.get<Logger>(LOGGER);
 
-const env = await parseEnv(ENV_SCHEMA);
-CONTAINER.bind<Env>(ENV).toConstantValue(env);
-const logger = createLogger();
-CONTAINER.bind<Logger>(LOGGER).toConstantValue(logger);
-const telegraf = new Telegraf(env.TG_BOT_TOKEN);
-CONTAINER.bind<Telegraf>(TELEGRAF).toConstantValue(telegraf);
-const db = new Db({
-  host: env.DB_HOST,
-  port: env.DB_PORT,
-  username: env.DB_USERNAME,
-  password: env.DB_PASSWORD,
-});
-CONTAINER.bind<Db>(DB).toConstantValue(db);
-const mq = new Mq({
-  host: env.MQ_HOST,
-  port: env.MQ_PORT,
-});
-CONTAINER.bind<Mq>(MQ).toConstantValue(mq);
+  app.listen(env.NODE_PORT, () => {
+    logger.info(`server is listening on port ${env.NODE_PORT}`);
+  });
+}
 
-await db.initialize();
+export async function main(manageWebhook = false): Promise<Server> {
+  const app = express();
 
-mq.rawEvents.addWorker(createEventProcessor);
-mq.runWorkers();
+  const env = await parseEnv(ENV_SCHEMA);
+  CONTAINER.bind<Env>(ENV).toConstantValue(env);
+  CONTAINER.bind<Logger>(LOGGER).toConstantValue(createLogger());
+  const telegraf = createTelegraf(env);
+  CONTAINER.bind<Telegraf>(TELEGRAF).toConstantValue(telegraf);
+  CONTAINER.bind<Db>(DB).toConstantValue(await createDb(env));
+  const mq = createMq(env);
+  CONTAINER.bind<Mq>(MQ).toConstantValue(mq);
 
-app.use(await createTelegrafMiddleware());
-telegraf.on(message(), async (ctx) => {
-  await ctx.reply('Hello');
-});
+  mq.rawEvents.addWorker(createEventProcessor);
+  mq.runWorkers();
 
-const server = createServer(app);
-server.listen(env.NODE_PORT, () => {
-  logger.info(`server is listening on port ${env.NODE_PORT}`);
-});
+  app.use(await createTelegrafMiddleware(manageWebhook));
+  telegraf.on(message(), async (ctx) => {
+    await ctx.reply('Hello');
+  });
+
+  return createServer(app, manageWebhook);
+}
