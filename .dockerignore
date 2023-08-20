@@ -139,3 +139,5 @@ dist
 /.docker
 
 *.DS_Store
+
+.git/

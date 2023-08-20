@@ -1,6 +1,23 @@
 version: '3'
 
 services:
+#  server:
+#    build: .
+#    container_name: server
+#    hostname: server
+#    restart: unless-stopped
+#    environment:
+#      NODE_ENV: 'DEV'
+#      DB_HOST: 'postgres'
+#      MQ_HOST: 'redis-stack'
+#      TG_BOT_TOKEN: 'xxx'
+#      TG_BOT_WEBHOOK_URL: 'xxx'
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - postgres
+#      - redis-stack
+
   postgres:
     image: postgres
     hostname: postgres
