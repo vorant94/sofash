@@ -30,32 +30,3 @@ export class ServerStack extends NestedStack {
     this.restApi.root.addMethod('GET', integration);
   }
 }
-
-//
-// example of wrapping express server to run it in AWS Lambda
-//
-// import express from 'express';
-// import sourceMapSupport from 'source-map-support';
-// import serverlessExpress from '@vendia/serverless-express';
-//
-// sourceMapSupport.install();
-//
-// const app = express();
-// app.get('/', (req, res) => {
-//   res.send('Hello World!');
-// });
-//
-// let instance;
-// export function handler(event, context) {
-//   if (instance != null) {
-//     return instance(event, context);
-//   }
-//
-//   return async (event, context) => {
-//     // setup database connection and other async stuff here. it probably
-//     // should be a function, that locally is run as main script
-//     // and setups express listener, but in prod returns the app instead
-//     instance = serverlessExpress({ app });
-//     return instance(event, context);
-//   };
-// }

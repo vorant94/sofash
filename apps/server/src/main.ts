@@ -1,7 +1,6 @@
-import express from 'express';
+import express, { type Express } from 'express';
 import { type Env, ENV_SCHEMA } from './core/env.js';
 import { type Telegraf } from 'telegraf';
-import { message } from 'telegraf/filters';
 import { parseEnv } from 'env';
 import { type Db } from 'db';
 import {
@@ -16,46 +15,50 @@ import { type Mq } from 'mq';
 import { createEventProcessor } from './event/create-event.processor.js';
 import { createLogger } from './core/create-logger.js';
 import { type Logger } from 'logger';
-import sourceMapSupport from 'source-map-support';
+import { install } from 'source-map-support';
 import { isMain } from './shared/is-main.js';
-import { createServer } from './core/create-server.js';
-import { type Server } from 'http';
-import { createTelegrafMiddleware } from './core/create-telegraf-middleware.js';
 import { createTelegraf } from './core/create-telegraf.js';
 import { createDb } from './core/create-db.js';
 import { createMq } from './core/create-mq.js';
+import { setupGracefulShutdown } from './core/setup-graceful-shutdown.js';
+import { handleAsyncRequest } from './shared/handle-async-request.js';
+import { handleHealthRequest } from './health/index.js';
+import { createTelegrafWebhookUrl } from './shared/create-telegraf-webhook-url.js';
+import { COMPOSER } from './telegraf/index.js';
 
 if (isMain(import.meta.url)) {
-  sourceMapSupport.install();
+  install();
 
   const app = await main(true);
   const env = CONTAINER.get<Env>(ENV);
   const logger = CONTAINER.get<Logger>(LOGGER);
 
-  app.listen(env.NODE_PORT, () => {
+  const server = app.listen(env.NODE_PORT, () => {
     logger.info(`server is listening on port ${env.NODE_PORT}`);
   });
+
+  setupGracefulShutdown(server, true);
 }
 
-export async function main(manageWebhook = false): Promise<Server> {
+export async function main(manageWebhook = false): Promise<Express> {
   const app = express();
 
   const env = await parseEnv(ENV_SCHEMA);
   CONTAINER.bind<Env>(ENV).toConstantValue(env);
   CONTAINER.bind<Logger>(LOGGER).toConstantValue(createLogger());
-  const telegraf = createTelegraf(env);
+  const telegraf = await createTelegraf(env, manageWebhook);
   CONTAINER.bind<Telegraf>(TELEGRAF).toConstantValue(telegraf);
   CONTAINER.bind<Db>(DB).toConstantValue(await createDb(env));
   const mq = createMq(env);
   CONTAINER.bind<Mq>(MQ).toConstantValue(mq);
 
   mq.rawEvents.addWorker(createEventProcessor);
-  mq.runWorkers();
 
-  app.use(await createTelegrafMiddleware(manageWebhook));
-  telegraf.on(message(), async (ctx) => {
-    await ctx.reply('Hello');
-  });
+  app.use('/health', handleAsyncRequest(handleHealthRequest));
 
-  return createServer(app, manageWebhook);
+  const webhookUrl = createTelegrafWebhookUrl(env);
+  app.use(handleAsyncRequest(telegraf.webhookCallback(webhookUrl.pathname)));
+  telegraf.use(COMPOSER);
+
+  return app;
 }

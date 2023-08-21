@@ -25,11 +25,11 @@ import { type Client } from 'tdl';
 import { type Mq } from 'mq';
 import { type Logger } from 'logger';
 import { createLogger } from './core/create-logger.js';
-import sourceMapSupport from 'source-map-support';
+import { install } from 'source-map-support';
 import { type Telegraf } from 'telegraf';
 import { createTelegraf } from './core/create-telegraf.js';
 
-sourceMapSupport.install();
+install();
 
 const program = new Command();
 

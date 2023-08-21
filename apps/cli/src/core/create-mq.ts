@@ -9,7 +9,7 @@ export function createMq(program: Command, env: Env): Mq {
   });
 
   program.hook('postAction', async () => {
-    await mq.quit();
+    await mq.destroy();
   });
 
   return mq;

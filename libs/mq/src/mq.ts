@@ -1,13 +1,10 @@
 import { Redis, type RedisOptions } from 'ioredis';
 import { RawEventQueue } from './raw-event/raw-event.queue.js';
-import { EventEmitter } from 'events';
-import { MqEvent } from './shared/mq-event.js';
 
 export class Mq {
   readonly rawEvents: RawEventQueue;
 
   readonly #connection: Redis;
-  readonly #mqEmitter = new EventEmitter();
 
   constructor(options: MqOptions) {
     this.#connection = new Redis({
@@ -18,15 +15,11 @@ export class Mq {
       maxRetriesPerRequest: null,
     });
 
-    this.rawEvents = new RawEventQueue(this.#connection, this.#mqEmitter);
+    this.rawEvents = new RawEventQueue(this.#connection);
   }
 
-  async quit(): Promise<void> {
-    await this.#connection.quit();
-  }
-
-  runWorkers(): void {
-    this.#mqEmitter.emit(MqEvent.RUN_WORKERS);
+  async destroy(): Promise<void> {
+    await Promise.all([this.rawEvents.closeWorkers()]);
   }
 }
 
