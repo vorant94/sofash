@@ -3,8 +3,7 @@ import { type Construct } from 'constructs';
 import { NetworkStack } from './network.stack.js';
 import { DbStack } from './db.stack.js';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
-
-// import { ServerStack } from './server.stack.js';
+import { ServerStack } from './server.stack.js';
 
 export class SofashStack extends Stack {
   constructor(scope: Construct) {
@@ -23,6 +22,6 @@ export class SofashStack extends Stack {
 
     new DbStack(this, network.vpc, credentialsSecret);
 
-    // new ServerStack(this, network.vpc);
+    new ServerStack(this, network.vpc);
   }
 }

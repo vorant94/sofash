@@ -3,6 +3,8 @@ import { type Construct } from 'constructs';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { SubnetType, type Vpc } from 'aws-cdk-lib/aws-ec2';
 import { LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway';
+import path from 'path';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 export class ServerStack extends NestedStack {
   readonly restApi: RestApi;
@@ -13,9 +15,21 @@ export class ServerStack extends NestedStack {
     const handler = new Function(this, Function.name, {
       vpc,
       vpcSubnets: { subnetType: SubnetType.PRIVATE_ISOLATED },
-      code: Code.fromAsset('./path/to/the/built/server/code'),
-      handler: 'index.handler',
+      code: Code.fromDockerBuild(path.resolve(`../../`), {
+        imagePath: '/usr/local/sofash',
+      }),
+      handler: 'apps/server/dist/lambda.handler',
       runtime: Runtime.NODEJS_18_X,
+      logRetention: RetentionDays.ONE_WEEK,
+      environment: {
+        NODE_ENV: 'PROD',
+        DB_HOST: 'xxx',
+        DB_USERNAME: 'xxx',
+        DB_PASSWORD: 'xxx',
+        MQ_HOST: 'xxx',
+        TG_BOT_TOKEN: 'xxx',
+        TG_BOT_WEBHOOK_URL: 'xxx',
+      },
     });
 
     const integration = new LambdaIntegration(handler);
@@ -24,9 +38,9 @@ export class ServerStack extends NestedStack {
     //  (it is optional only with a custom domain)
     this.restApi = new RestApi(this, RestApi.name);
 
-    // TODO make it proxy all requests to lambda instead of listing all of them
-    //  (at first try there was some internal server errors, that I was too lazy
-    //  to deal with them at the moment)
-    this.restApi.root.addMethod('GET', integration);
+    this.restApi.root.addProxy({
+      anyMethod: true,
+      defaultIntegration: integration,
+    });
   }
 }

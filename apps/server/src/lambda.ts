@@ -14,14 +14,9 @@ export const handler: Handler<APIGatewayEvent> = async (
     return await instance(...args);
   }
 
-  return async (
-    ...args: Parameters<Handler<APIGatewayEvent>>
-  ): Promise<any> => {
-    const app = await main();
-    instance = configure({ app });
+  const app = await main();
+  instance = configure({ app });
+  setupGracefulShutdown();
 
-    setupGracefulShutdown();
-
-    return await instance(...args);
-  };
+  return await instance(...args);
 };

@@ -139,3 +139,13 @@ dist
 /.docker
 
 *.DS_Store
+
+apps/infra/.cdk.staging
+apps/infra/cdk.out
+
+libs/db/ormconfig.ts
+
+apps/cli/_td_database
+apps/cli/_td_files
+apps/cli/db
+
