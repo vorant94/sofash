@@ -30,6 +30,7 @@ if (isMain(import.meta.url)) {
   install();
 
   const app = await main(true);
+
   const env = CONTAINER.get<Env>(ENV);
   const logger = CONTAINER.get<Logger>(LOGGER);
 
