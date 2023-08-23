@@ -36,6 +36,7 @@ export class ServerStack extends NestedStack {
 
     // TODO remove stage name from generated URL
     //  (it is optional only with a custom domain)
+    // TODO replace with HttpApi since it is cheapier
     this.restApi = new RestApi(this, RestApi.name);
 
     this.restApi.root.addProxy({
