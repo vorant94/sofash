@@ -16,7 +16,7 @@ export class RawEventQueue {
     });
   }
 
-  async queueJobs(jobs: RawEventJob[]): Promise<void> {
+  async queueJobsBulk(jobs: RawEventJob[]): Promise<void> {
     await this.#queue.addBulk(
       jobs.map((rawEvent) => ({
         name: rawEvent.name,
@@ -40,7 +40,7 @@ export class RawEventQueue {
   async closeWorkers(): Promise<void> {
     await Promise.all(
       this.#workers.map(async (worker) => {
-        await worker.close(true);
+        await worker.close();
       }),
     );
   }

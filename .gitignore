@@ -149,3 +149,4 @@ apps/cli/_td_database
 apps/cli/_td_files
 apps/cli/db
 
+apps/cli/prompt.txt

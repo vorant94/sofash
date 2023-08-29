@@ -9,3 +9,4 @@ export const TELEGRAM = Symbol('TELEGRAM');
 export const MQ = Symbol('MQ');
 export const LOGGER = Symbol('LOGGER');
 export const TELEGRAF = Symbol('TELEGRAF');
+export const LLM = Symbol('LLM');

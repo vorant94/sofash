@@ -8,6 +8,7 @@
     { "path": "../../libs/env" },
     { "path": "../../libs/db" },
     { "path": "../../libs/mq" },
-    { "path": "../../libs/logger" }
+    { "path": "../../libs/logger" },
+    { "path": "../../libs/llm" }
   ]
 }

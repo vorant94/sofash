@@ -20,6 +20,8 @@ export class Mq {
 
   async destroy(): Promise<void> {
     await Promise.all([this.rawEvents.closeWorkers()]);
+
+    await this.#connection.quit();
   }
 }
 

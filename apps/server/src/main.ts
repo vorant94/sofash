@@ -7,6 +7,7 @@ import {
   CONTAINER,
   DB,
   ENV,
+  LLM,
   LOGGER,
   MQ,
   TELEGRAF,
@@ -25,6 +26,8 @@ import { handleAsyncRequest } from './shared/handle-async-request.js';
 import { handleHealthRequest } from './health/index.js';
 import { createTelegrafWebhookUrl } from './shared/create-telegraf-webhook-url.js';
 import { COMPOSER } from './telegraf/index.js';
+import { type Llm } from 'llm';
+import { createLlm } from './core/create-llm.js';
 
 if (isMain(import.meta.url)) {
   install();
@@ -52,6 +55,7 @@ export async function main(manageWebhook = false): Promise<Express> {
   CONTAINER.bind<Db>(DB).toConstantValue(await createDb(env));
   const mq = createMq(env);
   CONTAINER.bind<Mq>(MQ).toConstantValue(mq);
+  CONTAINER.bind<Llm>(LLM).toConstantValue(createLlm(env));
 
   mq.rawEvents.addWorker(createEventProcessor);
 

@@ -8,11 +8,11 @@ import { TELEGRAM_COMMAND } from './telegram/index.js';
 import { createPg } from './core/create-pg.js';
 import { createDb } from './core/create-db.js';
 import { createTelegram } from './core/create-telegram.js';
-import { createMq } from './core/create-mq.js';
 import {
   CONTAINER,
   DB,
   ENV,
+  LLM,
   LOGGER,
   MQ,
   PG,
@@ -22,12 +22,16 @@ import {
 import type pg from 'pg';
 import { type Db } from 'db';
 import { type Client } from 'tdl';
-import { type Mq } from 'mq';
 import { type Logger } from 'logger';
 import { createLogger } from './core/create-logger.js';
 import { install } from 'source-map-support';
 import { type Telegraf } from 'telegraf';
 import { createTelegraf } from './core/create-telegraf.js';
+import { type Llm } from 'llm';
+import { createLlm } from './core/create-llm.js';
+import { LLM_COMMAND } from './llm/index.js';
+import { type Mq } from 'mq';
+import { createMq } from './core/create-mq.js';
 
 install();
 
@@ -41,10 +45,12 @@ CONTAINER.bind<Client>(TELEGRAM).toConstantValue(createTelegram(program, env));
 CONTAINER.bind<Mq>(MQ).toConstantValue(createMq(program, env));
 CONTAINER.bind<Logger>(LOGGER).toConstantValue(createLogger());
 CONTAINER.bind<Telegraf>(TELEGRAF).toConstantValue(createTelegraf(env));
+CONTAINER.bind<Llm>(LLM).toConstantValue(createLlm(env));
 
 await program
   .addCommand(PG_COMMAND)
   .addCommand(EVENT_SOURCE_COMMAND)
   .addCommand(SCRAP_COMMAND)
   .addCommand(TELEGRAM_COMMAND)
+  .addCommand(LLM_COMMAND)
   .parseAsync();

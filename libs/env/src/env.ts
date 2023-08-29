@@ -13,6 +13,7 @@ export interface BaseEnv {
   MQ_PORT: number;
   TG_BOT_TOKEN: string;
   TG_BOT_WEBHOOK_URL: string;
+  LLM_API_KEY: string;
 }
 
 export const NODE_ENVS = ['DEV', 'PROD'] as const;
@@ -67,5 +68,6 @@ export const BASE_SCHEMA = joi
     MQ_PORT: joi.number().optional().default(6379),
     TG_BOT_TOKEN: joi.string().required(),
     TG_BOT_WEBHOOK_URL: joi.string().required(),
+    LLM_API_KEY: joi.string().required(),
   })
   .options({ stripUnknown: true });
