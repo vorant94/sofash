@@ -2,9 +2,11 @@ import fs from 'fs-extra';
 import path from 'path';
 import { config } from 'dotenv';
 import joi, { type ObjectSchema } from 'joi';
+import { LOG_LEVELS, type LogLevel } from 'logger';
 
 export interface BaseEnv {
   NODE_ENV: NodeEnv;
+  LOG_LEVEL: LogLevel;
   DB_HOST: string;
   DB_PORT: number;
   DB_USERNAME: string;
@@ -16,7 +18,7 @@ export interface BaseEnv {
   LLM_API_KEY: string;
 }
 
-export const NODE_ENVS = ['DEV', 'PROD'] as const;
+export const NODE_ENVS = ['development', 'production'] as const;
 export type NodeEnv = (typeof NODE_ENVS)[number];
 
 export async function parseEnv<T extends BaseEnv>(
@@ -44,24 +46,29 @@ export const BASE_SCHEMA = joi
       .string()
       .allow(...NODE_ENVS)
       .required(),
+    LOG_LEVEL: joi
+      .string()
+      .allow(...LOG_LEVELS)
+      .optional()
+      .default('info'),
     DB_HOST: joi.string().when('NODE_ENV', {
-      is: 'DEV',
+      is: 'development',
       then: joi.optional().default('localhost'),
       otherwise: joi.required(),
     }),
     DB_PORT: joi.number().optional().default(5432),
     DB_USERNAME: joi.string().when('NODE_ENV', {
-      is: 'DEV',
+      is: 'development',
       then: joi.optional().default('sofash'),
       otherwise: joi.required(),
     }),
     DB_PASSWORD: joi.string().when('NODE_ENV', {
-      is: 'DEV',
+      is: 'development',
       then: joi.optional().default('password'),
       otherwise: joi.required(),
     }),
     MQ_HOST: joi.string().when('NODE_ENV', {
-      is: 'DEV',
+      is: 'development',
       then: joi.optional().default('localhost'),
       otherwise: joi.required(),
     }),

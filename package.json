@@ -9,9 +9,9 @@
     "docker:build": "docker build . -t vorant94/sofash:latest",
     "docker:pg": "docker exec -it sofash-postgres-1 psql -U postgres",
     "docker:server": "docker exec -it server ash",
-    "lint": "yarn workspaces foreach --verbose --parallel --jobs unlimited --exclude . run lint",
-    "lint:fix": "yarn workspaces foreach --verbose --parallel --jobs unlimited --exclude . run lint:fix",
-    "build": "yarn workspaces foreach --verbose --parallel --jobs unlimited --exclude . run build",
+    "lint": "yarn workspaces foreach -vp --jobs unlimited run lint",
+    "lint:fix": "yarn workspaces foreach -vp --jobs unlimited run lint:fix",
+    "build": "yarn workspaces foreach -vpt --jobs unlimited run build",
     "prepare": "husky install",
     "postinstall": "husky install"
   },

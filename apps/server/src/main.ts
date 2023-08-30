@@ -49,13 +49,14 @@ export async function main(manageWebhook = false): Promise<Express> {
 
   const env = await parseEnv(ENV_SCHEMA);
   CONTAINER.bind<Env>(ENV).toConstantValue(env);
-  CONTAINER.bind<Logger>(LOGGER).toConstantValue(createLogger());
+  const logger = createLogger(env);
+  CONTAINER.bind<Logger>(LOGGER).toConstantValue(logger);
   const telegraf = await createTelegraf(env, manageWebhook);
   CONTAINER.bind<Telegraf>(TELEGRAF).toConstantValue(telegraf);
   CONTAINER.bind<Db>(DB).toConstantValue(await createDb(env));
   const mq = createMq(env);
   CONTAINER.bind<Mq>(MQ).toConstantValue(mq);
-  CONTAINER.bind<Llm>(LLM).toConstantValue(createLlm(env));
+  CONTAINER.bind<Llm>(LLM).toConstantValue(createLlm(env, logger));
 
   mq.rawEvents.addWorker(createEventProcessor);
 

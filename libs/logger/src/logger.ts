@@ -8,8 +8,8 @@ import {
 export class Logger {
   #logger: winston.Logger;
 
-  constructor(transports: Transports) {
-    this.#logger = createLogger();
+  constructor(transports: Transports, level: LogLevel = 'info') {
+    this.#logger = createLogger({ level });
 
     if (transports.console) {
       this.#logger.add(CONSOLE_TRANSPORT);
@@ -47,3 +47,6 @@ export interface TransportTypeToTransportConfig {
   console: ConsoleTransportConfig;
 }
 export type Transports = Partial<TransportTypeToTransportConfig>;
+
+export const LOG_LEVELS = ['error', 'info', 'debug'] as const;
+export type LogLevel = (typeof LOG_LEVELS)[number];
