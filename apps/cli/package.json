@@ -5,7 +5,8 @@
   "scripts": {
     "prod": "node ./dist/main.js",
     "dev": "ts-node ./src/main.ts",
-    "build": "shx rm -rf dist && tsc --build",
+    "clean": "shx rm -rf dist",
+    "build": "yarn clean && tsc --build",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint ./src/**/*.ts --fix"
   },

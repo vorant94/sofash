@@ -1,17 +1,16 @@
 {
   "name": "infra",
-  "version": "0.1.0",
   "packageManager": "yarn@3.6.1",
   "type": "module",
   "scripts": {
     "prod": "node ./dist/main.js",
     "dev": "ts-node ./src/main.ts",
-    "deploy": "cdk deploy",
-    "destroy": "cdk destroy",
-    "build": "shx rm -rf dist && tsc --build",
+    "clean": "shx rm -rf dist",
+    "build": "yarn clean && tsc --build",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint ./src/**/*.ts --fix",
-    "cdk": "cdk"
+    "deploy": "cdk deploy",
+    "destroy": "cdk destroy"
   },
   "dependencies": {
     "aws-cdk": "^2.91.0",

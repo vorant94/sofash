@@ -3,7 +3,6 @@ version: '3'
 services:
 #  server:
 #    build: .
-#    container_name: server
 #    hostname: server
 #    restart: unless-stopped
 #    environment:

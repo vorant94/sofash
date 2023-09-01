@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "shx rm -rf dist && shx rm -f tsconfig.tsbuildinfo && tsc",
+    "clean": "shx rm -rf dist && shx rm -f tsconfig.tsbuildinfo",
+    "build": "yarn clean && tsc",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint ./src/**/*.ts --fix",
     "typeorm": "typeorm-ts-node-esm"
