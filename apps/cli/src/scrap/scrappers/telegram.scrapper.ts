@@ -5,7 +5,7 @@ import { type TelegramRawEventJob } from 'mq';
 import { type EventSourceEntity } from 'db';
 import { type Logger } from 'logger';
 
-export class TelegramChannelScrapper
+export class TelegramScrapper
   implements Scrapper<EventSourceEntity<'telegram'>, TelegramRawEventJob>
 {
   #telegram: Client;
@@ -13,7 +13,7 @@ export class TelegramChannelScrapper
 
   constructor(telegram: Client, logger: Logger) {
     this.#telegram = telegram;
-    this.#logger = logger.clone(TelegramChannelScrapper.name);
+    this.#logger = logger.clone(TelegramScrapper.name);
   }
 
   async scrapEventSource({

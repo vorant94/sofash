@@ -25,7 +25,7 @@ export class RawEventQueue {
     );
   }
 
-  addWorker(processor: (job: RawEventJob) => Promise<void>): void {
+  addWorker(processor: RawEventProcessor): void {
     this.#workers.push(
       new Worker(
         this.#queueName,
@@ -45,3 +45,5 @@ export class RawEventQueue {
     );
   }
 }
+
+export type RawEventProcessor = (job: RawEventJob) => Promise<void>;

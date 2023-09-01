@@ -3,13 +3,13 @@ import { type MeetupRawEventJob } from 'mq';
 import { type EventSourceEntity } from 'db';
 import { type Logger } from 'logger';
 
-export class MeetupGroupScrapper
+export class MeetupScrapper
   implements Scrapper<EventSourceEntity<'meetup'>, MeetupRawEventJob>
 {
   #logger: Logger;
 
   constructor(logger: Logger) {
-    this.#logger = logger.clone(MeetupGroupScrapper.name);
+    this.#logger = logger.clone(MeetupScrapper.name);
   }
 
   async scrapEventSource(

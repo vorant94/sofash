@@ -13,7 +13,7 @@ import {
   TELEGRAF,
 } from './shared/container.js';
 import { type Mq } from 'mq';
-import { createEventProcessor } from './event/create-event.processor.js';
+import { createParseProcessor } from './parse/parse.processor.js';
 import { createLogger } from './core/create-logger.js';
 import { type Logger } from 'logger';
 import { install } from 'source-map-support';
@@ -58,7 +58,7 @@ export async function main(manageWebhook = false): Promise<Express> {
   CONTAINER.bind<Mq>(MQ).toConstantValue(mq);
   CONTAINER.bind<Llm>(LLM).toConstantValue(createLlm(env, logger));
 
-  mq.rawEvents.addWorker(createEventProcessor);
+  mq.rawEvents.addWorker(createParseProcessor());
 
   app.use('/health', handleAsyncRequest(handleHealthRequest));
 
