@@ -7,7 +7,7 @@
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "docker:build": "docker build . -t vorant94/sofash:latest",
-    "docker:pg": "docker exec -it sofash-postgres-1 psql -U postgres",
+    "docker:pg": "docker exec -it sofash-postgres-1 psql -U sofash",
     "docker:server": "docker exec -it sofash-server-1 ash",
     "lint": "yarn workspaces foreach -vp -j unlimited run lint",
     "lint:fix": "yarn workspaces foreach -vp -j unlimited run lint:fix",
