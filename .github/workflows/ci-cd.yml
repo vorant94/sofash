@@ -1,4 +1,4 @@
-name: Build NodeJS Application
+name: CI/CD
 
 on:
   push:
@@ -11,18 +11,14 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
           cache: 'yarn'
 
       - name: Install dependencies
