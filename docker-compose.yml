@@ -29,8 +29,7 @@ services:
       POSTGRES_USER: sofash
       POSTGRES_PASSWORD: password
 
-# TODO add here preconfigured authorization for adminer
-#  https://github.com/TimWolla/docker-adminer/issues/13
+  # TODO add here preconfigured authorization for adminer (https://github.com/TimWolla/docker-adminer/issues/13)
   adminer:
     image: adminer
     hostname: adminer

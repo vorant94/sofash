@@ -53,7 +53,7 @@ export class TelegramParser implements Parser<TelegramRawEventJob> {
     return event;
   }
 
-  // TODO: make declarative
+  // TODO: make declarative like with scrappers
   #extractMessage({ content }: message): string {
     if (this.#isTextContent(content)) {
       return content.text.text;

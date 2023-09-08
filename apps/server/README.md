@@ -12,5 +12,3 @@
 - run `yarn lt` to host your machine to the internet, retrieve your public url
 - add public url from above to `.env` file (e.g. `TG_BOT_WEBHOOK_URL=<your-public-url-goes-here>`)
 - run `yarn dev:watch` and send any message to the bot, you should receive `Hello` in response
-
-[//]: # (TODO make prettier configs a library to reuse it instead of copying)
