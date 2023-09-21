@@ -40,7 +40,7 @@ export async function parseEnv<T extends BaseEnv>(
   return value;
 }
 
-export const BASE_SCHEMA = joi
+export const BASE_ENV_SCHEMA = joi
   .object<BaseEnv, true>({
     NODE_ENV: joi
       .string()
