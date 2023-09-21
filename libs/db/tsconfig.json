@@ -4,6 +4,7 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
+    // TODO: upgrade ts and try to use es6 decorators insead (https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#decorators)
     "experimentalDecorators": true
   },
   // to exclude ormconfig.ts. the exclude fields results in build errors,

@@ -41,6 +41,7 @@ if (isMain(import.meta.url)) {
     logger.info(`server is listening on port ${env.NODE_PORT}`);
   });
 
+  // TODO: upgrade ts and try to use using keyword (https://simonkoeck.medium.com/typescript-5-2s-using-keyword-managing-resources-with-ease-e0a31efa3eec#:~:text=The%20using%20keyword%20is%20designed,future%20addition%20to%20JavaScript%20itself.)
   setupGracefulShutdown(server, true);
 }
 
