@@ -13,3 +13,11 @@ A Telegram Bot that aggregates interesting local events for your, so you always 
 - run `yarn`
 - run `yarn docker:up`
 - make sure to go through [db](libs/db/README.md) lib README to properly setup project database
+
+### stuff
+
+###### image to text (OCR)
+
+- https://github.com/naptha/tesseract.js/ (JS)
+- https://github.com/JaidedAI/EasyOCR (Python)
+- https://github.com/facebookresearch/fastText/ (Python)

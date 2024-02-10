@@ -150,3 +150,5 @@ apps/cli/_td_files
 apps/cli/db
 
 apps/cli/prompt.txt
+
+.idea
