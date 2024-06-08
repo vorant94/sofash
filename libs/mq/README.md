@@ -1,4 +1,0 @@
-# mq
-
-### local dev setup
-
