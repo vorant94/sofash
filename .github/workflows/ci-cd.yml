@@ -1,0 +1,43 @@
+name: CI/CD
+
+on:
+  push:
+    branches: ['master']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - run: npm ci --ignore-scripts --no-audit
+
+      - run: npm run build --workspace @sofash/cli
+
+      - run: npm run start cinema rav-hen --workspace @sofash/cli -- --cinemaId 1058 --date 2024-06-09
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: './packages/cli/data'
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - generate
+    steps:
+      - uses: actions/deploy-pages@v4

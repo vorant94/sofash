@@ -50,6 +50,6 @@ export const ravHenEventSchema = z.object({
 
 export type RavHenEvent = z.infer<typeof ravHenEventSchema>;
 
-export const ravHenCinemaIds = ['1058'] as const;
+export const ravHenCinemaIds = ['1058', '1071', '1062'] as const;
 export type RavHenCinemaId = (typeof ravHenCinemaIds)[number];
 export const ravHenCinemaIdSchema = z.enum(ravHenCinemaIds);
