@@ -24,6 +24,15 @@ jobs:
 
       - run: npm run format:check
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - run: npm run lint:check
+
   generate:
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +42,7 @@ jobs:
 
       - run: npm run build --workspace @sofash/cli
 
-      - run: npm run start cinema rav-hen --workspace @sofash/cli -- --cinemaId 1058 --date 2024-06-09
+      - run: node packages/cli/dist/rav-hen/scripts/create-calendar.js --cinemaId 1058 --date 2024-06-09
 
       - uses: actions/upload-pages-artifact@v3
         with:

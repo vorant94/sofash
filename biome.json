@@ -1,0 +1,88 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"linter": {
+		"rules": {
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedVariables": "error",
+				"noUnusedPrivateClassMembers": "error",
+				"useArrayLiterals": "error"
+			},
+			"performance": {
+				"noBarrelFile": "error"
+			},
+			"style": {
+				"noDefaultExport": "error",
+				"noNamespace": "error",
+				"noNamespaceImport": "error",
+				"noNegationElse": "error",
+				"useBlockStatements": "error",
+				"useCollapsedElseIf": "error",
+				"useConsistentArrayType": {
+					"level": "error",
+					"options": {
+						"syntax": "generic"
+					}
+				},
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": {
+						"requireAscii": true,
+						"filenameCases": ["kebab-case"]
+					}
+				},
+				"useForOf": "error",
+				"useFragmentSyntax": "error",
+				"useNamingConvention": "error",
+				"useShorthandAssign": "error"
+			},
+			"suspicious": {
+				"noConsoleLog": "error",
+				"useAwait": "error"
+			}
+		}
+	},
+	"formatter": {
+		"attributePosition": "multiline"
+	},
+	"files": {
+		"ignore": [
+			"**/.idea",
+			"**/node_modules",
+			"**/dist",
+			"**/.env",
+			"**/.DS_Store",
+			"**/data"
+		]
+	},
+	"overrides": [
+		{
+			"include": ["*.config.js"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noDefaultExport": "off"
+					}
+				}
+			}
+		},
+		{
+			"include": ["*.spec.ts", "*.spec.tsx"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noNamespaceImport": "off"
+					}
+				}
+			}
+		},
+		{
+			"include": ["tsconfig.*.json"],
+			"json": {
+				"parser": {
+					"allowComments": true
+				}
+			}
+		}
+	]
+}

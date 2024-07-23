@@ -1,28 +1,22 @@
 {
-  "name": "sofash",
-  "type": "module",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "prepare": "husky install",
-    "format:check": "prettier . --check",
-    "format:fix": "prettier . --write"
-  },
-  "devDependencies": {
-    "husky": "^9.0.11",
-    "prettier": "^3.2.5",
-    "prettier-plugin-css-order": "^2.1.2",
-    "prettier-plugin-organize-imports": "^3.2.4",
-    "prettier-plugin-tailwindcss": "^0.5.14",
-    "typescript": "^5.4.5"
-  },
-  "engines": {
-    "node": ">=20"
-  },
-  "os": [
-    "darwin",
-    "linux"
-  ]
+	"name": "sofash",
+	"type": "module",
+	"private": true,
+	"workspaces": ["packages/*"],
+	"scripts": {
+		"prepare": "husky",
+		"format:check": "biome format .",
+		"format:fix": "biome format --write .",
+		"lint:check": "biome lint .",
+		"lint:fix": "biome lint --write .",
+		"lint:fix:unsafe": "biome lint --write --unsafe ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.8.3",
+		"husky": "^9.0.11"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"os": ["darwin", "linux"]
 }
