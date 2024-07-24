@@ -1,10 +1,10 @@
 import fs from "node:fs/promises";
-import consola from "consola";
 import ical, {
 	type ICalCalendar,
 	type ICalCalendarJSONData,
 } from "ical-generator";
 import { env } from "../../config/globals/env.js";
+import { logger } from "../../logging/globals/logger.js";
 import { getPathsOfDataFiles } from "./get-paths-of-data-files.js";
 import { getUrlsOfDataFiles } from "./get-urls-of-data-files.js";
 
@@ -34,11 +34,11 @@ async function getExistingICalCalendarFromLocalFilesystem(
 
 	try {
 		data = JSON.parse(await fs.readFile(jsonPath, { encoding: "utf-8" }));
-		consola.debug(
+		logger.debug(
 			"Found previous events file locally, will add new events to it",
 		);
 	} catch (_e) {
-		consola.debug("No previous events file found, will create a new one");
+		logger.debug("No previous events file found, will create a new one");
 	}
 
 	return data;
@@ -56,11 +56,11 @@ async function getExistingICalCalendarFromRemoteHost(
 	try {
 		const response = await fetch(jsonUrl);
 		data = await response.json();
-		consola.debug(
+		logger.debug(
 			"Found previous events file remotely, will add new events to it",
 		);
 	} catch (_e) {
-		consola.debug("No previous events file found, will create a new one");
+		logger.debug("No previous events file found, will create a new one");
 	}
 
 	return data;

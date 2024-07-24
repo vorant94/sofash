@@ -1,6 +1,6 @@
-import consola from "consola";
 import { addMinutes } from "date-fns";
 import type { ICalCalendar } from "ical-generator";
+import { logger } from "../../logging/globals/logger.js";
 import type { FindFilmEventsResponseBody } from "../models/film-event.client.js";
 import type { Film } from "../models/film.model.js";
 
@@ -15,7 +15,7 @@ export function fillCalendarWithFilmEvents(
 
 	for (const event of events) {
 		if (existingEvents.has(event.id)) {
-			consola.debug(
+			logger.debug(
 				`Skipping event with id ${event.id} since it is already in calendar`,
 			);
 			continue;

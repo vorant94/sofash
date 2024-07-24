@@ -1,7 +1,7 @@
 import { URL } from "node:url";
-import consola from "consola";
 import { format } from "date-fns";
 import { z } from "zod";
+import { logger } from "../../logging/globals/logger.js";
 import { config } from "../globals/config.js";
 import type { BranchId } from "../types/branch-id.js";
 import { filmEventSchema } from "./film-event.model.js";
@@ -22,7 +22,7 @@ export async function findFilmEvents(
 	try {
 		response = await fetch(url);
 	} catch (e) {
-		consola.error("Failed to fetch", url.toString());
+		logger.error("Failed to fetch", url.toString());
 		throw e;
 	}
 
@@ -30,22 +30,19 @@ export async function findFilmEvents(
 	try {
 		body = await response.json();
 	} catch (e) {
-		consola.error("Failed to parse response body from", url.toString());
+		logger.error("Failed to parse response body from", url.toString());
 		throw e;
 	}
 
 	try {
 		const parsed = findFilmEventsResponseBodySchema.parse(body);
-		consola.debug(
+		logger.debug(
 			`Fetched ${parsed.body.films.length} films and ${parsed.body.events.length} events`,
 		);
 
 		return parsed;
 	} catch (e) {
-		consola.error(
-			"Response body didn't pass schema validation",
-			url.toString(),
-		);
+		logger.error("Response body didn't pass schema validation", url.toString());
 		throw e;
 	}
 }

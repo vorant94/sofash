@@ -4,7 +4,9 @@
 	"scripts": {
 		"build": "tsc",
 		"build:watch": "tsc --watch",
-		"clean": "shx rm -rf dist"
+		"clean": "shx rm -rf dist",
+		"rav-hen:create:dev": "node --env-file=.env dist/rav-hen/scripts/create-calendar.js",
+		"rav-hen:create": "node dist/rav-hen/scripts/create-calendar.js"
 	},
 	"dependencies": {
 		"consola": "^3.2.3",
