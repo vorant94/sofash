@@ -13,10 +13,9 @@ export async function createICalCalendar(
 	cinemaName: string,
 	branchName: string,
 ): Promise<ICalCalendar> {
-	const jsonData: unknown | null =
-		env.NODE_ENV === "development"
-			? await getExistingICalCalendarFromLocalFilesystem(cinemaName, branchName)
-			: await getExistingICalCalendarFromRemoteHost(cinemaName, branchName);
+	const jsonData: unknown | null = env.CI
+		? await getExistingICalCalendarFromRemoteHost(cinemaName, branchName)
+		: await getExistingICalCalendarFromLocalFilesystem(cinemaName, branchName);
 
 	return ical(
 		jsonData ? (jsonData as ICalCalendarJSONData) : { name: branchName },
