@@ -3,18 +3,18 @@ import consola from "consola";
 import { format } from "date-fns";
 import { z } from "zod";
 import { config } from "../globals/config.js";
-import type { CinemaId } from "../types/cinema-id.js";
+import type { BranchId } from "../types/branch-id.js";
 import { filmEventSchema } from "./film-event.model.js";
 import { filmSchema } from "./film.model.js";
 
 export async function findFilmEvents(
-	cinemaId: CinemaId,
+	branchId: BranchId,
 	date: Date,
 ): Promise<FindFilmEventsResponseBody> {
 	const formattedDate = format(date, "yyyy-MM-dd");
 
 	const url = new URL(
-		`/rh/data-api-service/v1/quickbook/${config.tenantId}/film-events/in-cinema/${cinemaId}/at-date/${formattedDate}`,
+		`/rh/data-api-service/v1/quickbook/${config.tenantId}/film-events/in-cinema/${branchId}/at-date/${formattedDate}`,
 		config.baseUrl,
 	);
 

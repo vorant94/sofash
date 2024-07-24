@@ -5,9 +5,11 @@ import { differenceInDays } from "date-fns";
 import { z } from "zod";
 import { createICalCalendar } from "../../ical/utils/create-ical-calendar.js";
 import { getPathsOfDataFiles } from "../../ical/utils/get-paths-of-data-files.js";
-import { config } from "../globals/config.js";
 import { findFilmEvents } from "../models/film-event.client.js";
-import { cinemaIdSchema } from "../types/cinema-id.js";
+import {
+	branchNameSchema,
+	branchNameToBranchId,
+} from "../types/branch-name.js";
 import { fillCalendarWithFilmEvents } from "../utils/fill-calendar-with-film-events.js";
 
 consola.start("Creating Rav-Hen calendar");
@@ -15,16 +17,18 @@ consola.start("Creating Rav-Hen calendar");
 consola.info("Parsing CLI args");
 const args = parseArgs({
 	options: {
-		cinemaId: {
+		branchName: {
 			type: "string",
+			short: "b",
 		},
 		date: {
 			type: "string",
+			short: "d",
 		},
 	},
 });
 const argsSchema = z.object({
-	cinemaId: cinemaIdSchema,
+	branchName: branchNameSchema,
 	date: z.coerce.date().superRefine((value, context) => {
 		const date = new Date(value);
 		if (differenceInDays(date, new Date()) < 0) {
@@ -35,22 +39,16 @@ const argsSchema = z.object({
 		}
 	}),
 });
-const { cinemaId, date } = argsSchema.parse(args.values);
+const { branchName, date } = argsSchema.parse(args.values);
 
 consola.info("Ensuring data dir is in place");
-const [icsPath, jsonPath] = await getPathsOfDataFiles(
-	"rav-hen",
-	config.cinemaIdToName[cinemaId],
-);
+const [icsPath, jsonPath] = await getPathsOfDataFiles("rav-hen", branchName);
 
 consola.info("Creating calendar");
-const calendar = await createICalCalendar(
-	jsonPath,
-	config.cinemaIdToName[cinemaId],
-);
+const calendar = await createICalCalendar("rav-hen", branchName);
 
 consola.info("Fetching film events...");
-const data = await findFilmEvents(cinemaId, date);
+const data = await findFilmEvents(branchNameToBranchId[branchName], date);
 
 consola.info("Filling calendar with fetched events...");
 fillCalendarWithFilmEvents(calendar, data);
