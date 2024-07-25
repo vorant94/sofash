@@ -5,11 +5,10 @@
 	"workspaces": ["packages/*"],
 	"scripts": {
 		"prepare": "lefthook install",
-		"format:check": "biome format .",
-		"format:fix": "biome format --write .",
-		"lint:check": "biome lint .",
-		"lint:fix": "biome lint --write .",
-		"lint:fix:unsafe": "biome lint --write --unsafe ."
+		"lint:check": "biome check .",
+		"lint:write": "biome check --write .",
+		"lint:write:unsafe": "biome check --write --unsafe .",
+		"lint:ci": "biome ci ."
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.3",

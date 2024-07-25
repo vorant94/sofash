@@ -5,15 +5,6 @@ on:
     branches: ['master']
 
 jobs:
-  format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: ./.github/actions/setup
-
-      - run: npm run format:check
-
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +12,7 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      - run: npm run lint:check
+      - run: npm run lint:ci
 
   build:
     runs-on: ubuntu-latest
