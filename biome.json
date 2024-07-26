@@ -78,7 +78,7 @@
 			}
 		},
 		{
-			"include": ["tsconfig.*.json"],
+			"include": ["**/tsconfig.json", "**/tsconfig.*.json"],
 			"json": {
 				"parser": {
 					"allowComments": true

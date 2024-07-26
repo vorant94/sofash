@@ -15,7 +15,7 @@
 		"lefthook": "^1.7.5"
 	},
 	"engines": {
-		"node": ">=20"
+		"node": ">=22"
 	},
 	"os": ["darwin", "linux"]
 }

@@ -3,7 +3,7 @@
 		/* Base */
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"target": "ES2022",
+		"target": "ESNext",
 		"allowJs": true,
 		"resolveJsonModule": true,
 		"moduleDetection": "force",
@@ -34,7 +34,7 @@
 		"sourceMap": true,
 
 		/* Runtime/Framework */
-		"lib": ["ES2023"],
+		"lib": ["ESNext"],
 
 		/* Misc */
 		"types": ["node", "@total-typescript/ts-reset"]
