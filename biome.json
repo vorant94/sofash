@@ -48,12 +48,13 @@
 	"files": {
 		"ignore": [
 			"**/.idea",
+			"**/.DS_Store",
 			"**/node_modules",
 			"**/dist",
 			"**/.env",
-			"**/.DS_Store",
-			"**/data",
-			".husky/_/*"
+			"**/.tsimp",
+			".husky/_/*",
+			"**/data"
 		]
 	},
 	"overrides": [
