@@ -4,11 +4,12 @@ import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { type Env, envSchema } from "./shared/env.ts";
 
-// dotenv mainly needed during development to set env locally from process.env
-// instead of vite's import.meta.env with all its restrictions (like VITE_ prefix)
-// so hono's env helper can get env from process.env like it does with node runtime
-config();
-
+if (import.meta.env.DEV) {
+	// dotenv needed during development to set env locally from process.env
+	// instead of vite's import.meta.env with all its restrictions (like VITE_ prefix)
+	// so hono's env helper can get env from process.env like it does with node runtime
+	config();
+}
 const app = new Hono();
 
 // set validated and parsed env back to the request context
