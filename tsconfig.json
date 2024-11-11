@@ -27,17 +27,27 @@
 		"noImplicitThis": true,
 
 		/* Bundler/Compiler */
-		"module": "NodeNext",
-		"rootDir": "src",
-		"outDir": "dist",
-		"preserveWatchOutput": true,
-		"sourceMap": true,
+		"moduleResolution": "Bundler",
+		"module": "ESNext",
+		"noEmit": true,
 
 		/* Runtime/Framework */
 		"lib": ["ESNext"],
+		"jsx": "react-jsx",
+		"allowImportingTsExtensions": true,
+		"jsxImportSource": "hono/jsx",
 
 		/* Misc */
-		"types": ["node", "@total-typescript/ts-reset"]
+		"types": ["vite/client", "@total-typescript/ts-reset"]
 	},
-	"include": ["src"]
+	"include": [
+		"src",
+		"e2e",
+		"scripts",
+		"playwright.config.ts",
+		"postcss.config.ts",
+		"tailwind.config.ts",
+		"vite.config.ts",
+		"vitest.config.ts"
+	]
 }

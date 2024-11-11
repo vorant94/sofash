@@ -1,21 +1,34 @@
 {
 	"name": "sofash",
-	"type": "module",
 	"private": true,
-	"workspaces": ["packages/*"],
+	"version": "0.0.1",
+	"type": "module",
 	"scripts": {
-		"prepare": "lefthook install",
+		"start:dev": "vite",
+		"build": "vite build",
+		"tsc": "tsc",
 		"lint:check": "biome check .",
 		"lint:write": "biome check --write .",
 		"lint:write:unsafe": "biome check --write --unsafe .",
-		"lint:ci": "biome ci ."
+		"prepare": "lefthook install"
+	},
+	"dependencies": {
+		"hono": "^4.6.9"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.3",
-		"lefthook": "^1.7.5"
+		"@hono/vite-dev-server": "^0.17.0",
+		"@total-typescript/ts-reset": "^0.6.1",
+		"lefthook": "^1.7.5",
+		"typescript": "^5.6.3",
+		"vite": "^5.4.11",
+		"wrangler": "^3.86.0"
 	},
 	"engines": {
 		"node": ">=22"
 	},
-	"os": ["darwin", "linux"]
+	"os": [
+		"darwin",
+		"linux"
+	]
 }

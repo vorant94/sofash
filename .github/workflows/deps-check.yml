@@ -6,11 +6,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  check_updates:
+  deps-check:
+    name: Dependencies check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - uses: ./.github/actions/setup
+      - name: Setup Node & NPM
+        uses: ./.github/actions/setup
 
-      - run: npm outdated
+      - name: Check for Outdated Packages
+        run: npm outdated

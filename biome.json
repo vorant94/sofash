@@ -1,12 +1,35 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
 	"linter": {
 		"rules": {
 			"correctness": {
 				"noUnusedImports": "error",
 				"noUnusedVariables": "error",
 				"noUnusedPrivateClassMembers": "error",
-				"useArrayLiterals": "error"
+				"useArrayLiterals": "error",
+				"useHookAtTopLevel": "error",
+				"useExhaustiveDependencies": {
+					"level": "error",
+					"options": {
+						"hooks": [
+							{
+								"name": "useLiveQuery",
+								"closureIndex": 0,
+								"dependenciesIndex": 1
+							}
+						]
+					}
+				}
+			},
+			"nursery": {
+				"useSortedClasses": {
+					"level": "error",
+					"options": {
+						"attributes": ["className"],
+						"functions": ["cn"]
+					}
+				},
+				"noEnum": "error"
 			},
 			"performance": {
 				"noBarrelFile": "error"
@@ -38,7 +61,8 @@
 			},
 			"suspicious": {
 				"noConsoleLog": "error",
-				"useAwait": "error"
+				"useAwait": "error",
+				"noConstEnum": "error"
 			}
 		}
 	},
@@ -47,19 +71,40 @@
 	},
 	"files": {
 		"ignore": [
-			"**/.idea",
-			"**/.DS_Store",
-			"**/node_modules",
-			"**/dist",
-			"**/.env",
-			"**/.tsimp",
+			"Logs",
+			"logs",
+			"*.log",
+			"npm-debug.log*",
+			"yarn-debug.log*",
+			"yarn-error.log*",
+			"pnpm-debug.log*",
+			"lerna-debug.log*",
+			"node_modules",
+			"dist",
+			"dist-ssr",
+			"*.local",
+			".vscode/*",
+			".idea",
+			".DS_Store",
+			"*.suo",
+			"*.ntvs*",
+			"*.njsproj",
+			"*.sln",
+			"*.sw?",
+			"test-results",
+			"playwright-report",
+			"blob-report",
+			"playwright/.cache/",
+			"coverage",
+			".vercel",
 			".husky/_/*",
-			"**/data"
+			".wrangler",
+			".env"
 		]
 	},
 	"overrides": [
 		{
-			"include": ["*.config.js"],
+			"include": ["*.config.ts", "src/main.ts"],
 			"linter": {
 				"rules": {
 					"style": {
@@ -84,6 +129,12 @@
 				"parser": {
 					"allowComments": true
 				}
+			}
+		},
+		{
+			"include": ["**/package.json"],
+			"formatter": {
+				"lineWidth": 1
 			}
 		}
 	]
