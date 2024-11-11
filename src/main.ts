@@ -13,26 +13,26 @@ if (import.meta.env.DEV) {
 const app = new Hono();
 
 // set validated and parsed env back to the request context
-app.use(async (c, next) => {
-	c.env = envSchema.parse(env<Env>(c));
+app.use(async (hc, next) => {
+	hc.env = envSchema.parse(env<Env>(hc));
 	await next();
 });
 
-app.get("/", (c) => c.text("Hello CloudFlare!"));
+app.get("/", (hc) => hc.text("Hello CloudFlare!"));
 
 // cannot set this path to be secret since in CF secrets are accessed only
 // during request. the same goes for creating a bot instance outside of request
 // scope since token is a secret that is accessible only inside request
-app.use("/telegram", (c) => {
+app.use("/telegram", (hc) => {
 	// TODO fix type casting
-	const bot = new Bot((c.env as Env).BOT_TOKEN);
+	const bot = new Bot((hc.env as Env).BOT_TOKEN);
 
-	bot.command("start", (c) => c.reply("Hello Telegram!"));
-	bot.on("message", (c) =>
-		c.reply(c.message.text ?? "no text in your message"),
+	bot.command("start", (tc) => tc.reply("Hello Telegram!"));
+	bot.on("message", (tc) =>
+		tc.reply(tc.message.text ?? "no text in your message"),
 	);
 
-	return webhookCallback(bot, "hono")(c);
+	return webhookCallback(bot, "hono")(hc);
 });
 
 export default app;
