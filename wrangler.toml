@@ -1,4 +1,9 @@
 name = "sofash"
 main = "dist/main.js"
 compatibility_date = "2024-11-11"
-upload_source_maps = true
+
+no_bundle = true
+find_additional_modules = true
+rules = [
+  { type = "Text", globs = ["main.js.map"], fallthrough = true }
+]
