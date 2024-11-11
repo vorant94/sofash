@@ -32,7 +32,7 @@ app.use("/telegram", (hc) => {
 		tc.reply(tc.message.text ?? "no text in your message"),
 	);
 
-	return webhookCallback(bot, "hono")(hc);
+	return webhookCallback(bot, "cloudflare-mod")(hc.req.raw);
 });
 
 export default app;
