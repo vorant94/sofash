@@ -10,16 +10,22 @@
 		"lint:check": "biome check .",
 		"lint:write": "biome check --write .",
 		"lint:write:unsafe": "biome check --write --unsafe .",
+		"proxy:dev": "ngrok http 5173",
 		"prepare": "lefthook install"
 	},
 	"dependencies": {
-		"hono": "^4.6.9"
+		"dotenv": "^16.4.5",
+		"grammy": "^1.31.1",
+		"hono": "^4.6.9",
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.3",
 		"@hono/vite-dev-server": "^0.17.0",
 		"@total-typescript/ts-reset": "^0.6.1",
+		"@types/node": "^22.9.0",
 		"lefthook": "^1.7.5",
+		"tsx": "^4.19.2",
 		"typescript": "^5.6.3",
 		"vite": "^5.4.11",
 		"wrangler": "^3.86.0"

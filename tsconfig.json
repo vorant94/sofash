@@ -38,7 +38,7 @@
 		"jsxImportSource": "hono/jsx",
 
 		/* Misc */
-		"types": ["vite/client", "@total-typescript/ts-reset"]
+		"types": ["node", "vite/client", "@total-typescript/ts-reset"]
 	},
 	"include": [
 		"src",
