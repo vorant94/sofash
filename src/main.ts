@@ -1,20 +1,24 @@
-import { config } from "dotenv";
 import { Bot, webhookCallback } from "grammy";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
-import { type Env, envSchema } from "./shared/env.ts";
+import { contextStorage, getContext } from "hono/context-storage";
+import type { Context } from "./shared/context.ts";
+import { envSchema } from "./shared/env.ts";
 
 if (import.meta.env.DEV) {
 	// dotenv needed during development to set env locally from process.env
 	// instead of vite's import.meta.env with all its restrictions (like VITE_ prefix)
 	// so hono's env helper can get env from process.env like it does with node runtime
+	const { config } = await import("dotenv");
 	config();
 }
-const app = new Hono();
 
-// set validated and parsed env back to the request context
+const app = new Hono<Context>();
+
+// set validated and parsed env back to the context storage
+app.use(contextStorage());
 app.use(async (hc, next) => {
-	hc.env = envSchema.parse(env<Env>(hc));
+	hc.set("env", envSchema.parse(env(hc)));
 	await next();
 });
 
@@ -24,8 +28,9 @@ app.get("/", (hc) => hc.text("Hello CloudFlare!"));
 // during request. the same goes for creating a bot instance outside of request
 // scope since token is a secret that is accessible only inside request
 app.use("/telegram", (hc) => {
-	// TODO fix type casting
-	const bot = new Bot((hc.env as Env).BOT_TOKEN);
+	const { env } = getContext<Context>().var;
+
+	const bot = new Bot(env.BOT_TOKEN);
 
 	bot.command("start", (tc) => tc.reply("Hello Telegram!"));
 	bot.on("message", (tc) =>
