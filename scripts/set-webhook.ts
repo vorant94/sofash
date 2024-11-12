@@ -3,7 +3,7 @@ import { parseArgs } from "node:util";
 import { config } from "dotenv";
 import { Bot } from "grammy";
 import { z } from "zod";
-import { envSchema } from "../src/shared/env.ts";
+import { envSchema } from "../src/shared/context/env.ts";
 
 config();
 

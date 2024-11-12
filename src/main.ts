@@ -2,8 +2,8 @@ import { Bot, webhookCallback } from "grammy";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { contextStorage, getContext } from "hono/context-storage";
-import type { Context } from "./shared/context.ts";
-import { envSchema } from "./shared/env.ts";
+import type { Context } from "./shared/context/context.ts";
+import { envSchema } from "./shared/context/env.ts";
 
 if (import.meta.env.DEV) {
 	// dotenv needed during development to set env locally from process.env
@@ -15,22 +15,24 @@ if (import.meta.env.DEV) {
 
 const app = new Hono<Context>();
 
-// set validated and parsed env back to the context storage
 app.use(contextStorage());
 app.use(async (hc, next) => {
-	hc.set("env", envSchema.parse(env(hc)));
+	const parsedEnv = envSchema.parse(env(hc));
+	const bot = new Bot(parsedEnv.BOT_TOKEN);
+
+	hc.set("env", parsedEnv);
+	hc.set("bot", bot);
+
 	await next();
 });
 
 app.get("/", (hc) => hc.text("Hello CloudFlare!"));
 
 // cannot set this path to be secret since in CF secrets are accessed only
-// during request. the same goes for creating a bot instance outside of request
+// inside request. the same goes for creating a bot instance outside of request
 // scope since token is a secret that is accessible only inside request
 app.use("/telegram", (hc) => {
-	const { env } = getContext<Context>().var;
-
-	const bot = new Bot(env.BOT_TOKEN);
+	const { bot } = getContext<Context>().var;
 
 	bot.command("start", (tc) => tc.reply("Hello Telegram!"));
 	bot.on("message", (tc) =>

@@ -14,7 +14,7 @@
 		"prepare": "lefthook install"
 	},
 	"dependencies": {
-		"grammy": "^1.31.0",
+		"grammy": "^1.31.2",
 		"hono": "^4.6.9",
 		"zod": "^3.23.8"
 	},
