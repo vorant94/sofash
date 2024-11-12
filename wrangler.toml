@@ -12,4 +12,4 @@ rules = [
 binding = "DB"
 database_name = "sofash"
 database_id = "9d480b50-c9f8-4829-bfac-50019cba32af"
-migrations_dir = "drizzle/migrations"
+migrations_dir = "drizzle"
