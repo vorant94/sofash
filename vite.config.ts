@@ -13,7 +13,10 @@ export default defineConfig({
 			fileName: "main",
 		},
 		rollupOptions: {
-			external: [...builtinModules, /^node:/],
+			external: [...builtinModules, /^node:/], // without it rollup tries to "bundle" node built-in modules
+			output: {
+				inlineDynamicImports: true, // prevent multiple chunks since it is easier for CF to work with a single file
+			},
 		},
 	},
 	plugins: [
