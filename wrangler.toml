@@ -7,3 +7,9 @@ no_bundle = true
 rules = [
   { type = "Text", globs = ["main.js.map"], fallthrough = true }
 ]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sofash"
+database_id = "9d480b50-c9f8-4829-bfac-50019cba32af"
+migrations_dir = "drizzle/migrations"
