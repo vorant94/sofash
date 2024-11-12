@@ -11,5 +11,5 @@ rules = [
 [[d1_databases]]
 binding = "DB"
 database_name = "sofash"
-database_id = "9d480b50-c9f8-4829-bfac-50019cba32af"
+database_id = "2e220ae3-0252-483d-911b-87daf934a808"
 migrations_dir = "drizzle"
