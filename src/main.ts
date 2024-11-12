@@ -15,8 +15,7 @@ if (import.meta.env.DEV) {
 
 const app = new Hono<Context>();
 
-app.use(contextStorage());
-app.use(async (hc, next) => {
+app.use(contextStorage(), async (hc, next) => {
 	const parsedEnv = envSchema.parse(env(hc));
 	const bot = new Bot(parsedEnv.BOT_TOKEN);
 
