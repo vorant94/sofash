@@ -38,7 +38,12 @@
 		"jsxImportSource": "hono/jsx",
 
 		/* Misc */
-		"types": ["node", "vite/client", "@total-typescript/ts-reset"]
+		"types": [
+			"node",
+			"vite/client",
+			"@total-typescript/ts-reset",
+			"@cloudflare/workers-types"
+		]
 	},
 	"include": [
 		"src",

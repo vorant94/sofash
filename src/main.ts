@@ -1,7 +1,10 @@
-import { Bot, webhookCallback } from "grammy";
+import { Bot } from "grammy";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
-import { contextStorage, getContext } from "hono/context-storage";
+import { contextStorage } from "hono/context-storage";
+import { apiRoute } from "./api/api/api.route.ts";
+import { healthRoute } from "./api/health/health.route.ts";
+import { telegramRoute } from "./api/telegram/telegram.route.ts";
 import type { Context } from "./shared/context/context.ts";
 import { envSchema } from "./shared/context/env.ts";
 
@@ -17,28 +20,29 @@ const app = new Hono<Context>();
 
 app.use(contextStorage(), async (hc, next) => {
 	const parsedEnv = envSchema.parse(env(hc));
-	const bot = new Bot(parsedEnv.BOT_TOKEN);
-
 	hc.set("env", parsedEnv);
+
+	const bot = new Bot(parsedEnv.BOT_TOKEN);
 	hc.set("bot", bot);
+
+	if (import.meta.env.DEV) {
+		const { drizzle } = await import("drizzle-orm/libsql");
+		const db = drizzle(parsedEnv.DB_FILE_NAME);
+		hc.set("db", db);
+	} else {
+		const { drizzle } = await import("drizzle-orm/d1");
+		const db = drizzle(hc.env.DB);
+		hc.set("db", db);
+	}
 
 	await next();
 });
 
-app.get("/", (hc) => hc.text("Hello CloudFlare!"));
-
+app.route("/api", apiRoute);
+app.route("/health", healthRoute);
 // cannot set this path to be secret since in CF secrets are accessed only
 // inside request. the same goes for creating a bot instance outside of request
 // scope since token is a secret that is accessible only inside request
-app.use("/telegram", (hc) => {
-	const { bot } = getContext<Context>().var;
-
-	bot.command("start", (tc) => tc.reply("Hello Telegram!"));
-	bot.on("message", (tc) =>
-		tc.reply(tc.message.text ?? "no text in your message"),
-	);
-
-	return webhookCallback(bot, "cloudflare-mod")(hc.req.raw);
-});
+app.route("/telegram", telegramRoute);
 
 export default app;

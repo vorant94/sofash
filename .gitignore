@@ -26,3 +26,4 @@ coverage
 .husky/_/*
 .wrangler
 .env
+data

@@ -71,7 +71,6 @@
 	},
 	"files": {
 		"ignore": [
-			"Logs",
 			"logs",
 			"*.log",
 			"npm-debug.log*",
@@ -99,7 +98,8 @@
 			".vercel",
 			".husky/_/*",
 			".wrangler",
-			".env"
+			".env",
+			"data"
 		]
 	},
 	"overrides": [
