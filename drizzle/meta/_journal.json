@@ -8,6 +8,13 @@
 			"when": 1731436645896,
 			"tag": "0000_spotty_winter_soldier",
 			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "6",
+			"when": 1731512172017,
+			"tag": "0001_bored_lord_tyger",
+			"breakpoints": true
 		}
 	]
 }

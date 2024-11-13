@@ -7,6 +7,7 @@ import { healthRoute } from "./api/health/health.route.ts";
 import { telegramRoute } from "./api/telegram/telegram.route.ts";
 import type { Context } from "./shared/context/context.ts";
 import { envSchema } from "./shared/context/env.ts";
+import { dbConfig } from "./shared/schema/db-config.ts";
 
 if (import.meta.env.DEV) {
 	// dotenv needed during development to set env locally from process.env
@@ -27,11 +28,11 @@ app.use(contextStorage(), async (hc, next) => {
 
 	if (import.meta.env.DEV) {
 		const { drizzle } = await import("drizzle-orm/libsql");
-		const db = drizzle(parsedEnv.DB_FILE_NAME);
+		const db = drizzle(parsedEnv.DB_FILE_NAME, dbConfig);
 		hc.set("db", db);
 	} else {
 		const { drizzle } = await import("drizzle-orm/d1");
-		const db = drizzle(hc.env.DB);
+		const db = drizzle(hc.env.DB, dbConfig);
 		hc.set("db", db);
 	}
 
