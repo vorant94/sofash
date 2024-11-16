@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { getContext } from "hono/context-storage";
 import type { Context } from "../../shared/context/context.ts";
 import {
@@ -30,7 +30,7 @@ export async function findUserByTelegramChatId(
 	const [raw] = await db
 		.select()
 		.from(users)
-		.where(sql`${users.telegramChatId} = ${telegramChatId}`);
+		.where(eq(users.telegramChatId, telegramChatId));
 
 	return raw ? userSchema.parse(raw) : null;
 }
