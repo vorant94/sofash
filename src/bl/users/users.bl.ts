@@ -1,7 +1,7 @@
 import {
 	createUser,
 	findUserByTelegramChatId,
-} from "../../dal/users/users.table.ts";
+} from "../../dal/db/users.table.ts";
 import type { User } from "../../shared/schema/users.ts";
 
 export async function findOrCreateUserByTelegramChatId(

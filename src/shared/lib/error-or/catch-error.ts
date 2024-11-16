@@ -1,10 +1,26 @@
-import type { Constructor } from "./constructor.ts";
-
-export type ErrorOr<T, E extends Constructor<Error>> =
-	| [undefined, T]
-	| [InstanceType<E>];
+import type { Constructor } from "../constructor.ts";
+import type { ErrorOr } from "./error-or.ts";
 
 export function catchError<T, E extends Constructor<Error>>(
+	promise: Promise<T>,
+	errorsTypesToCatch?: Array<E>,
+): Promise<ErrorOr<T, E>>;
+export function catchError<T, E extends Constructor<Error>>(
+	callback: () => T,
+	errorsTypesToCatch?: Array<E>,
+): ErrorOr<T, E>;
+export function catchError<T, E extends Constructor<Error>>(
+	promiseOrCallback: Promise<T> | (() => T),
+	errorsTypesToCatch?: Array<E>,
+): Promise<ErrorOr<T, E>> | ErrorOr<T, E> {
+	if (promiseOrCallback instanceof Promise) {
+		return catchErrorAsync(promiseOrCallback, errorsTypesToCatch);
+	}
+
+	return catchErrorSync(promiseOrCallback, errorsTypesToCatch);
+}
+
+function catchErrorSync<T, E extends Constructor<Error>>(
 	callback: () => T,
 	errorsTypesToCatch?: Array<E>,
 ): ErrorOr<T, E> {
@@ -25,18 +41,7 @@ export function catchError<T, E extends Constructor<Error>>(
 	}
 }
 
-export function reThrowError<T, E extends Constructor<Error>>(
-	result: ErrorOr<T, E>,
-): T {
-	const [error, data] = result;
-	if (error) {
-		throw error;
-	}
-
-	return data as T;
-}
-
-export async function catchErrorAsync<T, E extends Constructor<Error>>(
+async function catchErrorAsync<T, E extends Constructor<Error>>(
 	promise: Promise<T>,
 	errorsTypesToCatch?: Array<E>,
 ): Promise<ErrorOr<T, E>> {
@@ -55,15 +60,4 @@ export async function catchErrorAsync<T, E extends Constructor<Error>>(
 
 		throw e;
 	}
-}
-
-export async function reThrowErrorAsync<T, E extends Constructor<Error>>(
-	result: Promise<ErrorOr<T, E>>,
-): Promise<T> {
-	const [error, data] = await result;
-	if (error) {
-		throw error;
-	}
-
-	return data as T;
 }
