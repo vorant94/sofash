@@ -36,7 +36,7 @@ const response = await fetch(
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json",
-			// biome-ignore lint/style/useNamingConvention: env variables have different convention
+			// biome-ignore lint/style/useNamingConvention: headers have different convention
 			Authorization: `Basic ${Buffer.from(`${env.ADMIN_USERNAME}:${env.ADMIN_PASSWORD}`).toString("base64")}`,
 		},
 	},
