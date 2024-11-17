@@ -3,7 +3,12 @@ import { defineConfig } from "drizzle-kit";
 import { envSchema } from "./src/shared/context/env.ts";
 import { dbConfig } from "./src/shared/schema/db-config";
 
-const env = envSchema.parse(config().parsed);
+const env = envSchema
+	.pick({
+		// biome-ignore lint/style/useNamingConvention: env variables have different convention
+		DB_FILE_NAME: true,
+	})
+	.parse(config().parsed);
 
 export default defineConfig({
 	...dbConfig,

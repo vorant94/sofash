@@ -4,22 +4,27 @@ import { Bot } from "grammy";
 import { z } from "zod";
 import { envSchema } from "../src/shared/context/env.ts";
 
-const argsRaw = parseArgs({
-	options: {
-		baseUrl: {
-			type: "string",
-		},
-	},
-});
+export const { baseUrl } = z
+	.object({
+		baseUrl: z.string().url(),
+	})
+	.parse(
+		parseArgs({
+			options: {
+				baseUrl: {
+					type: "string",
+				},
+			},
+		}).values,
+	);
 
-const argsSchema = z.object({ baseUrl: z.string().url() });
-
-export const { baseUrl } = argsSchema.parse(argsRaw.values);
-
-const env = envSchema.parse(config().parsed);
+const env = envSchema
+	.pick({
+		// biome-ignore lint/style/useNamingConvention: env variables have different convention
+		BOT_TOKEN: true,
+	})
+	.parse(config().parsed);
 
 const bot = new Bot(env.BOT_TOKEN);
 
-const fullUrl = new URL("/telegram", baseUrl);
-
-await bot.api.setWebhook(fullUrl.toString());
+await bot.api.setWebhook(new URL("/telegram", baseUrl).toString());

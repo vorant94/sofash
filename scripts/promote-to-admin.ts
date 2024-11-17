@@ -3,22 +3,35 @@ import { config } from "dotenv";
 import { z } from "zod";
 import { envSchema } from "../src/shared/context/env.ts";
 
-const argsRaw = parseArgs({
-	options: {
-		id: {
-			type: "string",
-		},
-	},
-});
+const { id, baseUrl } = z
+	.object({
+		id: z.string().uuid(),
+		baseUrl: z.string().url().default("http://localhost:5173"),
+	})
+	.parse(
+		parseArgs({
+			options: {
+				id: {
+					type: "string",
+				},
+				baseUrl: {
+					type: "string",
+				},
+			},
+		}).values,
+	);
 
-const argsSchema = z.object({ id: z.string().uuid() });
-
-const { id } = argsSchema.parse(argsRaw.values);
-
-const env = envSchema.parse(config().parsed);
+const env = envSchema
+	.pick({
+		// biome-ignore lint/style/useNamingConvention: env variables have different convention
+		ADMIN_USERNAME: true,
+		// biome-ignore lint/style/useNamingConvention: env variables have different convention
+		ADMIN_PASSWORD: true,
+	})
+	.parse(config().parsed);
 
 const response = await fetch(
-	`http://localhost:5173/admin/users/${id}/promote-to-admin`,
+	new URL(`/admin/users/${id}/promote-to-admin`, baseUrl),
 	{
 		method: "PUT",
 		headers: {
