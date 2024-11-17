@@ -4,7 +4,6 @@ import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createSelectSchema } from "drizzle-zod";
 import type { z } from "zod";
 import { resourceType } from "./resource-types.ts";
-import { users } from "./users.ts";
 
 export const chains = sqliteTable("chains", {
 	id: text()
@@ -14,9 +13,6 @@ export const chains = sqliteTable("chains", {
 		.notNull()
 		.default(resourceType.chain),
 	createdAt: text().notNull().default(sql`(CURRENT_TIMESTAMP)`),
-	createdBy: text()
-		.notNull()
-		.references(() => users.id),
 	updatedAt: text()
 		.notNull()
 		.default(sql`(CURRENT_TIMESTAMP)`)

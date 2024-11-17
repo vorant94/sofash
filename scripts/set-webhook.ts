@@ -4,7 +4,7 @@ import { Bot } from "grammy";
 import { z } from "zod";
 import { envSchema } from "../src/shared/context/env.ts";
 
-const rawArgs = parseArgs({
+const argsRaw = parseArgs({
 	options: {
 		baseUrl: {
 			type: "string",
@@ -14,7 +14,7 @@ const rawArgs = parseArgs({
 
 const argsSchema = z.object({ baseUrl: z.string().url() });
 
-export const { baseUrl } = argsSchema.parse(rawArgs.values);
+export const { baseUrl } = argsSchema.parse(argsRaw.values);
 
 const env = envSchema.parse(config().parsed);
 

@@ -2,7 +2,7 @@ import { Bot } from "grammy";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { contextStorage } from "hono/context-storage";
-import { apiRoute } from "./api/api/api.route.ts";
+import { adminRoute } from "./api/admin/admin.route.ts";
 import { healthRoute } from "./api/health/health.route.ts";
 import { telegramRoute } from "./api/telegram/telegram.route.ts";
 import type { Context } from "./shared/context/context.ts";
@@ -39,7 +39,7 @@ app.use(contextStorage(), async (hc, next) => {
 	await next();
 });
 
-app.route("/api", apiRoute);
+app.route("/admin", adminRoute);
 app.route("/health", healthRoute);
 // cannot set this path to be secret since in CF secrets are accessed only
 // inside request. the same goes for creating a bot instance outside of request
