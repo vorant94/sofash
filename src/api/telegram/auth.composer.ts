@@ -1,6 +1,6 @@
 import { Composer } from "grammy";
 import { getContext } from "hono/context-storage";
-import { findOrCreateUserByTelegramChatId } from "../../bl/users/users.bl.ts";
+import { findOrCreateUserByTelegramChatId } from "../../bl/auth/find-or-create-user-by-telegram-chat-id.ts";
 import type { Context } from "../../shared/context/context.ts";
 
 export const authComposer = new Composer();

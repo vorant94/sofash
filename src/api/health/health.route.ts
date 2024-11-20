@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { checkHealth, healthStatuses } from "../../bl/health/health.bl.ts";
+import { checkHealth, healthStatuses } from "../../bl/system/check-health.ts";
 
 export const healthRoute = new Hono();
 

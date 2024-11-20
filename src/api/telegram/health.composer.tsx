@@ -1,7 +1,7 @@
 import { Composer } from "grammy";
 import { renderToString } from "hono/jsx/dom/server";
 import { z } from "zod";
-import { checkHealth, healthStatuses } from "../../bl/health/health.bl.ts";
+import { checkHealth, healthStatuses } from "../../bl/system/check-health.ts";
 import { userSchema } from "../../shared/schema/users.ts";
 import { CodeBlock } from "../../shared/ui/code-block.tsx";
 import { telegramCommand } from "./telegram.command.ts";
