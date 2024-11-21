@@ -12,6 +12,7 @@ export interface Context extends HonoEnv {
 		bot: Bot;
 		db: DrizzleD1Database | LibSQLDatabase;
 		user: User;
+		requestId: string;
 	};
 	// biome-ignore lint/style/useNamingConvention: 3-rd party type
 	Bindings: {

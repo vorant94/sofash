@@ -5,6 +5,9 @@ import devServer from "@hono/vite-dev-server";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+	esbuild: {
+		target: "es2022", // so the "using" keyword introduced with TS 5.2 is available
+	},
 	build: {
 		sourcemap: true,
 		lib: {

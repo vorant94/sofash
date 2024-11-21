@@ -4,9 +4,13 @@ import { getContext } from "hono/context-storage";
 import type { Context } from "../../shared/context/context.ts";
 import type { Constructor } from "../../shared/lib/constructor.ts";
 import { catchError } from "../../shared/lib/error-or/catch-error.ts";
+import { createLogger } from "../../shared/logger/logger.ts";
 import type { User } from "../../shared/schema/users.ts";
 
 export async function checkHealth(): Promise<Health> {
+	// @ts-ignore
+	// biome-ignore lint/correctness/noUnusedVariables: testing purposes
+	using logger = createLogger("checkHealth");
 	const { db, bot, user } = getContext<Context>().var;
 
 	const [dbResolved, telegramMeResolved, telegramWebhookResolved] =
@@ -30,8 +34,8 @@ export async function checkHealth(): Promise<Health> {
 				status: dbError ? "down" : "up",
 			},
 			telegram: {
-				username: telegramMeError ? "" : telegramMeResult.username,
-				webhookUrl: telegramWebhookError ? "" : telegramWebhookResult.url,
+				username: telegramMeError ? null : telegramMeResult.username,
+				webhookUrl: telegramWebhookError ? null : telegramWebhookResult.url,
 			},
 		},
 		user,
@@ -48,8 +52,8 @@ export interface Health {
 			status: HealthStatus;
 		};
 		telegram: {
-			username: string;
-			webhookUrl?: string;
+			username?: string | null;
+			webhookUrl?: string | null;
 		};
 	};
 	user?: User;

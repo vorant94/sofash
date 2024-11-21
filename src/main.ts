@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Bot } from "grammy";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
@@ -20,6 +21,8 @@ if (import.meta.env.DEV) {
 const app = new Hono<Context>();
 
 app.use(contextStorage(), async (hc, next) => {
+	hc.set("requestId", randomUUID());
+
 	const parsedEnv = envSchema.parse(env(hc));
 	hc.set("env", parsedEnv);
 
@@ -28,12 +31,10 @@ app.use(contextStorage(), async (hc, next) => {
 
 	if (import.meta.env.DEV) {
 		const { drizzle } = await import("drizzle-orm/libsql");
-		const db = drizzle(parsedEnv.DB_FILE_NAME, dbConfig);
-		hc.set("db", db);
+		hc.set("db", drizzle(parsedEnv.DB_FILE_NAME, dbConfig));
 	} else {
 		const { drizzle } = await import("drizzle-orm/d1");
-		const db = drizzle(hc.env.DB, dbConfig);
-		hc.set("db", db);
+		hc.set("db", drizzle(hc.env.DB, dbConfig));
 	}
 
 	await next();
