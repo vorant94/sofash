@@ -3,10 +3,10 @@ import { inspect, parseArgs } from "node:util";
 import { addDays, format } from "date-fns";
 import { z } from "zod";
 
-const { tenantId, cinemaId, date } = z
+const { tenantId, siteId, date } = z
 	.object({
 		tenantId: z.coerce.number().default(10100),
-		cinemaId: z.coerce.number().default(1072),
+		siteId: z.coerce.number().default(1072),
 		date: z.coerce.date().default(addDays(new Date(), 1)),
 	})
 	.parse(
@@ -15,7 +15,7 @@ const { tenantId, cinemaId, date } = z
 				tenantId: {
 					type: "string",
 				},
-				cinemaId: {
+				siteId: {
 					type: "string",
 				},
 				date: {
@@ -26,7 +26,7 @@ const { tenantId, cinemaId, date } = z
 	);
 
 const response = await fetch(
-	`https://www.planetcinema.co.il/il/data-api-service/v1/quickbook/${tenantId}/film-events/in-cinema/${cinemaId}/at-date/${format(date, "yyyy-MM-dd")}`,
+	`https://www.planetcinema.co.il/il/data-api-service/v1/quickbook/${tenantId}/film-events/in-cinema/${siteId}/at-date/${format(date, "yyyy-MM-dd")}`,
 );
 const json = await response.json();
 

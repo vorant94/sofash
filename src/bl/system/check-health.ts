@@ -1,17 +1,13 @@
 import type { ResultSet } from "@libsql/client";
 import { sql } from "drizzle-orm";
 import { getContext } from "hono/context-storage";
-import type { Context } from "../../shared/context/context.ts";
+import type { HonoEnv } from "../../shared/env/hono-env.ts";
 import type { Constructor } from "../../shared/lib/constructor.ts";
 import { catchError } from "../../shared/lib/error-or/catch-error.ts";
-import { createLogger } from "../../shared/logger/logger.ts";
 import type { User } from "../../shared/schema/users.ts";
 
 export async function checkHealth(): Promise<Health> {
-	// @ts-ignore
-	// biome-ignore lint/correctness/noUnusedVariables: testing purposes
-	using logger = createLogger("checkHealth");
-	const { db, bot, user } = getContext<Context>().var;
+	const { db, bot, user } = getContext<HonoEnv>().var;
 
 	const [dbResolved, telegramMeResolved, telegramWebhookResolved] =
 		await Promise.all([

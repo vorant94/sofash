@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { getContext } from "hono/context-storage";
 import { HTTPException } from "hono/http-exception";
-import type { Context } from "../../shared/context/context.ts";
+import type { HonoEnv } from "../../shared/env/hono-env.ts";
 import {
 	type CreateUser,
 	type User,
@@ -13,7 +13,7 @@ import {
 } from "../../shared/schema/users.ts";
 
 export async function createUser(toCreateRaw: CreateUser): Promise<User> {
-	const { db } = getContext<Context>().var;
+	const { db } = getContext<HonoEnv>().var;
 
 	const toCreate = createUserSchema.parse(toCreateRaw);
 
@@ -28,7 +28,7 @@ export async function createUser(toCreateRaw: CreateUser): Promise<User> {
 export async function findUserByTelegramChatId(
 	telegramChatId: User["telegramChatId"],
 ): Promise<User | null> {
-	const { db } = getContext<Context>().var;
+	const { db } = getContext<HonoEnv>().var;
 
 	const [raw] = await db
 		.select()
@@ -42,7 +42,7 @@ export async function setUserRole(
 	id: User["id"],
 	toSetRaw: UserRole,
 ): Promise<User> {
-	const { db } = getContext<Context>().var;
+	const { db } = getContext<HonoEnv>().var;
 
 	const toSet = userRoleSchema.parse(toSetRaw);
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const envSchema = z.object({
+export const configSchema = z.object({
 	// biome-ignore lint/style/useNamingConvention: env variables have different convention
 	BOT_TOKEN: z.string(),
 	// biome-ignore lint/style/useNamingConvention: env variables have different convention
@@ -11,4 +11,4 @@ export const envSchema = z.object({
 	ADMIN_PASSWORD: z.string(),
 });
 
-export type Env = z.infer<typeof envSchema>;
+export type Config = z.infer<typeof configSchema>;

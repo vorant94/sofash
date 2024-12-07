@@ -1,7 +1,7 @@
 import { inspect, parseArgs } from "node:util";
 import { config } from "dotenv";
 import { z } from "zod";
-import { envSchema } from "../src/shared/context/env.ts";
+import { configSchema } from "../src/shared/env/config.ts";
 
 const { id, baseUrl } = z
 	.object({
@@ -21,7 +21,7 @@ const { id, baseUrl } = z
 		}).values,
 	);
 
-const env = envSchema
+const env = configSchema
 	.pick({
 		// biome-ignore lint/style/useNamingConvention: env variables have different convention
 		ADMIN_USERNAME: true,

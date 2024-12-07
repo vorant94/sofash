@@ -1,9 +1,9 @@
 import { config } from "dotenv";
 import { defineConfig } from "drizzle-kit";
-import { envSchema } from "./src/shared/context/env.ts";
+import { configSchema } from "./src/shared/env/config.ts";
 import { dbConfig } from "./src/shared/schema/db-config";
 
-const env = envSchema
+const env = configSchema
 	.pick({
 		// biome-ignore lint/style/useNamingConvention: env variables have different convention
 		DB_FILE_NAME: true,

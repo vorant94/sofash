@@ -1,18 +1,10 @@
 import { Hono } from "hono";
-import { basicAuth } from "hono/basic-auth";
-import { getContext } from "hono/context-storage";
-import type { Context } from "../../shared/context/context.ts";
+import { hOnlyAdmins } from "../../bl/auth/only-admins.ts";
+import type { HonoEnv } from "../../shared/env/hono-env.ts";
 import { usersRoute } from "./users.route.ts";
 
-export const adminRoute = new Hono();
+export const adminRoute = new Hono<HonoEnv>();
 
-adminRoute.use((hc, next) => {
-	const { env } = getContext<Context>().var;
-
-	return basicAuth({
-		username: env.ADMIN_USERNAME,
-		password: env.ADMIN_PASSWORD,
-	})(hc, next);
-});
+adminRoute.use(hOnlyAdmins);
 
 adminRoute.route("/users", usersRoute);

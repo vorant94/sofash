@@ -3,18 +3,16 @@ import { sql } from "drizzle-orm";
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createSelectSchema } from "drizzle-zod";
 import type { z } from "zod";
+import { chains } from "./chains.ts";
 import { resourceType } from "./resource-types.ts";
 
-export const chainTypes = ["rav-hen"] as const;
-export type ChainType = (typeof chainTypes)[number];
-
-export const chains = sqliteTable("chains", {
+export const sites = sqliteTable("sites", {
 	id: text()
 		.primaryKey()
 		.$default(() => randomUUID()),
-	resourceType: text({ enum: [resourceType.chain] })
+	resourceType: text({ enum: [resourceType.site] })
 		.notNull()
-		.default(resourceType.chain),
+		.default(resourceType.site),
 	createdAt: text().notNull().default(sql`(CURRENT_TIMESTAMP)`),
 	updatedAt: text()
 		.notNull()
@@ -22,9 +20,12 @@ export const chains = sqliteTable("chains", {
 		.$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
 
 	name: text().notNull(),
-	type: text({ enum: chainTypes }).unique(),
+	siteId: text().notNull(),
+	chainId: text()
+		.notNull()
+		.references(() => chains.id),
 });
 
-export const chainSchema = createSelectSchema(chains);
+export const siteSchema = createSelectSchema(sites);
 
-export type Chain = z.infer<typeof chainSchema>;
+export type Site = z.infer<typeof siteSchema>;

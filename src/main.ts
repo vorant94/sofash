@@ -1,13 +1,16 @@
 import { randomUUID } from "node:crypto";
-import { Bot } from "grammy";
+import { conversations } from "@grammyjs/conversations";
+import { Bot, session } from "grammy";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { contextStorage } from "hono/context-storage";
 import { adminRoute } from "./api/admin/admin.route.ts";
 import { healthRoute } from "./api/health/health.route.ts";
 import { telegramRoute } from "./api/telegram/telegram.route.ts";
-import type { Context } from "./shared/context/context.ts";
-import { envSchema } from "./shared/context/env.ts";
+import { auth } from "./bl/auth/auth.ts";
+import { configSchema } from "./shared/env/config.ts";
+import type { GrammyContext } from "./shared/env/grammy-context.ts";
+import type { HonoEnv } from "./shared/env/hono-env.ts";
 import { dbConfig } from "./shared/schema/db-config.ts";
 
 if (import.meta.env.DEV) {
@@ -18,20 +21,23 @@ if (import.meta.env.DEV) {
 	config();
 }
 
-const app = new Hono<Context>();
+const app = new Hono<HonoEnv>();
 
 app.use(contextStorage(), async (hc, next) => {
 	hc.set("requestId", randomUUID());
 
-	const parsedEnv = envSchema.parse(env(hc));
-	hc.set("env", parsedEnv);
+	const config = configSchema.parse(env(hc));
+	hc.set("config", config);
 
-	const bot = new Bot(parsedEnv.BOT_TOKEN);
+	const bot = new Bot<GrammyContext>(config.BOT_TOKEN);
+	bot.use(auth);
+	bot.use(session());
+	bot.use(conversations());
 	hc.set("bot", bot);
 
 	if (import.meta.env.DEV) {
 		const { drizzle } = await import("drizzle-orm/libsql");
-		hc.set("db", drizzle(parsedEnv.DB_FILE_NAME, dbConfig));
+		hc.set("db", drizzle(config.DB_FILE_NAME, dbConfig));
 	} else {
 		const { drizzle } = await import("drizzle-orm/d1");
 		hc.set("db", drizzle(hc.env.DB, dbConfig));

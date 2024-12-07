@@ -2,7 +2,7 @@ import { parseArgs } from "node:util";
 import { config } from "dotenv";
 import { Bot } from "grammy";
 import { z } from "zod";
-import { envSchema } from "../src/shared/context/env.ts";
+import { configSchema } from "../src/shared/env/config.ts";
 
 export const { baseUrl } = z
 	.object({
@@ -18,13 +18,13 @@ export const { baseUrl } = z
 		}).values,
 	);
 
-const env = envSchema
+const { BOT_TOKEN } = configSchema
 	.pick({
 		// biome-ignore lint/style/useNamingConvention: env variables have different convention
 		BOT_TOKEN: true,
 	})
 	.parse(config().parsed);
 
-const bot = new Bot(env.BOT_TOKEN);
+const bot = new Bot(BOT_TOKEN);
 
 await bot.api.setWebhook(new URL("/telegram", baseUrl).toString());

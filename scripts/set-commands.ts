@@ -1,8 +1,9 @@
 import { config } from "dotenv";
 import { Bot } from "grammy";
-import { envSchema } from "../src/shared/context/env.ts";
+import { command } from "../src/shared/env/command.ts";
+import { configSchema } from "../src/shared/env/config.ts";
 
-const env = envSchema
+const env = configSchema
 	.pick({
 		// biome-ignore lint/style/useNamingConvention: env variables have different convention
 		BOT_TOKEN: true,
@@ -12,5 +13,6 @@ const env = envSchema
 const bot = new Bot(env.BOT_TOKEN);
 
 await bot.api.setMyCommands([
-	// { command: telegramCommand.health, description: "Health Check" },
+	{ command: command.health, description: "Health Check" },
+	{ command: command.addChain, description: "Add New Chain" },
 ]);

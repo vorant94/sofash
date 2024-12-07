@@ -1,5 +1,5 @@
 import { getContext } from "hono/context-storage";
-import type { Context } from "../context/context.ts";
+import type { HonoEnv } from "../env/hono-env.ts";
 
 export function createLogger(name: string): Logger {
 	names.push(name);
@@ -16,7 +16,7 @@ export interface Logger extends Disposable {
 const logger: Logger = {
 	debug(...args: Array<unknown>): void {
 		const name = names.at(-1);
-		const { requestId } = getContext<Context>().var;
+		const { requestId } = getContext<HonoEnv>().var;
 
 		console.debug(requestId, name, ...args);
 	},

@@ -1,12 +1,14 @@
 import console from "node:console";
 import { inspect, parseArgs } from "node:util";
-import { addDays, format } from "date-fns";
+import { addDays } from "date-fns";
 import { z } from "zod";
+import { findRavHenFilmEvents } from "../src/dal/rav-hen/rav-hen.client.ts";
+import { ravHenSiteIdSchema } from "../src/dal/rav-hen/rav-hen.dtos.ts";
+import { reThrowError } from "../src/shared/lib/error-or/re-throw-error.ts";
 
-const { tenantId, cinemaId, date } = z
+const { siteId, date } = z
 	.object({
-		tenantId: z.coerce.number().default(10104),
-		cinemaId: z.coerce.number().default(1058),
+		siteId: ravHenSiteIdSchema.default("1058"),
 		date: z.coerce.date().default(addDays(new Date(), 1)),
 	})
 	.parse(
@@ -15,7 +17,7 @@ const { tenantId, cinemaId, date } = z
 				tenantId: {
 					type: "string",
 				},
-				cinemaId: {
+				siteId: {
 					type: "string",
 				},
 				date: {
@@ -25,13 +27,10 @@ const { tenantId, cinemaId, date } = z
 		}).values,
 	);
 
-const response = await fetch(
-	`https://www.rav-hen.co.il/rh/data-api-service/v1/quickbook/${tenantId}/film-events/in-cinema/${cinemaId}/at-date/${format(date, "yyyy-MM-dd")}`,
-);
-const json = await response.json();
+const filmEvents = await reThrowError(findRavHenFilmEvents(siteId, date));
 
 console.info(
-	inspect(json, {
+	inspect(filmEvents, {
 		colors: true,
 		depth: Number.POSITIVE_INFINITY,
 		maxArrayLength: Number.POSITIVE_INFINITY,

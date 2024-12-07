@@ -3,15 +3,15 @@ import { inspect, parseArgs } from "node:util";
 import { addDays, format } from "date-fns";
 import { z } from "zod";
 
-const { cinemaId, date } = z
+const { siteId, date } = z
 	.object({
-		cinemaId: z.coerce.number().default(1),
+		siteId: z.coerce.number().default(1),
 		date: z.coerce.date().default(addDays(new Date(), 1)),
 	})
 	.parse(
 		parseArgs({
 			options: {
-				cinemaId: {
+				siteId: {
 					type: "string",
 				},
 				date: {
@@ -22,7 +22,7 @@ const { cinemaId, date } = z
 	);
 
 const response = await fetch(
-	`https://www.hotcinema.co.il/tickets/TheaterEvents2?date=${format(date, "dd/MM/yyyy")}&theatreid=${cinemaId}`,
+	`https://www.hotcinema.co.il/tickets/TheaterEvents2?date=${format(date, "dd/MM/yyyy")}&theatreid=${siteId}`,
 );
 const json = await response.json();
 
