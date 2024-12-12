@@ -30,29 +30,27 @@
 		"moduleResolution": "Bundler",
 		"module": "ESNext",
 		"noEmit": true,
+		"allowImportingTsExtensions": true,
 
 		/* Runtime/Framework */
 		"lib": ["ESNext"],
 		"jsx": "react-jsx",
-		"allowImportingTsExtensions": true,
 		"jsxImportSource": "hono/jsx",
 
 		/* Misc */
 		"types": [
-			"node",
 			"vite/client",
 			"@total-typescript/ts-reset",
+			"node",
 			"@cloudflare/workers-types"
 		]
 	},
-	"include": [
-		"src",
-		"e2e",
-		"scripts",
-		"playwright.config.ts",
-		"postcss.config.ts",
-		"tailwind.config.ts",
-		"vite.config.ts",
-		"vitest.config.ts"
-	]
+	//	using unified tsconfig.json instead of separate tsconfig.json /
+	//		tsconfig.app.json / tsconfig.node.json because of two reasons:
+	//		1. separate configs with references to each other don't work well
+	//			with "noEmit": true, see https://github.com/vitejs/vite/issues/18139
+	//		2. although e2e is ran in node env, it has pieces like page.evaluate
+	//			callback, that is run in browser, so dedicated node config still
+	//			needs to include browser env as well
+	"include": ["src", "e2e", "scripts", "*.config.ts"]
 }

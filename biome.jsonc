@@ -13,7 +13,7 @@
 					"options": {
 						"hooks": [
 							{
-								"name": "useLiveQuery",
+								"name": "useLiveQuery", // react-dexie
 								"closureIndex": 0,
 								"dependenciesIndex": 1
 							}
@@ -25,11 +25,10 @@
 				"useSortedClasses": {
 					"level": "error",
 					"options": {
-						"attributes": ["className"],
-						"functions": ["cn"]
+						"attributes": ["className"], // react
+						"functions": ["cn"] // shared/ui/cn.ts
 					}
-				},
-				"noEnum": "error"
+				}
 			},
 			"performance": {
 				"noBarrelFile": "error"
@@ -71,40 +70,27 @@
 	},
 	"files": {
 		"ignore": [
-			"logs",
-			"*.log",
-			"npm-debug.log*",
-			"yarn-debug.log*",
-			"yarn-error.log*",
-			"pnpm-debug.log*",
-			"lerna-debug.log*",
+			".DS_Store",
+			".idea",
 			"node_modules",
 			"dist",
-			"dist-ssr",
-			"*.local",
-			".vscode/*",
-			".idea",
-			".DS_Store",
-			"*.suo",
-			"*.ntvs*",
-			"*.njsproj",
-			"*.sln",
-			"*.sw?",
-			"test-results",
-			"playwright-report",
-			"blob-report",
-			"playwright/.cache/",
 			"coverage",
-			".vercel",
-			".husky/_/*",
-			".wrangler",
+			"playwright-report",
+			"test-results",
+			".react-router",
 			".env",
+			".wrangler",
+			".vercel",
 			"data"
 		]
 	},
 	"overrides": [
 		{
-			"include": ["*.config.ts", "src/main.ts"],
+			"include": [
+				"*.config.ts", // root level configs use default exports
+				"packages/*/*.config.ts", // root level config for workspaces
+				"src/main.ts" // some engines and frameworks use default exports
+			],
 			"linter": {
 				"rules": {
 					"style": {
@@ -114,7 +100,7 @@
 			}
 		},
 		{
-			"include": ["*.spec.ts", "*.spec.tsx"],
+			"include": ["*.spec.ts", "*.spec.tsx"], // because in order to mock top-level function, the test suite should import the whole ESModule
 			"linter": {
 				"rules": {
 					"style": {
@@ -124,7 +110,7 @@
 			}
 		},
 		{
-			"include": ["**/tsconfig.json", "**/tsconfig.*.json"],
+			"include": ["**/tsconfig.json", "**/tsconfig.*.json"], // its really JSONC/JSON5 format despite the name
 			"json": {
 				"parser": {
 					"allowComments": true
@@ -132,7 +118,7 @@
 			}
 		},
 		{
-			"include": ["**/package.json"],
+			"include": ["**/package.json"], // because NPM CLI doesn't preserve format and put new lines where it shouldn't by formatter definitions, so the only option is to obey to NPM
 			"formatter": {
 				"lineWidth": 1
 			}
