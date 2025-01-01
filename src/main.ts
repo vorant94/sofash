@@ -1,7 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { conversations } from "@grammyjs/conversations";
+import { swaggerUI } from "@hono/swagger-ui";
 import { Bot, session } from "grammy";
 import { Hono } from "hono";
+import { openAPISpecs } from "hono-openapi";
 import { env } from "hono/adapter";
 import { contextStorage } from "hono/context-storage";
 import { adminRoute } from "./api/admin/admin.route.ts";
@@ -52,5 +54,34 @@ app.route("/health", healthRoute);
 // inside request. the same goes for creating a bot instance outside of request
 // scope since token is a secret that is accessible only inside request
 app.route("/telegram", telegramRoute);
+
+app.get(
+	"/openapi.json",
+	openAPISpecs(app, {
+		documentation: {
+			info: {
+				title: "Sofash",
+				version: "0.0.1",
+				description: "Sofash API",
+			},
+			servers: [
+				{
+					url: "http://localhost:5173",
+					description: "Local server",
+				},
+			],
+			components: {
+				securitySchemes: {
+					basicAuth: {
+						type: "http",
+						scheme: "basic",
+					},
+				},
+			},
+		},
+	}),
+);
+
+app.get("/docs", swaggerUI({ url: "/openapi.json" }));
 
 export default app;

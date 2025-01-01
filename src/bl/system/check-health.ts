@@ -17,21 +17,28 @@ export async function checkHealth(): Promise<Health> {
 				db.run(sql`SELECT 1`).execute(),
 			),
 			catchError(bot.api.getMe()),
-			catchError(bot.api.getWebhookInfo()),
+			catchError(getWebhookUrl()),
 		]);
 	const [dbError] = dbResolved;
 	const [telegramMeError, telegramMeResult] = telegramMeResolved;
-	const [telegramWebhookError, telegramWebhookResult] = telegramWebhookResolved;
+	const [telegramWebhookUrlError, telegramWebhookUrlResult] =
+		telegramWebhookResolved;
+
+	const status = [dbError, telegramMeError, telegramWebhookUrlError].some(
+		Boolean,
+	)
+		? "down"
+		: "up";
 
 	return {
-		status: "up",
+		status,
 		components: {
 			database: {
 				status: dbError ? "down" : "up",
 			},
 			telegram: {
 				username: telegramMeError ? null : telegramMeResult.username,
-				webhookUrl: telegramWebhookError ? null : telegramWebhookResult.url,
+				webhookUrl: telegramWebhookUrlError ? null : telegramWebhookUrlResult,
 			},
 		},
 		user,
@@ -53,4 +60,17 @@ export interface Health {
 		};
 	};
 	user?: User;
+}
+
+// bot.api.getWebhookInfo returns url as an empty string if no webhook is set
+// it is easier to threat it as an error and throw an exception
+async function getWebhookUrl(): Promise<string> {
+	const { bot } = getContext<HonoEnv>().var;
+
+	const result = await bot.api.getWebhookInfo();
+	if (!result.url) {
+		throw new Error("No webhook URL set");
+	}
+
+	return result.url;
 }
